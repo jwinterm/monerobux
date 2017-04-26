@@ -5,9 +5,17 @@ import re
 import requests
 import praw
 
+@sopel.module.commands('4matter')
+def fourmatter(bot, trigger):
+    bot.say('Irish I be fookin <3 Milo')
+
 @sopel.module.commands('aminorex')
 def aminorex(bot, trigger):
     bot.say('if i could replace my wife with a robot...  i might seriously think about it')
+
+@sopel.module.commands('ayylmao', 'lmao')
+def lmao(bot, trigger):
+    bot.say('https://i.redd.it/jjiwl9dbejoy.jpg')
 
 @sopel.module.commands('banana')
 def banana(bot, trigger):
@@ -22,8 +30,12 @@ def barolo(bot, trigger):
     bot.say('I just opened a 2004 barolo in your and all the devs honor -- https://i.ytimg.com/vi/-JvdfsIeb-s/hqdefault.jpg')
 
 @sopel.module.commands('bear')
-def banana(bot, trigger):
+def bear(bot, trigger):
     bot.say(u'ʕ ·(エ)· ʔ'.encode('utf8'))
+
+@sopel.module.commands('brothers')
+def brothers(bot, trigger):
+    bot.say(u'http://www.trollaxor.com/2011/11/brief-history-of-ascii-penis.html'.encode('utf8'))
 
 @sopel.module.commands('buyorsell')
 def buyorsell(bot, trigger):
@@ -73,12 +85,20 @@ def ded(bot, trigger):
         bot.say('https://imgur.com/a/yzNZW')
 
 @sopel.module.commands('donate', 'donation')
-def dash(bot, trigger):
+def donate(bot, trigger):
     bot.say('45SkxgDmcLmW5ByS7w9AG78JuJRvCoVKCdGJWnd4US95CBUAtvdGAdM2oHgZgTGjkEAUcwdqcryM819aqdeiKxHSQC8HkmS', trigger.nick)
+
+@sopel.module.commands('dump')
+def dump(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=RHg8qIKJo1I')
 
 @sopel.module.commands('eth')
 def eth(bot, trigger):
     bot.say(u'The world computer 💻🌐'.encode('utf8'))
+
+@sopel.module.commands('fib', 'fibonacci')
+def fib(bot, trigger):
+    bot.say(u'Pardon me, do you have a moment to discuss our lord and savior ✞Cheesus Monero✞?'.encode('utf8'))
 
 @sopel.module.commands('flip')
 def flip(bot, trigger):
@@ -94,9 +114,25 @@ fuckyouoptions = [
 def fuckyou(bot, trigger):
     bot.say(random.choice(fuckyouoptions))
 
+@sopel.module.commands('gay')
+def gay(bot, trigger):
+    bot.say('https://i.imgur.com/RHbXrLa.png')
+
 @sopel.module.commands('gui')
 def gui(bot, trigger):
     bot.say('http://imgur.com/a/hnxfS')
+
+@sopel.module.commands('hmm', 'hmmm')
+def hmm(bot, trigger):
+    try:
+        sub=reddit.get_subreddit('hmmm')
+        posts=sub.get_new(limit=100)
+        n=random.randint(0,100)
+        for i, post in enumerate(posts):
+            if i==n:
+                bot.say(post.url)
+    except:
+        bot.say("Something something reddit's servers")
 
 @sopel.module.commands('isittrue')
 def isittrue(bot, trigger):
@@ -114,12 +150,20 @@ def jaxx(bot, trigger):
     bot.say(u'This command will be implemented soon. Honest. Especially if the devs can provide some unpaid assistance. Soon™...')
 
 @sopel.module.commands('joshua1234')
-def jaxx(bot, trigger):
+def joshua(bot, trigger):
     bot.say(u'The first, second, third, and fourth amongst joshes.')
+
+@sopel.module.commands('jwinterm')
+def jwinterm(bot, trigger):
+    bot.say(u'j_winter_m')
 
 @sopel.module.commands('lenny')
 def lenny(bot, trigger):
     bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
+
+@sopel.module.commands('ltc', 'chikun')
+def ltc(bot, trigger):
+    bot.say(u'🐔🐔🐔 https://cdn.meme.am/cache/instances/folder100/48222100.jpg 🐔🐔🐔'.encode('utf8'))
 
 @sopel.module.commands('masternode', 'masternodes')
 def masternode(bot, trigger):
@@ -141,24 +185,37 @@ def nomnomnom(bot, trigger):
 def noom(bot, trigger):
     bot.say(u'┏(.0.)┓'.encode('utf8'))
 
+odboptions = [
+"FBI don't you be watching me",
+"Ooo baby I like it raw",
+"Jacques Cousteau could never get this low"
+]
+@sopel.module.commands('odb', 'oldirty')
+def odb(bot, trigger):
+    bot.say(random.choice(confirmoptions))
+
+perooptions = [
+'https://www.youtube.com/watch?v=QqreRufrkxM',
+'https://www.youtube.com/watch?v=ZnPrtiLy0uU'
+]
 @sopel.module.commands('pero')
 def pero(bot, trigger):
-    bot.say('https://www.youtube.com/watch?v=QqreRufrkxM')
+    bot.say(random.choice(perooptions))
 
+@sopel.module.commands('pivx')
+def pivc(bot, trigger):
+    bot.say("Masternodes + PoS...what could possibly go wrong?")
+
+confirmoptions = [
+"I can confirm that it is true",
+"This is true",
+"Fake news",
+"Alternative fact",
+"The outlook is murky, ask again later"
+]
 @sopel.module.commands('pleaseconfirm', 'confirm')
 def confirm(bot, trigger):
-    draw = random.random()
-    if draw < 0.20:
-        silly_string = "I can confirm that it is true"  
-    elif 0.4 > draw >= 0.20:
-        silly_string = "This is true"  
-    elif 0.6 > draw >= 0.4:
-        silly_string = "Fake news"  
-    elif 0.8 > draw >= 0.6:
-        silly_string = "Alternative fact"  
-    elif 1 > draw >= 0.8:
-        silly_string = "The outlook is murky, ask again later"  
-    bot.say(silly_string)
+    bot.say(random.choice(confirmoptions))
 
 @sopel.module.commands('rarepepe', 'rare')
 def rarepepe(bot, trigger):
@@ -239,6 +296,10 @@ def tinytrump(bot, trigger):
 def trump(bot, trigger):
     bot.say("Monero is the best crypto, believe me, I know crypto and it's going to be yuuuuuuuge!")
 
+@sopel.module.commands('tumbleweed')
+def trump(bot, trigger):
+    bot.say("https://rootco.de/2016-03-28-why-use-tumbleweed/")
+
 @sopel.module.commands('unflip')
 def unflip(bot, trigger):
     bot.say(u'┬─┬ノ( º _ ºノ)'.encode('utf8'))
@@ -254,19 +315,37 @@ urmomoptions = [
 "ur momma has a glass eye with a fish in it",  
 "ur mama is so stupid she sold her romero for bitcoins",  
 "ur momma look like a Simpsons character",
-"ur mom is Amanda B Johnson"
+"ur mom is so ugly Donald Trump wouldn't even grab her by the pussy",
+"ur momma is so stupid she listens to rpietila",
+"ur mom is Amanda B Johnson",
+"US ur mom if u want to U!",
+"ur mom is so stupid she thinks Craig Wright is Satoshi"
 ]  
 @sopel.module.commands('urmom', 'yourmom', 'yomom', 'yomomma')
 def urmom(bot, trigger):
     bot.say(random.choice(urmomoptions))
 
+vitalikoptions = [
+"https://pbs.twimg.com/media/CrWjczJXgAExF2S.jpg",
+"mETH, not even once: https://cdn-az.allevents.in/banners/e7df519e0808bac49fa3aaf503aff87d",
+"Betteridge's law of headlines: https://fortunedotcom.files.wordpress.com/2016/09/blo_startups_2520x1667.png"
+]
+@sopel.module.commands('vitalik', 'buterin')
+def vitalik(bot, trigger):
+    bot.say(random.choice(vitalikoptions))
+
+
 @sopel.module.commands('wat')
 def wat(bot, trigger):
     bot.say("https://www.destroyallsoftware.com/talks/wat")
 
+zcashoptions = [
+"Trust us guys, we totally smashed that computer up, with like...magnetic baseball bats.", 
+"https://youtu.be/A51Bl3jkF0c"
+]
 @sopel.module.commands('zec', 'zcash')
 def zcash(bot, trigger):
-    bot.say('Trust us guys, we totally smashed that computer up, with like...magnetic baseball bats.')
+    bot.say(random.choice(zcashoptions))
 
 @sopel.module.rule('monerobux o\/')
 def wave(bot, trigger):

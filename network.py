@@ -4,6 +4,20 @@ import re
 
 networkurl = "http://api.minexmr.com:8080/stats"
 
+@sopel.module.commands('fork', 'forkening')
+def fork(bot, trigger):
+  try:
+    r=requests.get(networkurl)
+    j=r.json()
+  except Exception,e:
+    pass
+  try:
+    height=j["network"]["height"]
+    forkheight=1288616
+    bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
+  except:
+    bot.say("Something borked -_-")
+
 @sopel.module.commands('network')
 def network(bot, trigger):
   try:
@@ -41,7 +55,7 @@ def mempool(bot, trigger):
 def blocksize(bot, trigger):
   try:
     r=requests.get('http://moneroblocks.info/stats/block-medians')
-    size=re.search('&nbsp;<\/strong><\/div>\s*<div class=\"col-xs-5 col-sm-3 col-md-1\">(\d*)', r.text) 
+    size=re.search('&nbsp;<\/strong><\/div>\s*<div class=\"col-xs-2\">(\d*)', r.text) 
     bot.say("Median blocksize over last 200 blocks is {0} bytes".format(size.group(1)))
   except:
     bot.say("Bomething sorked 0_0")

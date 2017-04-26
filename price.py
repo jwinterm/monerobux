@@ -2,12 +2,13 @@
 import sopel.module
 import requests
 import time
+import random
 
 polourl = "https://poloniex.com/public?command=returnTicker"
 poloxmrlendurl = "https://poloniex.com/public?command=returnLoanOrders&currency=XMR&limit=999999"
 prevamnt, prevtime = 0, 0
 trexurl = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-"
-cryptopiaurl = "https://www.cryptopia.co.nz/api/GetMarket/2999"
+cryptopiaurl = "https://www.cryptopia.co.nz/api/GetMarkets"
 bitsquareurl = "https://market.bitsquare.io/api/ticker/?market=xmr_btc"
 fixerurl = 'http://api.fixer.io/latest?base=USD'
 finexbtc = 'https://api.bitfinex.com/v1/pubticker/XMRBTC'
@@ -17,6 +18,7 @@ krakbtceur = 'https://api.kraken.com/0/public/Ticker?pair=XBTEUR'
 krakusd = 'https://api.kraken.com/0/public/Ticker?pair=XMRUSD'
 krakeur = 'https://api.kraken.com/0/public/Ticker?pair=XMREUR'
 okcquar = 'https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=quarter'
+krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 
 @sopel.module.commands('bfx', 'bitfinex')
 def bfx(bot, trigger):
@@ -63,6 +65,16 @@ def krak(bot, trigger):
         bot.say(stringtosay)
     except:
         bot.say("Error getting data")
+
+@sopel.module.commands('usdt')
+def usdt(bot, trigger):
+    try:
+        r = requests.get(krakusdt)
+        j = r.json()
+        stringtosay = "Last USDT/USD trade at ${0:.4f} on {1:.2f} USD 24 h volume. Highest bid at ${2:.4f}".format(float(j['result']['USDTZUSD']['c'][0]), float(j['result']['USDTZUSD']['v'][0]), float(j['result']['USDTZUSD']['b'][0]))
+        bot.say(stringtosay)
+    except:
+        bot.say("Error getting USDT/USD data")
 
 @sopel.module.commands('btckrak', 'btckraken', 'btceur')
 def krakeur(bot, trigger):
@@ -128,6 +140,8 @@ def polo(bot, trigger):
         #     bot.say("COBOL only in #monero-markets")
         # elif coin == "NAUT":
         #     bot.say("That ship has sailed...")
+        elif coin == "PIVX":
+            bot.say("Masternodes + PoS...what could possibly go wrong?")
         else:
             label="BTC_" + coin
             try:
@@ -193,40 +207,70 @@ def bsq(bot, trigger):
 @sopel.module.commands('cryptopia')
 def cryptopia(bot, trigger):
     try:
+        if not trigger.group(2):
+             coin = 'XMR'
+             pair = 'BTC'
+        else: 
+            coin = trigger.group(2).split(' ')[0].upper()
+            try:
+                if len(trigger.group(2).split(' ')[1]) > 1:
+                    pair = trigger.group(2).split(' ')[1].upper()
+                else:
+                    pair = "BTC"
+            except:
+                pair = "BTC"
         r = requests.get(cryptopiaurl)
         j = r.json()
-        xmr=j['Data']
-        last=float(xmr['LastPrice'])
-        change=float(xmr['Change'])
-        vol=float(xmr['Volume'])
-        bot.say("Cryptopia at {0:.8f} BTC; {1:.2f}% over 24 hours on {2:.3f} BTC volume".format(last, change, vol*last))
+        found = False
+        for i in j["Data"]:
+            if i["Label"] == coin+"/"+pair:
+                last=float(i['LastPrice'])
+                change=float(i['Change'])
+                vol=float(i['Volume'])
+                bot.say("{0} on Cryptopia at {1:.8f} {2}; {3:.2f}% over 24 hours on {4:.3f} {2} volume".format(coin, last, pair, change, vol*last))
+                found = True
+        if found == False:
+            bot.say("This shit is too shitty even for shitopia")
     except:
         bot.say("Error retrieving data from Cryptopia")
 
 @sopel.module.commands('cmc', 'coinmarketcap')
 def cmc(bot, trigger):
     try:
-        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=100')
+        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
         j = r.json()
     except:
         bot.say("Can't connect to API")
     if not trigger.group(2):
         symbol = 'XMR'
     else:
-        symbol = trigger.group(2)
-        symbol = symbol.upper()
+        if trigger.group(2).isdigit():
+            rank = trigger.group(2)
+        elif trigger.group(2) == 'random':
+            rank = random.randint(1,500)
+        else:
+            symbol = trigger.group(2)
+            symbol = symbol.upper()
     try:
         for i in j:
-            if i['symbol'] == symbol:
-                name = i['name']
-                rank = i['rank']
-                price_usd = float(i['price_usd'])
-                price_btc = float(i['price_btc'])
-                volume_usd = float(i['24h_volume_usd'])
-                market_cap_usd = float(i['market_cap_usd'])
-                available_supply = float(i['available_supply'])
-                total_supply = float(i['total_supply'])
-                percent_change_24h = float(i['percent_change_24h'])
+            try:
+                if i['symbol'] == symbol:
+                    coin = i
+            except: pass
+            try:
+                if i['rank'] == str(rank):
+                    coin = i
+            except: pass
+        symbol = coin['symbol']    
+        name = coin['name']
+        rank = coin['rank']
+        price_usd = float(coin['price_usd'])
+        price_btc = float(coin['price_btc'])
+        volume_usd = float(coin['24h_volume_usd'])
+        market_cap_usd = float(coin['market_cap_usd'])
+        available_supply = float(coin['available_supply'])
+        total_supply = float(coin['total_supply'])
+        percent_change_24h = float(coin['percent_change_24h'])
         bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply)) 
     except:
         bot.say("Error parsing ticker")
@@ -564,5 +608,12 @@ def log(bot, trigger):
         last=float(j['ticker']['log']['last'])
         vol=float(j['ticker']['log']['vol'])
         bot.say("Last price on c-cex for LOG at {0:.8f} BTC on {1:.3f} BTC volume.".format(last, vol))
+    except:
+        bot.say("C-cex sucks")
+
+@sopel.module.commands('price')
+def price(bot, trigger):
+    try:
+        bot.say("1 XMR = $1000 USD (Offer valid in participating locations)")
     except:
         bot.say("C-cex sucks")
