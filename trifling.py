@@ -104,6 +104,10 @@ def fib(bot, trigger):
 def flip(bot, trigger):
     bot.say(u'(╯°□°）╯︵ ┻━┻'.encode('utf8'))
 
+@sopel.module.commands('fuck')
+def fuck(bot, trigger):
+    bot.say("Fuck your {} if you want fuck!".format(trigger.group(2)))
+
 fuckyouoptions = [
 "http://imgur.com/Kt8os8v",
 "https://pbs.twimg.com/profile_images/502111486915788801/DtB5ruDz_400x400.jpeg",
@@ -156,6 +160,10 @@ def joshua(bot, trigger):
 @sopel.module.commands('jwinterm')
 def jwinterm(bot, trigger):
     bot.say(u'j_winter_m')
+
+@sopel.module.commands('kid', 'rehrar')
+def kid(bot, trigger):
+    bot.say(u'What up kid?')
 
 @sopel.module.commands('lenny')
 def lenny(bot, trigger):
