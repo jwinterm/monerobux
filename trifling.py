@@ -362,3 +362,71 @@ def wave(bot, trigger):
 #@sopel.module.rule('[Tt]rump')
 #def politics(bot, trigger):
 #    bot.reply("politics is the mind killer")
+
+@sopel.module.commands('asp')
+def asp(bot, trigger):
+    polourl = "https://poloniex.com/public?command=returnTicker"
+    stampurl = 'https://www.bitstamp.net/api/ticker/'
+
+    try:
+        r=requests.get(polourl)
+            j=r.json()
+        except:
+            bot.say("Error connecting to Poloniex")
+            
+        label_dash="BTC_DASH"
+        label_decred="BTC_DCR"
+        label_factom="BTC_FCT"
+        label_golem="BTC_GNT"
+        label_maidsafecoin="BTC_MAID"
+        label_augur="BTC_REP"
+        label_stellar="BTC_STR"
+        label_nem="BTC_XEM"
+        label_ripple="BTC_XRP"
+        label_zcash="BTC_ZEC"
+
+    # Bitstamp
+    try: 
+        stampresult = requests.get(stampurl)
+        stampjson = stampresult.json()
+    except:
+        stampjson = False
+    if stampjson:
+        stamp_price = float(stampjson['last'])
+    # Poloniex  
+    try:
+        ticker_dash=j[label_dash]
+        ticker_decred=j[label_decred]
+        ticker_factom=j[label_factom]
+        ticker_golem=j[label_golem]
+        ticker_maidsafecoin=j[label_maidsafecoin]
+        ticker_augur=j[label_augur]
+        ticker_stellar=j[label_stellar]
+        ticker_nem=j[label_nem]
+        ticker_ripple=j[label_ripple]
+        ticker_zcash=j[label_zcash]
+        last_dash=float(ticker_dash['last'])
+        last_decred=float(ticker_decred['last'])
+        last_factom=float(ticker_factom['last'])
+        last_golem=float(ticker_golem['last'])
+        last_maidsafecoin=float(ticker_maidsafecoin['last'])
+        last_augur=float(ticker_augur['last'])
+        last_stellar=float(ticker_stellar['last'])
+        last_nem=float(ticker_nem['last'])
+        last_ripple=float(ticker_ripple['last'])
+        last_zcash=float(ticker_zcash['last'])
+        value_dash = float(last_dash*18.84760476)
+        value_decred = float(last_decred*93.74095377)
+        value_factom = float(last_factom*207.78912373)
+        value_golem = float(last_golem*7374.44608569)
+        value_maidsafecoin = float(last_maidsafecoin*5973.05389222)
+        value_augur = float(last_augur*94.01892768)
+        value_stellar = float(last_stellar*318974.81202454)
+        value_nem = float(last_nem*29892.11866946)
+        value_ripple = float(last_ripple*27962.37965895)
+        value_zcash = float(last_zcash*16.47649534)
+        total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
+
+        bot.say("{0} {1:.3f}BTC; {2} {3:.3f}BTC; {4} {5:.3f}BTC; {6} {7:.3f}BTC; {8} {9:.3f}BTC; {10} {11:.3f}BTC; {12} {13:.3f}BTC; {14} {15:.3f}BTC; {16} {17:.3f}BTC; {18} {19:.3f}BTC; ASP Total: {20:.3f}BTC ({21:,.1f}USD) (02-May-17 outlay, 10 BTC@14,950 USD)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, "XEM", value_nem, "XRP", value_ripple, "ZEC", value_zcash, total, stamp_price * total))
+    except:
+        bot.say("ERROR!")
