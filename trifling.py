@@ -370,20 +370,20 @@ def asp(bot, trigger):
 
     try:
         r=requests.get(polourl)
-            j=r.json()
-        except:
-            bot.say("Error connecting to Poloniex")
+        j=r.json()
+    except:
+        bot.say("Error connecting to Poloniex")
             
-        label_dash="BTC_DASH"
-        label_decred="BTC_DCR"
-        label_factom="BTC_FCT"
-        label_golem="BTC_GNT"
-        label_maidsafecoin="BTC_MAID"
-        label_augur="BTC_REP"
-        label_stellar="BTC_STR"
-        label_nem="BTC_XEM"
-        label_ripple="BTC_XRP"
-        label_zcash="BTC_ZEC"
+    label_dash="BTC_DASH"
+    label_decred="BTC_DCR"
+    label_factom="BTC_FCT"
+    label_golem="BTC_GNT"
+    label_maidsafecoin="BTC_MAID"
+    label_augur="BTC_REP"
+    label_stellar="BTC_STR"
+    label_nem="BTC_XEM"
+    label_ripple="BTC_XRP"
+    label_zcash="BTC_ZEC"
 
     # Bitstamp
     try: 
