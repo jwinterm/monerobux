@@ -367,7 +367,15 @@ def wave(bot, trigger):
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
     stampurl = 'https://www.bitstamp.net/api/ticker/'
+    cmcurl = "https://api.coinmarketcap.com/v1/ticker/monero/"
 
+    try:
+        r=requests.get(cmcurl)
+        j=r.json()
+        xmrusd_price=float(j[0]['price_usd'])
+    except:
+        bot.say("Error connecting to CoinMarketCap")
+        
     try:
         r=requests.get(polourl)
         j=r.json()
@@ -426,12 +434,18 @@ def asp(bot, trigger):
         value_ripple = float(last_ripple*27962.37965895)
         value_zcash = float(last_zcash*16.47649534)
         total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
-        percent = (((stamp_price * total) / 14950)-1)*100
-        if percent >= 0: 
-            sign = '+'
+        xmr_totalvalue = float(stamp_price*total) / xmrusd_price
+        asppercent = (((stamp_price * total) / 14950)-1)*100
+        if asppercent >= 0: 
+            aspsign = '+'
         else:
-            sign = '-'
+            aspsign = '-'
+        xmrpercent = ((((stamp_price * total) / xmrusd_price ) / 650)-1)*100
+        if xmrpercent >= 0: 
+            xmrsign = '+'
+        else:
+            xmrsign = '-'  
 
-        bot.say("{0} {1:.3f}BTC; {2} {3:.3f}BTC; {4} {5:.3f}BTC; {6} {7:.3f}BTC; {8} {9:.3f}BTC; {10} {11:.3f}BTC; {12} {13:.3f}BTC; {14} {15:.3f}BTC; {16} {17:.3f}BTC; {18} {19:.3f}BTC; ASP Total: {20:.3f}BTC ({21:,.1f}USD {22}{23:.2f}%) (02-May-17 outlay, 10 BTC@14,950 USD)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, "XEM", value_nem, "XRP", value_ripple, "ZEC", value_zcash, total, stamp_price * total, sign, percent))
+        bot.say("{0} {1:.2f}BTC; {2} {3:.2f}BTC; {4} {5:.2f}BTC; {6} {7:.2f}BTC; {8} {9:.2f}BTC; {10} {11:.2f}BTC; {12} {13:.2f}BTC; {14} {15:.2f}BTC; {16} {17:.2f}BTC; {18} {19:.2f}BTC; ASP Total:{20:.2f}BTC/{21:,.0f}USD/{22:,.1f}XMR (02-May outlay, 10BTC/14,950USD/650XMR) (Since begin ASP:{23}{24:.2f}% XMR:{25}{26:.2f}%)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, "XEM", value_nem, "XRP", value_ripple, "ZEC", value_zcash, total, stamp_price * total, xmr_totalvalue, aspsign, asppercent, xmrsign, xmrpercent))
     except:
         bot.say("ERROR!")
