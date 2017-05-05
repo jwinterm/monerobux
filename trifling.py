@@ -372,7 +372,7 @@ def asp(bot, trigger):
     try:
         r=requests.get(cmcurl)
         j=r.json()
-        xmrusd_price=float(j[0]['price_usd'])
+        xmrbtc_price=float(j[0]['price_btc'])
     except:
         bot.say("Error connecting to CoinMarketCap")
         
@@ -434,13 +434,13 @@ def asp(bot, trigger):
         value_ripple = float(last_ripple*27962.37965895)
         value_zcash = float(last_zcash*16.47649534)
         total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
-        xmr_totalvalue = float(stamp_price*total) / xmrusd_price
+        xmr_totalvalue = float(total / xmrbtc_price)
         asppercent = (((stamp_price * total) / 14950)-1)*100
         if asppercent >= 0: 
             aspsign = '+'
         else:
             aspsign = '-'
-        xmrpercent = ((((stamp_price * total) / xmrusd_price ) / 650)-1)*100
+        xmrpercent = (((total / xmrbtc_price ) / 650)-1)*100
         if xmrpercent >= 0: 
             xmrsign = '+'
         else:
