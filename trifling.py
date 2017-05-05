@@ -426,7 +426,12 @@ def asp(bot, trigger):
         value_ripple = float(last_ripple*27962.37965895)
         value_zcash = float(last_zcash*16.47649534)
         total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
+        percent = (((stamp_price * total) / 14950)-1)*100
+        if percent >= 0: 
+            sign = '+'
+        else:
+            sign = '-'
 
-        bot.say("{0} {1:.3f}BTC; {2} {3:.3f}BTC; {4} {5:.3f}BTC; {6} {7:.3f}BTC; {8} {9:.3f}BTC; {10} {11:.3f}BTC; {12} {13:.3f}BTC; {14} {15:.3f}BTC; {16} {17:.3f}BTC; {18} {19:.3f}BTC; ASP Total: {20:.3f}BTC ({21:,.1f}USD) (02-May-17 outlay, 10 BTC@14,950 USD)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, "XEM", value_nem, "XRP", value_ripple, "ZEC", value_zcash, total, stamp_price * total))
+        bot.say("{0} {1:.3f}BTC; {2} {3:.3f}BTC; {4} {5:.3f}BTC; {6} {7:.3f}BTC; {8} {9:.3f}BTC; {10} {11:.3f}BTC; {12} {13:.3f}BTC; {14} {15:.3f}BTC; {16} {17:.3f}BTC; {18} {19:.3f}BTC; ASP Total: {20:.3f}BTC ({21:,.1f}USD {22}{23:.2f}%) (02-May-17 outlay, 10 BTC@14,950 USD)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, "XEM", value_nem, "XRP", value_ripple, "ZEC", value_zcash, total, stamp_price * total, sign, percent))
     except:
         bot.say("ERROR!")
