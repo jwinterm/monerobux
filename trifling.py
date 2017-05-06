@@ -440,7 +440,7 @@ def asp(bot, trigger):
             aspsign = '+'
         else:
             aspsign = '-'
-        xmrpercent = (((total / xmrbtc_price ) / 650)-1)*100
+        xmrpercent = ((650*(xmrbtc_price*stamp_price)/14950)-1)*100
         if xmrpercent >= 0: 
             xmrsign = '+'
         else:
