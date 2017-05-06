@@ -4,6 +4,7 @@ import random
 import re
 import requests
 import praw
+from client import *
 
 @sopel.module.commands('4matter')
 def fourmatter(bot, trigger):
@@ -287,7 +288,7 @@ def summon(bot, trigger):
 def timetravelpp(bot, trigger):
     bot.say("A journey is best measured in pepes, rather than miles http://rarepepedirectory.com/wp-content/uploads/2016/09/timetravelpepe.jpg")
 
-reddit=praw.Reddit(user_agent='monerobux')
+reddit=praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent='monerobux')
 @sopel.module.commands('tinytrump')
 def tinytrump(bot, trigger):
     try:
