@@ -6,6 +6,7 @@ import random
 
 polourl = "https://poloniex.com/public?command=returnTicker"
 poloxmrlendurl = "https://poloniex.com/public?command=returnLoanOrders&currency=XMR&limit=999999"
+polobtclendurl = "https://poloniex.com/public?command=returnLoanOrders&currency=BTC&limit=999999"
 prevamnt, prevtime = 0, 0
 trexurl = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-"
 cryptopiaurl = "https://www.cryptopia.co.nz/api/GetMarkets"
