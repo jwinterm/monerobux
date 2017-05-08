@@ -4,6 +4,7 @@ import random
 import re
 import requests
 import praw
+from client import *
 
 @sopel.module.commands('4matter')
 def fourmatter(bot, trigger):
@@ -128,15 +129,15 @@ def gui(bot, trigger):
 
 @sopel.module.commands('hmm', 'hmmm')
 def hmm(bot, trigger):
-    try:
-        sub=reddit.get_subreddit('hmmm')
-        posts=sub.get_new(limit=100)
+    # try:
+        sub=reddit.subreddit('hmmm')
+        posts=sub.new(limit=100)
         n=random.randint(0,100)
         for i, post in enumerate(posts):
             if i==n:
                 bot.say(post.url)
-    except:
-        bot.say("Something something reddit's servers")
+    # except:
+    #     bot.say("Something something reddit's servers")
 
 @sopel.module.commands('isittrue')
 def isittrue(bot, trigger):
@@ -287,12 +288,16 @@ def summon(bot, trigger):
 def timetravelpp(bot, trigger):
     bot.say("A journey is best measured in pepes, rather than miles http://rarepepedirectory.com/wp-content/uploads/2016/09/timetravelpepe.jpg")
 
-reddit=praw.Reddit(user_agent='monerobux')
+reddit=praw.Reddit(client_id=client_id, 
+                   client_secret=client_secret, 
+                   user_agent='monerobux',
+                   username=username,
+                   password=password)
 @sopel.module.commands('tinytrump')
 def tinytrump(bot, trigger):
     try:
-        sub=reddit.get_subreddit('tinytrump')
-        posts=sub.get_new(limit=100)
+        sub=reddit.subreddit('tinytrump')
+        posts=sub.new(limit=100)
         n=random.randint(0,100)
         for i, post in enumerate(posts):
             if i==n:
