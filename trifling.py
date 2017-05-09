@@ -139,6 +139,10 @@ def hmm(bot, trigger):
     # except:
     #     bot.say("Something something reddit's servers")
 
+@sopel.module.commands('invest')
+def invest(bot, trigger):
+    bot.say('i think invest in bitcoin is much more safe and profitable because bitcoin price rising to higher value and we do not face to any risk when we invest our money in bitcoin and i if we invest our money in bitcoin we will be get a good profit from bitcoin in the future so i think bitcoin is much more profitable currency than altcoins.')
+
 @sopel.module.commands('isittrue')
 def isittrue(bot, trigger):
     draw = random.random()
@@ -310,7 +314,7 @@ def trump(bot, trigger):
     bot.say("Monero is the best crypto, believe me, I know crypto and it's going to be yuuuuuuuge!")
 
 @sopel.module.commands('tumbleweed')
-def trump(bot, trigger):
+def trumbleweed(bot, trigger):
     bot.say("https://rootco.de/2016-03-28-why-use-tumbleweed/")
 
 @sopel.module.commands('unflip')
