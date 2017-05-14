@@ -435,10 +435,10 @@ def asp(bot, trigger):
         value_maidsafecoin = float(last_maidsafecoin*5973.05389222)
         value_augur = float(last_augur*94.01892768)
         value_stellar = float(last_stellar*318974.81202454)
-        value_stellar = float(8.34800202)
+        value_stellar_h = float(8.34800202)
         value_nem = float(last_nem*29892.11866946)
         value_ripple = float(last_ripple*27962.37965895)
-        value_ripple = float(3.17485452)
+        value_ripple_h = float(3.17485452)
         value_zcash = float(last_zcash*16.47649534)
         total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
         xmr_totalvalue = float(total / xmrbtc_price)
