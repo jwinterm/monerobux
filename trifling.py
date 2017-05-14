@@ -434,10 +434,10 @@ def asp(bot, trigger):
         value_golem = float(last_golem*7374.44608569)
         value_maidsafecoin = float(last_maidsafecoin*5973.05389222)
         value_augur = float(last_augur*94.01892768)
-        #value_stellar = float(last_stellar*318974.81202454)
+        value_stellar = float(last_stellar*318974.81202454)
         value_stellar = float(8.34800202)
         value_nem = float(last_nem*29892.11866946)
-        #value_ripple = float(last_ripple*27962.37965895)
+        value_ripple = float(last_ripple*27962.37965895)
         value_ripple = float(3.17485452)
         value_zcash = float(last_zcash*16.47649534)
         total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
@@ -453,6 +453,6 @@ def asp(bot, trigger):
         else:
             xmrsign = '-'  
 
-        bot.say("{0} {1:.2f}BTC; {2} {3:.2f}BTC; {4} {5:.2f}BTC; {6} {7:.2f}BTC; {8} {9:.2f}BTC; {10} {11:.2f}BTC; {12}* {13:.2f}BTC; {14} {15:.2f}BTC; {16}* {17:.2f}BTC; {18} {19:.2f}BTC; ASP Total:{20:.2f}BTC/{21:,.0f}USD/{22:,.1f}XMR (02-May outlay, 10BTC/14,950USD/650XMR) (Since begin ASP:{23}{24:.2f}% XMR:{25}{26:.2f}%, Harvested 11.52BTC)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, "XEM", value_nem, "XRP", value_ripple, "ZEC", value_zcash, total, stamp_price * total, xmr_totalvalue, aspsign, asppercent, xmrsign, xmrpercent))
+        bot.say("{0} {1:.2f}BTC; {2} {3:.2f}BTC; {4} {5:.2f}BTC; {6} {7:.2f}BTC; {8} {9:.2f}BTC; {10} {11:.2f}BTC; {12} {13:.2f}[{14:.2f}]BTC; {15} {16:.2f}BTC; {17} {18:.2f}[{19:.2f}]BTC; {20} {21:.2f}BTC; ASP Total:{22:.2f}BTC/{23:,.0f}USD/{24:,.1f}XMR (02-May outlay, 10BTC/14,950USD/650XMR) (Since begin ASP:{25}{26:.2f}% XMR:{27}{26:.2f}%, Harvested 11.52BTC)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, value_stellar_h, "XEM", value_nem, "XRP", value_ripple, value_ripple_h, "ZEC", value_zcash, total, stamp_price * total, xmr_totalvalue, aspsign, asppercent, xmrsign, xmrpercent))
     except:
         bot.say("ERROR!")
