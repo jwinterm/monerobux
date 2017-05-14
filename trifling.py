@@ -30,6 +30,10 @@ def bananas(bot, trigger):
 def barolo(bot, trigger):
     bot.say('I just opened a 2004 barolo in your and all the devs honor -- https://i.ytimg.com/vi/-JvdfsIeb-s/hqdefault.jpg')
 
+@sopel.module.commands('bb')
+def bb(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=_VvbP0QNmF0')
+
 @sopel.module.commands('bear')
 def bear(bot, trigger):
     bot.say(u'ʕ ·(エ)· ʔ'.encode('utf8'))
@@ -138,6 +142,10 @@ def hmm(bot, trigger):
                 bot.say(post.url)
     # except:
     #     bot.say("Something something reddit's servers")
+
+@sopel.module.commands('hotline')
+def hotline(bot, trigger):
+    bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))
 
 @sopel.module.commands('invest')
 def invest(bot, trigger):

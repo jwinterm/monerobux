@@ -288,6 +288,23 @@ def okc(bot, trigger):
     except:
         bot.say("Error retrieving data from OKCoin")
 
+@sopel.module.commands('tux')
+def tux(bot, trigger):
+    try:
+        r = requests.get('https://tuxexchange.com/api?method=getticker')
+        j = r.json()
+        if not trigger.group(2):
+            ticker='XMR'
+        else:
+            ticker=trigger.group(2).upper()
+        coin=j['BTC_{}'.format(ticker)]
+        last=float(coin['last'])
+        vol=float(coin['baseVolume'])
+        change=float(coin['percentChange'])
+        bot.say("{0} at {1:.8f} BTC on {2:.3f} BTC volume, changed {3:.2f}% over last 24 hr".format(ticker, last, vol, change))
+    except:
+        bot.say("Error retrieving data from Tuxexchange")
+
 @sopel.module.commands('pepe', 'pepecash')
 def pepe(bot, trigger):
     try:
