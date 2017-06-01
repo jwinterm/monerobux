@@ -5,6 +5,7 @@ import re
 import requests
 import praw
 from client import *
+from threading import Timer
 
 @sopel.module.commands('4matter')
 def fourmatter(bot, trigger):
@@ -131,6 +132,15 @@ def gay(bot, trigger):
 def gui(bot, trigger):
     bot.say('http://imgur.com/a/hnxfS')
 
+hitleroptions = [
+'https://www.youtube.com/watch?v=L2WfedZG7bo',
+r"There's always Aeon", 
+'http://adolfcoin.camp/'
+]
+@sopel.module.commands('hitler', 'adolf')
+def hitler(bot, trigger):
+    bot.say(random.choice(hitleroptions))
+
 @sopel.module.commands('hmm', 'hmmm')
 def hmm(bot, trigger):
     # try:
@@ -182,9 +192,17 @@ def kid(bot, trigger):
 def lenny(bot, trigger):
     bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
 
+@sopel.module.commands('luigi')
+def luigi(bot, trigger):
+    bot.say(u'🍄 luigi is doing. mario is not doing luigi is doing 🍄'.encode('utf8'))
+
 @sopel.module.commands('ltc', 'chikun')
 def ltc(bot, trigger):
     bot.say(u'🐔🐔🐔 https://cdn.meme.am/cache/instances/folder100/48222100.jpg 🐔🐔🐔'.encode('utf8'))
+
+@sopel.module.commands('major')
+def major(bot, trigger):
+    bot.say(r"Showed them a sneak peak of the MAJOR Monero announcement that is happening at tomorrow's meetup, they're excited!")
 
 @sopel.module.commands('masternode', 'masternodes')
 def masternode(bot, trigger):
@@ -197,6 +215,18 @@ def moon(bot, trigger):
 @sopel.module.commands('multisig')
 def multisig(bot, trigger):
     bot.say(u'𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮 𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮'.encode('utf8'))
+
+@sopel.module.commands('myriad', 'myr', 'myriadcoin')
+def myriad(bot, trigger):
+    bot.say(u'Myriad - A coin for everyone 🖐'.encode('utf8'))
+
+@sopel.module.commands('needmoney', 'needmoney90', 'nm90')
+def needmoney(bot, trigger):
+    bot.say(u'cash rules everything around me C.R.E.A.M get the money 💵 💵 bill yall'.encode('utf8'))
+
+@sopel.module.commands('nioc')
+def nioc(bot, trigger):
+    bot.say(u'If I had a monero for every time I went to the salt mines...I would have a lot of moneros'.encode('utf8'))
 
 @sopel.module.commands('nomnomnom')
 def nomnomnom(bot, trigger):
@@ -213,7 +243,7 @@ odboptions = [
 ]
 @sopel.module.commands('odb', 'oldirty')
 def odb(bot, trigger):
-    bot.say(random.choice(confirmoptions))
+    bot.say(random.choice(odboptions))
 
 perooptions = [
 'https://www.youtube.com/watch?v=QqreRufrkxM',
@@ -300,6 +330,27 @@ def summon(bot, trigger):
 def timetravelpp(bot, trigger):
     bot.say("A journey is best measured in pepes, rather than miles http://rarepepedirectory.com/wp-content/uploads/2016/09/timetravelpepe.jpg")
 
+@sopel.module.commands('trivia')
+def trivia(bot, trigger):
+    try:
+        triviaurl = 'https://opentdb.com/api.php?amount=1&type=multiple'
+        r = requests.get(triviaurl)
+        j = r.json()
+        category = j['results'][0]['category']
+        difficulty = j['results'][0]['difficulty']
+        question = j['results'][0]['question']
+        correct_answer = j['results'][0]['correct_answer']
+        incorrect_answers = j['results'][0]['incorrect_answers']
+        bot.say("This question is in the field of {} and is of {} difficulty: {}".format(category, difficulty, question))
+        replystr = "If you said {} you are correct, but if you said {}, {}, or {} you should call your parents and complain.".format(correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2])
+        def f():
+            bot.say(replystr)
+        t = Timer(10.0, f)
+        t.start()
+    except:
+        bot.say("No trivia for you!")
+
+
 reddit=praw.Reddit(client_id=client_id, 
                    client_secret=client_secret, 
                    user_agent='monerobux',
@@ -371,6 +422,10 @@ zcashoptions = [
 @sopel.module.commands('zec', 'zcash')
 def zcash(bot, trigger):
     bot.say(random.choice(zcashoptions))
+
+@sopel.module.commands('zooko')
+def zcash(bot, trigger):
+    bot.say("And by the way, I think we can successfully make Zcash too traceable for criminals like WannaCry, but still completely private & fungible.")
 
 @sopel.module.rule('monerobux o\/')
 def wave(bot, trigger):
