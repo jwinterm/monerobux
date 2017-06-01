@@ -435,6 +435,10 @@ def wave(bot, trigger):
 #def politics(bot, trigger):
 #    bot.reply("politics is the mind killer")
 
+@sopel.module.commands('pamp')
+def pamp(bot, trigger):
+    bot.say("<pero> pamp o clock yet?")
+
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
