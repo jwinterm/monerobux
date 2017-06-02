@@ -441,7 +441,7 @@ def pamp(bot, trigger):
     
 @sopel.module.commands('xrp')
 def xrp(bot, trigger):
-    bot.say("We have the best C++ dev team on the world!")
+    bot.say("We have the best C++ dev team in the world!")
 
 @sopel.module.commands('asp')
 def asp(bot, trigger):
