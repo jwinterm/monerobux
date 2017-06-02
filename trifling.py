@@ -438,6 +438,10 @@ def wave(bot, trigger):
 @sopel.module.commands('pamp')
 def pamp(bot, trigger):
     bot.say("<pero> pamp o clock yet?")
+    
+@sopel.module.commands('xrp')
+def xrp(bot, trigger):
+    bot.say("We have the best C++ dev team on the world!")
 
 @sopel.module.commands('asp')
 def asp(bot, trigger):
