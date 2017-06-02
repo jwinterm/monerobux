@@ -4,7 +4,7 @@ import random
 import re
 import requests
 import praw
-from client import 
+from client import *
 from threading import Timer
 
 @sopel.module.commands('4matter')
