@@ -438,7 +438,15 @@ def wave(bot, trigger):
 @sopel.module.commands('pamp')
 def pamp(bot, trigger):
     bot.say("<pero> pamp o clock yet?")
-
+    
+@sopel.module.commands('xrp')
+def xrp(bot, trigger):
+    bot.say("We have the best C++ dev team in the world!")
+    
+@sopel.module.commands('fake')
+def fake(bot, trigger):
+    bot.say("and gay")
+    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
