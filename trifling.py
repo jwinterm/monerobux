@@ -131,6 +131,10 @@ def gay(bot, trigger):
 @sopel.module.commands('gui')
 def gui(bot, trigger):
     bot.say('http://imgur.com/a/hnxfS')
+    
+@sopel.module.commands('slack')
+def slack(bot, trigger):
+    bot.say('Only gays use slack.')
 
 hitleroptions = [
 'https://www.youtube.com/watch?v=L2WfedZG7bo',
