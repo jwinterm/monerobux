@@ -404,7 +404,8 @@ def urmom(bot, trigger):
 vitalikoptions = [
 "https://pbs.twimg.com/media/CrWjczJXgAExF2S.jpg",
 "mETH, not even once: https://cdn-az.allevents.in/banners/e7df519e0808bac49fa3aaf503aff87d",
-"Betteridge's law of headlines: https://fortunedotcom.files.wordpress.com/2016/09/blo_startups_2520x1667.png"
+"Betteridge's law of headlines: https://fortunedotcom.files.wordpress.com/2016/09/blo_startups_2520x1667.png",
+"Casper can survive 51% attacks happening once in a while; we can just delete the attackers' deposits and keep going."
 ]
 @sopel.module.commands('vitalik', 'buterin')
 def vitalik(bot, trigger):
