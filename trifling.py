@@ -438,7 +438,7 @@ def wave(bot, trigger):
 
 @sopel.module.commands('pamp')
 def pamp(bot, trigger):
-    bot.say("<pero> pamp o clock yet?")
+    bot.say("Pamp o clock yet?")
     
 @sopel.module.commands('xrp')
 def xrp(bot, trigger):
