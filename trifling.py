@@ -448,6 +448,10 @@ def xrp(bot, trigger):
 def fake(bot, trigger):
     bot.say("and gay")
     
+@sopel.module.commands('pony')
+def pony(bot, trigger):
+    bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
+    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
