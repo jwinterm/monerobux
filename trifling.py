@@ -448,6 +448,10 @@ def xrp(bot, trigger):
 def fake(bot, trigger):
     bot.say("and gay")
     
+@sopel.module.commands('primer')
+def pfimer(bot, trigger):
+    bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
+    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
