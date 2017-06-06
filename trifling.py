@@ -448,6 +448,10 @@ def xrp(bot, trigger):
 def primer(bot, trigger):
     bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
     
+@sopel.module.commands('pony')
+def pony(bot, trigger):
+    bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
+    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
