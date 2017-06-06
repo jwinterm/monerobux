@@ -444,10 +444,6 @@ def pamp(bot, trigger):
 def xrp(bot, trigger):
     bot.say("We have the best C++ dev team in the world!")
     
-@sopel.module.commands('fake')
-def fake(bot, trigger):
-    bot.say("and gay")
-    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
