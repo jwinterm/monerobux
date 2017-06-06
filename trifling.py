@@ -443,13 +443,9 @@ def pamp(bot, trigger):
 @sopel.module.commands('xrp')
 def xrp(bot, trigger):
     bot.say("We have the best C++ dev team in the world!")
-    
-@sopel.module.commands('fake')
-def fake(bot, trigger):
-    bot.say("and gay")
-    
+ 
 @sopel.module.commands('primer')
-def pfimer(bot, trigger):
+def primer(bot, trigger):
     bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
     
 @sopel.module.commands('asp')
