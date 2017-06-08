@@ -452,6 +452,10 @@ def primer(bot, trigger):
 def pony(bot, trigger):
     bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
     
+@sopel.module.commands('kramer')
+def kramer(bot, trigger):
+    bot.say("Waiting for a retrace to 0.007")
+    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
