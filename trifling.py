@@ -265,13 +265,13 @@ def pero(bot, trigger):
 def pivc(bot, trigger):
     bot.say("Masternodes + PoS...what could possibly go wrong?")
     
-@sopel.module.commands('primer')
-def primer(bot, trigger):
-    bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
-
 @sopel.module.commands('pony')
 def pony(bot, trigger):
     bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
+    
+@sopel.module.commands('primer')
+def primer(bot, trigger):
+    bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
    
 confirmoptions = [
 "I can confirm that it is true",
