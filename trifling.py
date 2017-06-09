@@ -187,6 +187,10 @@ def jwinterm(bot, trigger):
 @sopel.module.commands('kid', 'rehrar')
 def kid(bot, trigger):
     bot.say(u'What up kid?')
+    
+@sopel.module.commands('kramer')
+def kramer(bot, trigger):
+    bot.say("Waiting for a retrace to 0.007")
 
 @sopel.module.commands('lenny')
 def lenny(bot, trigger):
@@ -245,6 +249,10 @@ odboptions = [
 def odb(bot, trigger):
     bot.say(random.choice(odboptions))
 
+@sopel.module.commands('pamp')
+def pamp(bot, trigger):
+    bot.say("Pamp o clock yet?")
+    
 perooptions = [
 'https://www.youtube.com/watch?v=QqreRufrkxM',
 'https://www.youtube.com/watch?v=ZnPrtiLy0uU'
@@ -256,7 +264,15 @@ def pero(bot, trigger):
 @sopel.module.commands('pivx')
 def pivc(bot, trigger):
     bot.say("Masternodes + PoS...what could possibly go wrong?")
+    
+@sopel.module.commands('primer')
+def primer(bot, trigger):
+    bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
 
+@sopel.module.commands('pony')
+def pony(bot, trigger):
+    bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
+   
 confirmoptions = [
 "I can confirm that it is true",
 "This is true",
@@ -415,6 +431,10 @@ def vitalik(bot, trigger):
 @sopel.module.commands('wat')
 def wat(bot, trigger):
     bot.say("https://www.destroyallsoftware.com/talks/wat")
+    
+@sopel.module.commands('xrp')
+def xrp(bot, trigger):
+    bot.say("We have the best C++ dev team in the world!")
 
 zcashoptions = [
 "Trust us guys, we totally smashed that computer up, with like...magnetic baseball bats.", 
@@ -435,26 +455,6 @@ def wave(bot, trigger):
 #@sopel.module.rule('[Tt]rump')
 #def politics(bot, trigger):
 #    bot.reply("politics is the mind killer")
-
-@sopel.module.commands('pamp')
-def pamp(bot, trigger):
-    bot.say("Pamp o clock yet?")
-    
-@sopel.module.commands('xrp')
-def xrp(bot, trigger):
-    bot.say("We have the best C++ dev team in the world!")
- 
-@sopel.module.commands('primer')
-def primer(bot, trigger):
-    bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
-    
-@sopel.module.commands('pony')
-def pony(bot, trigger):
-    bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
-    
-@sopel.module.commands('kramer')
-def kramer(bot, trigger):
-    bot.say("Waiting for a retrace to 0.007")
     
 @sopel.module.commands('asp')
 def asp(bot, trigger):
