@@ -380,7 +380,14 @@ def asp(bot, trigger):
         xmrbtc_price=float(j[0]['price_btc'])
     except:
         bot.say("Error connecting to CoinMarketCap")
-        
+    try:
+        r = requests.get(trexurl)
+        j = r.json()
+        ans=j['result'][0]
+        last=float(ans['Last'])    
+        value_ans = float(last*231.6)
+    except:
+        print ("Error retrieving data from Bittrex")    
     try:
         r=requests.get(polourl)
         j=r.json()
@@ -397,7 +404,11 @@ def asp(bot, trigger):
     label_nem="BTC_XEM"
     label_ripple="BTC_XRP"
     label_zcash="BTC_ZEC"
-
+    label_nxt="BTC_NXT"
+    label_sia="BTC_SC"
+    label_dgb="BTC_DGB"
+    label_sys="BTC_SYS"
+    
     # Bitstamp
     try: 
         stampresult = requests.get(stampurl)
@@ -418,6 +429,10 @@ def asp(bot, trigger):
         ticker_nem=j[label_nem]
         ticker_ripple=j[label_ripple]
         ticker_zcash=j[label_zcash]
+        ticker_nxt=j[label_nxt]
+        ticker_sia=j[label_sia]
+        ticker_dgb=j[label_dgb]
+        ticker_sys=j[label_sys]  
         last_dash=float(ticker_dash['last'])
         last_decred=float(ticker_decred['last'])
         last_factom=float(ticker_factom['last'])
@@ -428,6 +443,10 @@ def asp(bot, trigger):
         last_nem=float(ticker_nem['last'])
         last_ripple=float(ticker_ripple['last'])
         last_zcash=float(ticker_zcash['last'])
+        last_nxt=float(ticker_nxt['last'])
+        last_sia=float(ticker_sia['last'])
+        last_dgb=float(ticker_dgb['last'])
+        last_sys=float(ticker_sys['last'])      
         value_dash = float(last_dash*18.84760476)
         value_decred = float(last_decred*93.74095377)
         value_factom = float(last_factom*207.78912373)
@@ -440,7 +459,13 @@ def asp(bot, trigger):
         value_ripple = float(last_ripple*27962.37965895)
         value_ripple_h = float(3.17485452)
         value_zcash = float(last_zcash*16.47649534)
-        total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar_h + value_nem + value_ripple_h + value_zcash
+        value_nxt = float(last_nxt*14932.63473053)
+        value_sia = float(last_sia*129377.43190662)
+        value_dgb = float(last_dgb*84177.21518989)
+        value_sys = float(last_sys*10523.26194748)
+
+        total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
+        total_june = value_nxt + value_sia + value_dgb + value_sys + value_ans        
         xmr_totalvalue = float(total / xmrbtc_price)
         asppercent = (((stamp_price * total) / 14950)-1)*100
         if asppercent >= 0: 
@@ -453,6 +478,6 @@ def asp(bot, trigger):
         else:
             xmrsign = '-'  
 
-        bot.say("{0} {1:.2f}BTC; {2} {3:.2f}BTC; {4} {5:.2f}BTC; {6} {7:.2f}BTC; {8} {9:.2f}BTC; {10} {11:.2f}BTC; {12} {13:.2f}[{14:.2f}]BTC; {15} {16:.2f}BTC; {17} {18:.2f}[{19:.2f}]BTC; {20} {21:.2f}BTC; ASP Total:{22:.2f}BTC/{23:,.0f}USD/{24:,.1f}XMR (02-May outlay, 10BTC/14,950USD/650XMR) (Since begin ASP:{25}{26:.2f}% XMR:{27}{28:.2f}%, Harvested 11.52BTC)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, value_stellar_h, "XEM", value_nem, "XRP", value_ripple, value_ripple_h, "ZEC", value_zcash, total, stamp_price * total, xmr_totalvalue, aspsign, asppercent, xmrsign, xmrpercent))
+        bot.say("{0} {1:.2f}BTC; {2} {3:.2f}BTC; {4} {5:.2f}BTC; {6} {7:.2f}BTC; {8} {9:.2f}BTC; {10} {11:.2f}BTC; {12} {13:.2f}[{14:.2f}]BTC; {15} {16:.2f}BTC; {17} {18:.2f}[{19:.2f}]BTC; {20} {21:.2f}BTC; {22} {23:.2f}BTC; {24} {25:.2f}BTC; {26} {27:.2f}BTC; {28} {29:.2f}BTC; {30} {31:.2f}BTC; ASP Total:{32:.2f}BTC/{33:,.0f}USD/{34:,.1f}XMR (02-May+20-Jun outlay, 10BTC+5BTC/14,950USD+13,240USD/650XMR+250XMR) (Since begin ASP:{35}{36:.2f}% XMR:{37}{38:.2f}%, Harvested 11.52BTC)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, value_stellar_h, "XEM", value_nem, "XRP", value_ripple, value_ripple_h, "ZEC", value_zcash, "NXT", value_nxt, "SIA", value_sia, "DGB", value_dgb, "SYS", value_sys, "ANS", value_ans, total+total_june, stamp_price * (total + total_june), xmr_totalvalue, aspsign, asppercent, xmrsign, xmrpercent))
     except:
         bot.say("ERROR!")
