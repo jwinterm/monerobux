@@ -468,12 +468,12 @@ def asp(bot, trigger):
         total = value_dash + value_decred  + value_factom + value_golem + value_maidsafecoin + value_augur + value_stellar + value_nem + value_ripple + value_zcash
         total_june = value_nxt + value_sia + value_dgb + value_sys + value_ans        
         xmr_totalvalue = float(total / xmrbtc_price)
-        asppercent = (((stamp_price * total) / 14950)-1)*100
+        asppercent = ((((stamp_price * total) / 14950)-1)*100) + ((((stamp_price * total_june) / 13240)-1)*100)
         if asppercent >= 0: 
             aspsign = '+'
         else:
             aspsign = '-'
-        xmrpercent = ((650*(xmrbtc_price*stamp_price)/14950)-1)*100
+        xmrpercent = ((((650*(xmrbtc_price*stamp_price)/14950)-1)*100))  + (((250*(xmrbtc_price*stamp_price)/13240)-1)*100)
         if xmrpercent >= 0: 
             xmrsign = '+'
         else:
