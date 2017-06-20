@@ -373,6 +373,7 @@ def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
     stampurl = 'https://www.bitstamp.net/api/ticker/'
     cmcurl = "https://api.coinmarketcap.com/v1/ticker/monero/"
+    trexurl = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-ans"
 
     try:
         r=requests.get(cmcurl)
