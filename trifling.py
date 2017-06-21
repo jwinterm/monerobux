@@ -487,3 +487,11 @@ def asp(bot, trigger):
         bot.say("{0} {1:.2f}BTC; {2} {3:.2f}BTC; {4} {5:.2f}BTC; {6} {7:.2f}BTC; {8} {9:.2f}BTC; {10} {11:.2f}BTC; {12} {13:.2f}[{14:.2f}]BTC; {15} {16:.2f}BTC; {17} {18:.2f}[{19:.2f}]BTC; {20} {21:.2f}BTC; {22} {23:.2f}BTC; {24} {25:.2f}BTC; {26} {27:.2f}BTC; {28} {29:.2f}BTC; {30} {31:.2f}BTC; ASP Total:{32:.2f}BTC/{33:,.0f}USD/{34:,.1f}XMR (02-May+20-Jun outlay, 10BTC+5BTC/14,950USD+13,240USD/650XMR+250XMR) (Since begin ASP:{35}{36:.2f}[{37}{38:.2f}]% XMR:{39}{40:.2f}%, Harvested 11.52BTC)".format("DASH", value_dash, "DCR", value_decred, "FCT", value_factom, "GNT", value_golem, "MAID", value_maidsafecoin, "REP", value_augur, "STR", value_stellar, value_stellar_h, "XEM", value_nem, "XRP", value_ripple, value_ripple_h, "ZEC", value_zcash, "NXT", value_nxt, "SIA", value_sia, "DGB", value_dgb, "SYS", value_sys, "ANS", value_ans, total+total_june, stamp_price * (total + total_june), xmr_totalvalue, aspsign, asppercent, aspsign_h, asppercent_h, xmrsign, xmrpercent))
     except:
         bot.say("ERROR!")
+
+@sopel.module.commands('wtfisasp')
+def wtfisasp(bot, trigger):
+    bot.say("ASP means the Angry Shitcoin Portfolio, a list of the top 15 coins that piss me off as people mindlessly pour money into them.")
+    
+@sopel.module.commands('asprules')
+def asprules(bot, trigger):
+    bot.say("1. Shitcoins only, eg. a premine, ICO, Corporate, APPCoin, Buzzwordy, Copycat, etc. . 2. Must have high volume, it needs staying power to be considered as the ASP is a longterm thing. 3. 1 BTC gets bought of each coin on the list, as this list is not fictional. laughable as that is. 4. No trading, buy and hold only. 5. Can be liquidated at my discretion, but preferably once it's fleeced users of 4> BTC in value or more, or almost nothing is left (<0.1 BTC in value). 5. Each shitcoin should preferably should have a poor/toxic community, and or dev group shilling, censoring, etc. . 6. I must literally hate the idea of this coins existence.")
