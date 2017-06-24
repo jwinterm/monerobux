@@ -79,6 +79,10 @@ def dash(bot, trigger):
 def dealwithit(bot, trigger):
     bot.say(u'(•_•)   ( •_•)>⌐■-■    (⌐■_■)'.encode('utf8'))
 
+@sopel.module.commands('diiorio')
+def diiorio(bot, trigger):
+    bot.say(u'http://www.contravex.com/2016/06/29/from-the-scammer-files-anthony-di-iorio/'.encode('utf8'))
+
 @sopel.module.commands('disapprove')
 def disapprove(bot, trigger):
     bot.say(u'ಠ_ಠ'.encode('utf8'))
@@ -195,6 +199,10 @@ def kramer(bot, trigger):
 @sopel.module.commands('lenny')
 def lenny(bot, trigger):
     bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
+
+@sopel.module.commands('livermore')
+def livermore(bot, trigger):
+    bot.say(u'https://en.wikipedia.org/wiki/Reminiscences_of_a_Stock_Operator'.encode('utf8'))
 
 @sopel.module.commands('luigi')
 def luigi(bot, trigger):
