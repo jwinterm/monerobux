@@ -3,6 +3,7 @@ import sopel.module
 import requests
 import time
 import random
+# from apikey import commodity_key
 
 polourl = "https://poloniex.com/public?command=returnTicker"
 poloxmrlendurl = "https://poloniex.com/public?command=returnLoanOrders&currency=XMR&limit=999999"
@@ -20,6 +21,7 @@ krakusd = 'https://api.kraken.com/0/public/Ticker?pair=XMRUSD'
 krakeur = 'https://api.kraken.com/0/public/Ticker?pair=XMREUR'
 okcquar = 'https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=quarter'
 krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
+bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
 
 @sopel.module.commands('bfx', 'bitfinex')
 def bfx(bot, trigger):
@@ -175,6 +177,28 @@ def lending(bot, trigger):
     except:
         bot.say("Something bad happened :o")
     
+@sopel.module.commands('btclending')
+def btclending(bot, trigger):
+    try:
+        r=requests.get(polobtclendurl) 
+        j=r.json()
+        amnt=0
+        amnt10=0
+        rate10=0
+        amnt100=0
+        rate100=0
+        for i in j['offers']:
+            if amnt < 10:
+                amnt10=amnt
+                rate10=float(i['rate'])
+            if amnt < 100:
+                amnt100=amnt
+                rate100=float(i['rate'])
+            amnt+=float(i['amount'])
+        bot.say("Minimum rate is {0:.3f}%. To borrow {1:,.2f} BTC need up to rate {2:.3f}%. To borrow {3:,.2f} BTC need up to rate {4:.3f}%. Total amount is {5:,.2f} BTC at max rate {6:.3f}%".format(float(j['offers'][0]['rate'])*100, amnt10, rate10*100, amnt100, rate100*100, amnt, float(j['offers'][-1]['rate'])*100))
+    except:
+        bot.say("Something bad happened :o")
+    
 
 @sopel.module.commands('trex', 'bittrex')
 def trex(bot, trigger):
@@ -288,6 +312,23 @@ def okc(bot, trigger):
     except:
         bot.say("Error retrieving data from OKCoin")
 
+@sopel.module.commands('tux')
+def tux(bot, trigger):
+    try:
+        r = requests.get('https://tuxexchange.com/api?method=getticker')
+        j = r.json()
+        if not trigger.group(2):
+            ticker='XMR'
+        else:
+            ticker=trigger.group(2).upper()
+        coin=j['BTC_{}'.format(ticker)]
+        last=float(coin['last'])
+        vol=float(coin['baseVolume'])
+        change=float(coin['percentChange'])
+        bot.say("{0} at {1:.8f} BTC on {2:.3f} BTC volume, changed {3:.2f}% over last 24 hr".format(ticker, last, vol, change))
+    except:
+        bot.say("Error retrieving data from Tuxexchange")
+
 @sopel.module.commands('pepe', 'pepecash')
 def pepe(bot, trigger):
     try:
@@ -328,13 +369,15 @@ def tall(bot, trigger):
     btccurl  = 'https://data.btcchina.com/data/ticker?market=btccny'
     huobiurl = 'http://api.huobi.com/staticmarket/ticker_btc_json.js'
     gemiurl  = 'https://api.gemini.com/v1/pubticker/btcusd'
-    gdaxurl  = 'https://api.coinbase.com/v2/exchange-rates?currency=BTC'
+    # gdaxurl  = 'https://api.coinbase.com/v2/exchange-rates?currency=BTC'
+    gdaxurl  = 'https://api.gdax.com/products/BTC-USD/ticker'
     # Get conversion rate
     try: 
         fixerresult = requests.get(fixerurl)
         fixerjson = fixerresult.json()
         usdcny = fixerjson['rates']['CNY']
         usdeur = fixerjson['rates']['EUR']
+        usdjpy = fixerjson['rates']['JPY']
     except:
         usdcny = 7
     # Bitstamp
@@ -371,7 +414,7 @@ def tall(bot, trigger):
     except:
 	gdaxjson = False
     if gdaxjson:
-        stringtosend += "GDAX price: {0:,.2f} | ".format(float(gdaxjson['data']['rates']['USD']))
+        stringtosend += "GDAX price: {0:,.2f}, vol: {1:,.1f} | ".format(float(gdaxjson['price']), float(gdaxjson['volume']))
     # Bitfinex
     try: 
         finexresult = requests.get(finexurl)
@@ -396,6 +439,14 @@ def tall(bot, trigger):
 	huobijson = False
     if huobijson:
         stringtosend += "Huobi last: {0:,.2f}, vol: {1:,.1f} | ".format(float(huobijson['ticker']['last'])/usdcny, float(huobijson['ticker']['vol']))
+    # Bitflyer
+    try: 
+        bitflyerresult = requests.get(bitflyerurl)
+        bitflyerjson = bitflyerresult.json()
+    except:
+	bitflyerjson = False
+    if bitflyerjson:
+        stringtosend += "Bitflyer last: {0:,.2f}, vol: {1:,.1f} | ".format(float(bitflyerjson['ltp'])/usdjpy, float(bitflyerjson['volume_by_product']))
     # Send the tickers to IRC
     bot.say(stringtosend)
 
@@ -618,3 +669,28 @@ def price(bot, trigger):
         bot.say("1 XMR = $1000 USD (Offer valid in participating locations)")
     except:
         bot.say("C-cex sucks")
+
+@sopel.module.commands('commodity', 'com')
+def commodity(bot, trigger):
+    commodity_key = 'B1ZnykTmG6_A1vkwzt9u'
+    input_com = trigger.group(2).upper()
+    if input_com == ('AU' or 'GOLD' or 'XAU'):
+        commodity = 'AU_EGL'
+        unit = 'oz'
+    elif input_com == ('AG' or 'SILVER' or 'XAG'):
+        commodity = 'AG_USD'
+        unit = 'oz'
+    elif input_com == ('PT' or 'PLATINUM' or 'XPT'):
+        commodity = 'WLD_PLATINUM'
+        unit = 'oz'
+    elif input_com == ('COFFEE'):
+        commodity = 'COFFEE_BRZL'
+        unit = 'lb'
+    try:
+        r=requests.get("https://www.quandl.com/api/v3/datasets/COM/{0}.json?&api_key={1}".format(commodity, commodity_key))
+        j=r.json()
+        last=j['dataset']['data'][0][1]
+        bot.say("Last price on {0} was ${1:.3f} per {2}.".format(commodity, last, unit))
+    except:
+        bot.say("Monerobux fails again...")
+

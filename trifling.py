@@ -5,6 +5,7 @@ import re
 import requests
 import praw
 from client import *
+from threading import Timer
 
 @sopel.module.commands('4matter')
 def fourmatter(bot, trigger):
@@ -29,6 +30,10 @@ def bananas(bot, trigger):
 @sopel.module.commands('barolo')
 def barolo(bot, trigger):
     bot.say('I just opened a 2004 barolo in your and all the devs honor -- https://i.ytimg.com/vi/-JvdfsIeb-s/hqdefault.jpg')
+
+@sopel.module.commands('bb')
+def bb(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=_VvbP0QNmF0')
 
 @sopel.module.commands('bear')
 def bear(bot, trigger):
@@ -73,6 +78,10 @@ def dash(bot, trigger):
 @sopel.module.commands('dealwithit')
 def dealwithit(bot, trigger):
     bot.say(u'(•_•)   ( •_•)>⌐■-■    (⌐■_■)'.encode('utf8'))
+
+@sopel.module.commands('diiorio')
+def diiorio(bot, trigger):
+    bot.say(u'http://www.contravex.com/2016/06/29/from-the-scammer-files-anthony-di-iorio/'.encode('utf8'))
 
 @sopel.module.commands('disapprove')
 def disapprove(bot, trigger):
@@ -127,6 +136,15 @@ def gay(bot, trigger):
 def gui(bot, trigger):
     bot.say('http://imgur.com/a/hnxfS')
 
+hitleroptions = [
+'https://www.youtube.com/watch?v=L2WfedZG7bo',
+r"There's always Aeon", 
+'http://adolfcoin.camp/'
+]
+@sopel.module.commands('hitler', 'adolf')
+def hitler(bot, trigger):
+    bot.say(random.choice(hitleroptions))
+
 @sopel.module.commands('hmm', 'hmmm')
 def hmm(bot, trigger):
     # try:
@@ -138,6 +156,14 @@ def hmm(bot, trigger):
                 bot.say(post.url)
     # except:
     #     bot.say("Something something reddit's servers")
+
+@sopel.module.commands('hotline')
+def hotline(bot, trigger):
+    bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))
+
+@sopel.module.commands('invest')
+def invest(bot, trigger):
+    bot.say('i think invest in bitcoin is much more safe and profitable because bitcoin price rising to higher value and we do not face to any risk when we invest our money in bitcoin and i if we invest our money in bitcoin we will be get a good profit from bitcoin in the future so i think bitcoin is much more profitable currency than altcoins.')
 
 @sopel.module.commands('isittrue')
 def isittrue(bot, trigger):
@@ -165,14 +191,30 @@ def jwinterm(bot, trigger):
 @sopel.module.commands('kid', 'rehrar')
 def kid(bot, trigger):
     bot.say(u'What up kid?')
+    
+@sopel.module.commands('kramer')
+def kramer(bot, trigger):
+    bot.say("Waiting for a retrace to 0.007")
 
 @sopel.module.commands('lenny')
 def lenny(bot, trigger):
     bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
 
+@sopel.module.commands('livermore')
+def livermore(bot, trigger):
+    bot.say(u'https://en.wikipedia.org/wiki/Reminiscences_of_a_Stock_Operator'.encode('utf8'))
+
+@sopel.module.commands('luigi')
+def luigi(bot, trigger):
+    bot.say(u'🍄 luigi is doing. mario is not doing luigi is doing 🍄'.encode('utf8'))
+
 @sopel.module.commands('ltc', 'chikun')
 def ltc(bot, trigger):
     bot.say(u'🐔🐔🐔 https://cdn.meme.am/cache/instances/folder100/48222100.jpg 🐔🐔🐔'.encode('utf8'))
+
+@sopel.module.commands('major')
+def major(bot, trigger):
+    bot.say(r"Showed them a sneak peak of the MAJOR Monero announcement that is happening at tomorrow's meetup, they're excited!")
 
 @sopel.module.commands('masternode', 'masternodes')
 def masternode(bot, trigger):
@@ -185,6 +227,18 @@ def moon(bot, trigger):
 @sopel.module.commands('multisig')
 def multisig(bot, trigger):
     bot.say(u'𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮 𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮'.encode('utf8'))
+
+@sopel.module.commands('myriad', 'myr', 'myriadcoin')
+def myriad(bot, trigger):
+    bot.say(u'Myriad - A coin for everyone 🖐'.encode('utf8'))
+
+@sopel.module.commands('needmoney', 'needmoney90', 'nm90')
+def needmoney(bot, trigger):
+    bot.say(u'cash rules everything around me C.R.E.A.M get the money 💵 💵 bill yall'.encode('utf8'))
+
+@sopel.module.commands('nioc')
+def nioc(bot, trigger):
+    bot.say(u'If I had a monero for every time I went to the salt mines...I would have a lot of moneros'.encode('utf8'))
 
 @sopel.module.commands('nomnomnom')
 def nomnomnom(bot, trigger):
@@ -201,8 +255,12 @@ odboptions = [
 ]
 @sopel.module.commands('odb', 'oldirty')
 def odb(bot, trigger):
-    bot.say(random.choice(confirmoptions))
+    bot.say(random.choice(odboptions))
 
+@sopel.module.commands('pamp')
+def pamp(bot, trigger):
+    bot.say("Pamp o clock yet?")
+    
 perooptions = [
 'https://www.youtube.com/watch?v=QqreRufrkxM',
 'https://www.youtube.com/watch?v=ZnPrtiLy0uU'
@@ -214,7 +272,15 @@ def pero(bot, trigger):
 @sopel.module.commands('pivx')
 def pivc(bot, trigger):
     bot.say("Masternodes + PoS...what could possibly go wrong?")
-
+    
+@sopel.module.commands('pony')
+def pony(bot, trigger):
+    bot.say("https://www.youtube.com/watch?v=O3rpmctmC_M")
+    
+@sopel.module.commands('primer')
+def primer(bot, trigger):
+    bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
+   
 confirmoptions = [
 "I can confirm that it is true",
 "This is true",
@@ -288,6 +354,27 @@ def summon(bot, trigger):
 def timetravelpp(bot, trigger):
     bot.say("A journey is best measured in pepes, rather than miles http://rarepepedirectory.com/wp-content/uploads/2016/09/timetravelpepe.jpg")
 
+@sopel.module.commands('trivia')
+def trivia(bot, trigger):
+    try:
+        triviaurl = 'https://opentdb.com/api.php?amount=1&type=multiple'
+        r = requests.get(triviaurl)
+        j = r.json()
+        category = j['results'][0]['category']
+        difficulty = j['results'][0]['difficulty']
+        question = j['results'][0]['question']
+        correct_answer = j['results'][0]['correct_answer']
+        incorrect_answers = j['results'][0]['incorrect_answers']
+        bot.say("This question is in the field of {} and is of {} difficulty: {}".format(category, difficulty, question))
+        replystr = "If you said {} you are correct, but if you said {}, {}, or {} you should call your parents and complain.".format(correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2])
+        def f():
+            bot.say(replystr)
+        t = Timer(10.0, f)
+        t.start()
+    except:
+        bot.say("No trivia for you!")
+
+
 reddit=praw.Reddit(client_id=client_id, 
                    client_secret=client_secret, 
                    user_agent='monerobux',
@@ -310,7 +397,7 @@ def trump(bot, trigger):
     bot.say("Monero is the best crypto, believe me, I know crypto and it's going to be yuuuuuuuge!")
 
 @sopel.module.commands('tumbleweed')
-def trump(bot, trigger):
+def trumbleweed(bot, trigger):
     bot.say("https://rootco.de/2016-03-28-why-use-tumbleweed/")
 
 @sopel.module.commands('unflip')
@@ -341,7 +428,8 @@ def urmom(bot, trigger):
 vitalikoptions = [
 "https://pbs.twimg.com/media/CrWjczJXgAExF2S.jpg",
 "mETH, not even once: https://cdn-az.allevents.in/banners/e7df519e0808bac49fa3aaf503aff87d",
-"Betteridge's law of headlines: https://fortunedotcom.files.wordpress.com/2016/09/blo_startups_2520x1667.png"
+"Betteridge's law of headlines: https://fortunedotcom.files.wordpress.com/2016/09/blo_startups_2520x1667.png",
+"Casper can survive 51% attacks happening once in a while; we can just delete the attackers' deposits and keep going."
 ]
 @sopel.module.commands('vitalik', 'buterin')
 def vitalik(bot, trigger):
@@ -351,6 +439,10 @@ def vitalik(bot, trigger):
 @sopel.module.commands('wat')
 def wat(bot, trigger):
     bot.say("https://www.destroyallsoftware.com/talks/wat")
+    
+@sopel.module.commands('xrp')
+def xrp(bot, trigger):
+    bot.say("We have the best C++ dev team in the world!")
 
 zcashoptions = [
 "Trust us guys, we totally smashed that computer up, with like...magnetic baseball bats.", 
@@ -360,6 +452,10 @@ zcashoptions = [
 def zcash(bot, trigger):
     bot.say(random.choice(zcashoptions))
 
+@sopel.module.commands('zooko')
+def zcash(bot, trigger):
+    bot.say("And by the way, I think we can successfully make Zcash too traceable for criminals like WannaCry, but still completely private & fungible.")
+
 @sopel.module.rule('monerobux o\/')
 def wave(bot, trigger):
     #bot.reply(u'‹^› ‹(•_•)› ‹^›'.encode('utf8'))
@@ -367,7 +463,7 @@ def wave(bot, trigger):
 #@sopel.module.rule('[Tt]rump')
 #def politics(bot, trigger):
 #    bot.reply("politics is the mind killer")
-
+    
 @sopel.module.commands('asp')
 def asp(bot, trigger):
     polourl = "https://poloniex.com/public?command=returnTicker"
