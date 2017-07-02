@@ -675,7 +675,7 @@ def commodity(bot, trigger):
     commodity_key = 'B1ZnykTmG6_A1vkwzt9u'
     input_com = trigger.group(2).upper()
     if input_com == ('AU' or 'GOLD' or 'XAU'):
-        commodity = 'AU_EGL'
+        commodity = 'AU_EIB'
         unit = 'oz'
     elif input_com == ('AG' or 'SILVER' or 'XAG'):
         commodity = 'AG_USD'
