@@ -591,3 +591,57 @@ def wtfisasp(bot, trigger):
 @sopel.module.commands('asprules')
 def asprules(bot, trigger):
     bot.say("1. Shitcoins only, eg. a premine, ICO, Corporate, APPCoin, Buzzwordy, Copycat, etc. . 2. Must have high volume, it needs staying power to be considered as the ASP is a longterm thing. 3. 1 BTC gets bought of each coin on the list, as this list is not fictional, laughable as that is. 4. No trading, buy and hold only. 5. Can be liquidated at my discretion, but preferably once it's fleeced users of 4> BTC in value or more, or almost nothing is left (<0.1 BTC in value). 5. Each shitcoin should preferably should have a poor/toxic community, and or dev group shilling, censoring, etc. . 6. I must literally hate the idea of this coins existence.")
+
+@sopel.module.commands('whaleornot')
+def whaleornot(bot, trigger):
+
+    if not trigger.group(2):
+        bot.say("Gotta have skin in the game to be a big fish! Add some XMR after the command to see what level the player is at!")
+    else
+        xmr_size = int(trigger.group(2))
+        if xmr_size < 0.1:
+            fish_string = "plankton"  
+        elif xmr_size >= 0.1 and xmr_size < 0.2:
+            fish_string = "Paedocypris"  
+        elif xmr_size >= 0.2 and xmr_size < 0.5:
+            fish_string = "Dwarf Goby" 
+        elif xmr_size >= 0.5 and xmr_size < 1:
+            fish_string = "European Pilchard"
+        elif xmr_size >= 1 and xmr_size < 2:
+            fish_string = "Goldfish"
+        elif xmr_size >= 2 and xmr_size < 5:
+            fish_string = "Herring"
+        elif xmr_size >= 5 and xmr_size < 10:
+            fish_string = "Atlantic Macerel"
+        elif xmr_size >= 10 and xmr_size < 20:
+            fish_string = "Gilt-head Bream"
+        elif xmr_size >= 20 and xmr_size < 50:
+            fish_string = "Salmonidae"
+        elif xmr_size >= 50 and xmr_size < 100:
+            fish_string = "Gadidae"
+        elif xmr_size >= 100 and xmr_size < 200:
+            fish_string = "Norwegian Delicious Salmon"
+        elif xmr_size >= 200 and xmr_size < 500:
+            fish_string = "Electric eel"
+        elif xmr_size >= 500 and xmr_size < 1000:
+            fish_string = "Tuna"
+        elif xmr_size >= 1000 and xmr_size < 2000:
+            fish_string = "Wels catfish"
+        elif xmr_size >= 2000 and xmr_size < 5000:
+            fish_string = "Black marlin"
+        elif xmr_size >= 5000 and xmr_size < 10000:
+            fish_string = "Shark"
+        elif xmr_size >= 10000 and xmr_size < 20000:
+            fish_string = "Dolphin"
+        elif xmr_size >= 20000 and xmr_size < 40000:
+            fish_string = "Narwhal"
+        elif xmr_size >= 40000 and xmr_size < 60000:
+            fish_string = "Orca"
+        elif xmr_size >= 60000 and xmr_size < 100000:
+            fish_string = "Blue Whale"
+        elif xmr_size >= 100000 and xmr_size < 200000:
+            fish_string = "Leviathan"
+        elif xmr_size >= 200000:
+            fish_string = "Cthulu"
+
+    bot.say("{0} level.".format(fish_string))
