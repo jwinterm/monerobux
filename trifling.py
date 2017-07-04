@@ -56,7 +56,7 @@ def buyorsell(bot, trigger):
 
 @sopel.module.commands('china')
 def china(bot, trigger):
-    bot.say('https://www.youtube.com/watch?v=RbM2F-cfN0A')
+    bot.say('https://youtu.be/ZrNrleD2ZFs')
 
 @sopel.module.commands('cursive')
 def cursive(bot, trigger):
@@ -291,6 +291,17 @@ confirmoptions = [
 @sopel.module.commands('pleaseconfirm', 'confirm')
 def confirm(bot, trigger):
     bot.say(random.choice(confirmoptions))
+
+projectingoptions = [
+"https://i.warosu.org/data/fa/img/0059/31/1365465556033.jpg",
+"https://thenicessist.files.wordpress.com/2015/12/screen-shot-2015-12-15-at-8-03-04-pm.png?w=748",
+"https://4.bp.blogspot.com/-cMYssGE9g6w/VNru-2E-bDI/AAAAAAAAA3Y/fM91wN757Z0/s1600/Projection.PNG",
+"https://s-media-cache-ak0.pinimg.com/originals/b7/fa/f3/b7faf3aac68dc3f15d3526ecb292dc8b.jpg",
+"https://s-media-cache-ak0.pinimg.com/originals/17/40/e1/1740e15f12c153c00a041d95978f831c.gif"
+]
+@sopel.module.commands('projecting')
+def projecting(bot, trigger):
+    bot.say(random.choice(projectingoptions))
 
 @sopel.module.commands('rarepepe', 'rare')
 def rarepepe(bot, trigger):
