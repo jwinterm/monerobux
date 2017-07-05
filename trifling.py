@@ -263,7 +263,8 @@ def pamp(bot, trigger):
     
 perooptions = [
 'https://www.youtube.com/watch?v=QqreRufrkxM',
-'https://www.youtube.com/watch?v=ZnPrtiLy0uU'
+'https://www.youtube.com/watch?v=ZnPrtiLy0uU',
+'https://www.youtube.com/watch?v=d8qOV1z7ZA0'
 ]
 @sopel.module.commands('pero')
 def pero(bot, trigger):
