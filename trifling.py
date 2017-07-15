@@ -157,6 +157,14 @@ def hmm(bot, trigger):
     # except:
     #     bot.say("Something something reddit's servers")
 
+herooptions = [
+"https://t.co/CZMFNMifB7",
+"https://media.giphy.com/media/REH3MZp1FeCM8/giphy.gif",
+]
+@sopel.module.commands('hero')
+def hero(bot, trigger):
+    bot.say(random.choice(herooptions))
+
 @sopel.module.commands('hotline')
 def hotline(bot, trigger):
     bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))

@@ -229,7 +229,7 @@ def bsq(bot, trigger):
     except:
         bot.say("Error retrieving data from Bitsquare")
 
-@sopel.module.commands('cryptopia')
+@sopel.module.commands('cryptopia', 'shitopia', 'topia', 'ctop')
 def cryptopia(bot, trigger):
     try:
         if not trigger.group(2):
