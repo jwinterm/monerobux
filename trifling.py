@@ -58,6 +58,10 @@ def buyorsell(bot, trigger):
 def china(bot, trigger):
     bot.say('https://youtu.be/ZrNrleD2ZFs')
 
+@sopel.module.commands('cryptosid', 'sid')
+def cryptosid(bot, trigger):
+    bot.say('https://img.huffingtonpost.com/asset/58acbbd0280000d59899a57a.jpeg?ops=crop_5_33_460_393,scalefit_720_noupscale')
+
 @sopel.module.commands('cursive')
 def cursive(bot, trigger):
     instring = trigger.group(2)
@@ -158,7 +162,7 @@ def hmm(bot, trigger):
     #     bot.say("Something something reddit's servers")
 
 herooptions = [
-"https://t.co/CZMFNMifB7",
+"https://video.twimg.com/tweet_video/DEnItJjV0AI81CK.mp4",
 "https://media.giphy.com/media/REH3MZp1FeCM8/giphy.gif",
 ]
 @sopel.module.commands('hero')
