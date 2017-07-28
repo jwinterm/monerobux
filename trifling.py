@@ -623,8 +623,10 @@ def whaleornot(bot, trigger):
         bot.say("Gotta have skin in the game to be a big fish! Add some XMR after the command to see what level the player is at!")
     else:
         try:
-            xmr_size = int(trigger.group(2))
-            if xmr_size < 0.1:
+            xmr_size = float(trigger.group(2))
+            if xmr_size <= 0:
+                fish_string = "amoeba"  
+            elif xmr_size < 0.1:
                 fish_string = "plankton"  
             elif xmr_size >= 0.1 and xmr_size < 0.2:
                 fish_string = "Paedocypris"  
@@ -672,3 +674,6 @@ def whaleornot(bot, trigger):
         except:
             bot.say("Try a base ten representation of a number")
 
+@sopel.module.commands('trebuchet')
+def trebuchet(bot, trigger):            
+    bot.say("Can YOU use a counterweight to launch a 90 kg projectile over 300 meters? Yeah, I thought not.")
