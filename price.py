@@ -23,6 +23,29 @@ okcquar = 'https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contrac
 krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
 
+@sopel.module.commands('bcc', 'bitcointrash')
+def bcc(bot, trigger):
+    url = 'https://api.coinmarketcap.com/v1/ticker/?bcc'
+    try:
+        r = requests.get(url)
+        j = r.json()
+        for i in j:
+            try:
+                if i['id'] == 'bitcoin-cash':
+                    coin = i
+            except: pass
+        symbol = coin['symbol']    
+        name = coin['name']
+        rank = coin['rank']
+        price_usd = float(coin['price_usd'])
+        price_btc = float(coin['price_btc'])
+        volume_usd = float(coin['24h_volume_usd'])
+        percent_change_24h = float(coin['percent_change_24h'])
+        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h)) 
+    except:
+        bot.say("Error parsing ticker")
+    
+
 @sopel.module.commands('bfx', 'bitfinex')
 def bfx(bot, trigger):
     stringtosay = ''
