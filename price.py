@@ -96,8 +96,8 @@ def krak(bot, trigger):
     else:
         coin = trigger.group(2).upper()
         try:
-	    kraktrig = kraktrig[-1]                 #Didn't test.  It's meant to delete the "'".  Delete this line if unneeded.
-	    kraktrig = kraktrig.append(coin)+"'"    #Again, delete the "+" and after if unneeded.
+	    kraktrig = kraktrig[:-1]                #Didn't test.  It's meant to delete the "'" from end of string.  Delete this line if unneeded.
+	    kraktrig = kraktrig.append(coin)+"'"    #Again, delete the +"'" at the end, if unneeded.
             r=requests.get(kraktrig)
             j=r.json()
 	    stringtosay += coin + " at {0:.2f} on {1:.2f} 24 h BTC volume. ".format(float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
