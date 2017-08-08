@@ -19,6 +19,7 @@ krakbtc = 'https://api.kraken.com/0/public/Ticker?pair=XMRXBT'
 krakbtceur = 'https://api.kraken.com/0/public/Ticker?pair=XBTEUR'
 krakusd = 'https://api.kraken.com/0/public/Ticker?pair=XMRUSD'
 krakeur = 'https://api.kraken.com/0/public/Ticker?pair=XMREUR'
+kraktrig = 'https://api.kraken.com/0/public/Ticker?pair=XBT'  #append coin/trigger in function below
 okcquar = 'https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=quarter'
 krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
@@ -69,28 +70,64 @@ def bfx(bot, trigger):
 @sopel.module.commands('krak', 'kraken')
 def krak(bot, trigger):
     stringtosay = ''
-    try:
-        r = requests.get(krakbtc)
-        j = r.json()
-        stringtosay += "Last XMR/BTC trade at {0:.6f} on {1:.2f} 24 h XMR volume. ".format(float(j['result']['XXMRXXBT']['c'][0]), float(j['result']['XXMRXXBT']['v'][1]))
-    except:
-        bot.say("Error getting XMR/BTC data")
-    try:
-        r = requests.get(krakusd)
-        j = r.json()
-        stringtosay += "Last XMR/USD trade at {0:.2f} on {1:.2f} 24 h XMR volume. ".format(float(j['result']['XXMRZUSD']['c'][0]), float(j['result']['XXMRZUSD']['v'][1]))
-    except:
-        bot.say("Error getting XMR/USD data")
-    try:
-        r = requests.get('https://api.kraken.com/0/public/Ticker?pair=XMREUR')
-        j = r.json()
-        stringtosay += "Last XMR/EUR trade at {0:.2f} on {1:.2f} 24 h XMR volume. ".format(float(j['result']['XXMRZEUR']['c'][0]), float(j['result']['XXMRZEUR']['v'][1]))
-    except:
-        bot.say("Error getting XMR/EUR data")
-    try:
-        bot.say(stringtosay)
-    except:
-        bot.say("Error getting data")
+    if not trigger.group(2):
+        try:
+            r = requests.get(krakbtc)
+            j = r.json()
+            stringtosay += "Last XMR/BTC trade at {0:.6f} on {1:.2f} 24 h XMR volume. ".format(float(j['result']['XXMRXXBT']['c'][0]), float(j['result']['XXMRXXBT']['v'][1]))
+        except:
+            bot.say("Error getting XMR/BTC data")
+        try:
+            r = requests.get(krakusd)
+            j = r.json()
+            stringtosay += "Last XMR/USD trade at {0:.2f} on {1:.2f} 24 h XMR volume. ".format(float(j['result']['XXMRZUSD']['c'][0]), float(j['result']['XXMRZUSD']['v'][1]))
+        except:
+            bot.say("Error getting XMR/USD data")
+        try:
+            r = requests.get('https://api.kraken.com/0/public/Ticker?pair=XMREUR')  #shouldn't this be krakeur?
+            j = r.json()
+            stringtosay += "Last XMR/EUR trade at {0:.2f} on {1:.2f} 24 h XMR volume. ".format(float(j['result']['XXMRZEUR']['c'][0]), float(j['result']['XXMRZEUR']['v'][1]))
+        except:
+            bot.say("Error getting XMR/EUR data")
+        try:
+            bot.say(stringtosay)
+        except:
+            bot.say("Error getting data")		
+    else:
+        coin = trigger.group(2).upper()
+        try:
+	    kraktrig = kraktrig[:-1]                #Didn't test.  It's meant to delete the "'" from end of string.  Delete this line if unneeded.
+	    kraktrig = kraktrig.append(coin)+"'"    #Again, delete the +"'" at the end, if unneeded.
+            r=requests.get(kraktrig)
+            j=r.json()
+	    stringtosay += coin + " at {0:.2f} on {1:.2f} 24 h BTC volume. ".format(float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
+	except:
+            bot.say("Error connecting to Kraken")
+#        if len(coin) > 5 or len(coin) < 2:
+#            bot.say("Coin ticker is too long or short")
+#        elif coin == "PIVX":
+#            bot.say("Masternodes + PoS...what could possibly go wrong?")
+#        else:
+	try:
+            bot.say(stringtosay)
+        except:
+            bot.say("Error getting data")
+	
+#   THIS WAS COPIED FROM THE POLO FUNCTION, AND IS UNUSED, AT LEAST FOR NOW
+#            label="BTC_" + coin
+#            try:
+#                ticker=j[label]
+#                last=float(ticker['last'])
+#                change=float(ticker['percentChange'])
+#                vol=float(ticker['baseVolume'])
+#                if change >= 0: 
+#                    sign = '+'
+#                else:
+#                    sign = ''
+#                bot.say("{0} at {1:.8f} BTC; {2}{3:.2f}% over 24 hours on {4:.3f} BTC volume".format(coin, last, sign, change*100, vol))
+#            except:
+#                bot.say("ERROR!")
+	
 
 @sopel.module.commands('usdt')
 def usdt(bot, trigger):
