@@ -98,7 +98,7 @@ def krak(bot, trigger):
         try:
             r=requests.get(kraktrig+coin+'XBT')
             j=r.json()
-	    stringtosay += "{0} at {1:.2f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
+	    stringtosay += "{0} at {1:.8f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
 	except:
             bot.say("Error connecting to Kraken")
 #        if len(coin) > 5 or len(coin) < 2:
