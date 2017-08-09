@@ -19,7 +19,7 @@ krakbtc = 'https://api.kraken.com/0/public/Ticker?pair=XMRXBT'
 krakbtceur = 'https://api.kraken.com/0/public/Ticker?pair=XBTEUR'
 krakusd = 'https://api.kraken.com/0/public/Ticker?pair=XMRUSD'
 krakeur = 'https://api.kraken.com/0/public/Ticker?pair=XMREUR'
-kraktrig = 'https://api.kraken.com/0/public/Ticker?pair=XBT'  #append coin/trigger in function below
+kraktrig = 'https://api.kraken.com/0/public/Ticker?pair='  #append coin/trigger in function below
 okcquar = 'https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=quarter'
 krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
@@ -96,11 +96,9 @@ def krak(bot, trigger):
     else:
         coin = trigger.group(2).upper()
         try:
-	    kraktrig = kraktrig[:-1]                #Didn't test.  It's meant to delete the "'" from end of string.  Delete this line if unneeded.
-	    kraktrig = kraktrig.append(coin)+"'"    #Again, delete the +"'" at the end, if unneeded.
-            r=requests.get(kraktrig)
+            r=requests.get(kraktrig+coin+'XBT')
             j=r.json()
-	    stringtosay += coin + " at {0:.2f} on {1:.2f} 24 h BTC volume. ".format(float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
+	    stringtosay += "{0} at {1:.2f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
 	except:
             bot.say("Error connecting to Kraken")
 #        if len(coin) > 5 or len(coin) < 2:
