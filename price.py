@@ -447,13 +447,13 @@ def tall(bot, trigger):
     if stampjson:
         stringtosend += "Bitstamp last: {0:,.2f}, vol: {1:,.1f} | ".format(float(stampjson['last']), float(stampjson['volume']))
     # BTC-E
-    try: 
-        btceresult = requests.get(btceurl)
-        btcejson = btceresult.json()
-    except:
-	btcejson = False
-    if btcejson:
-        stringtosend += "BTC-E last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btcejson['btc_usd']['last']), float(btcejson['btc_usd']['vol_cur']))
+    # try: 
+    #     btceresult = requests.get(btceurl)
+    #     btcejson = btceresult.json()
+    # except:
+    #     btcejson = False
+    # if btcejson:
+    #     stringtosend += "BTC-E last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btcejson['btc_usd']['last']), float(btcejson['btc_usd']['vol_cur']))
     # Gemini
     try: 
         gemiresult = requests.get(gemiurl)

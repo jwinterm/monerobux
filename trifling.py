@@ -208,6 +208,10 @@ def kid(bot, trigger):
 def kramer(bot, trigger):
     bot.say("Waiting for a retrace to 0.007")
 
+@sopel.module.commands('lambo')
+def lambo(bot, trigger):
+    bot.say(u'Our mission is to give you a taste of the lambo dream 🏎 '.encode('utf8'))
+
 @sopel.module.commands('lenny')
 def lenny(bot, trigger):
     bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
