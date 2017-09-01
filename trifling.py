@@ -342,6 +342,10 @@ def rarepepe(bot, trigger):
 def rip(bot, trigger):
     bot.say(u'(X_X) ☜ (◉▂◉ ) we hardly knew ye'.encode('utf8'))
 
+@sopel.module.commands('risto', 'rpietila')
+def risto(bot, trigger):
+    bot.say(u'Zionists own the media, including Hollywood. It is nothing extraordinary for them to use it to further their goals. Just see what they are propagating every day in every media outlet. And the compulsory disclaimer: Zionist != Jew. Zionists in my understanding are typically mostly not even ethnic Jews, and the supermajority of Jews certainly are not Zionists. Zionism is a purely political supremacy movement.'.encode('utf8'))
+
 @sopel.module.commands('romerito', 'romero')
 def romerito(bot, trigger):
     draw = random.random()
@@ -377,6 +381,15 @@ def summon(bot, trigger):
             bot.say("{0} has summoned {1}, ༼つ ◕_◕ ༽つ come to us {1} ༼つ ◕_◕ ༽つ".format(trigger.nick, trigger.group(2)))
         except:
             bot.say("Stop using non-ascii characters! (╯°□°）╯︵ ( . 0 .)")
+
+suraeoptions = [
+"you are speaking with such generalities, it's impossible to confirm or deny any of what you are saying, so i'll just nod and give you the benefit of the doubt and assume we are in agreement on something unspoken. haha",
+"The Buddha, the Godhead, resides quite as comfortably in the circuits of a digital computer or the gears of a cycle transmission as he does at the top of the mountain, or in the petals of a flower. To think otherwise is to demean the Buddha - which is to demean oneself.",
+"update coefList[k] = COEFPROD(coefList, q[j][k]). Can you spot a problem with that? The method signature of COEFPROD is scalar[] COEFPROD(scalar[] c, scalar[] d) <--- yeah, pass it coefList[k]."
+]
+@sopel.module.commands('surae')
+def surae(bot, trigger):
+    bot.say(random.choice(suraeoptions))
 
 @sopel.module.commands('timetravelpp')
 def timetravelpp(bot, trigger):
@@ -467,6 +480,10 @@ def vitalik(bot, trigger):
 @sopel.module.commands('wat')
 def wat(bot, trigger):
     bot.say("https://www.destroyallsoftware.com/talks/wat")
+    
+@sopel.module.commands('yoda')
+def wat(bot, trigger):
+    bot.say("The optimism is strong in this one")
     
 @sopel.module.commands('xrp')
 def xrp(bot, trigger):
