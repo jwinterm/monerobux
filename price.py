@@ -520,28 +520,28 @@ def xmrtall(bot, trigger):
         last=float(xmr['last'])
 #       change=float(xmr['percentChange'])	
         vol=float(xmr['baseVolume'])		
-'''remove?
-        if change >= 0: 			
-            sign = '+'				
-        else:					
-            sign = ''				
-        face = ''
-        if change > 0.10:
-            face = u'\u263d'.encode('utf8')
-        if 0.10 >= change > 0.05:
-            face = u'\u2661'.encode('utf8')
-        if 0.05 >= change > 0.02:
-            face = u'\u263a'.encode('utf8')
-        if 0.02 >= change > -0.02:
-            face = u'\u2694'.encode('utf8')
-        if -0.02 >= change > -0.05:
-            face = u'\u2639'.encode('utf8')
-        if -0.05 >= change > -0.1:
-            face = u'\u2620'.encode('utf8')
-        if change < -0.1: 
-            face = u'\u262d'.encode('utf8')
-'''
-    	stringtosend += "Poloniex last: {0:.8f} BTC on {3:.3f} BTC volume;\n".format(last, vol)
+# '''remove?
+#         if change >= 0: 			
+#             sign = '+'				
+#         else:					
+#             sign = ''				
+#         face = ''
+#         if change > 0.10:
+#             face = u'\u263d'.encode('utf8')
+#         if 0.10 >= change > 0.05:
+#             face = u'\u2661'.encode('utf8')
+#         if 0.05 >= change > 0.02:
+#             face = u'\u263a'.encode('utf8')
+#         if 0.02 >= change > -0.02:
+#             face = u'\u2694'.encode('utf8')
+#         if -0.02 >= change > -0.05:
+#             face = u'\u2639'.encode('utf8')
+#         if -0.05 >= change > -0.1:
+#             face = u'\u2620'.encode('utf8')
+#         if change < -0.1: 
+#             face = u'\u262d'.encode('utf8')
+# '''
+    	stringtosend += "Poloniex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
     except:
         bot.say("Something borked ¯\(º_o)/¯") 
     
@@ -549,7 +549,7 @@ def xmrtall(bot, trigger):
     try:
         r = requests.get(finexbtc)
         j = r.json()
-        stringtosay += "Bitfinex last: {0:.6f} on {1:.2f} XMR volume;\n.".format(float(j['last_price']), float(j['volume']))
+        stringtosend += "Bitfinex last: {0:.6f} on {1:.2f} XMR volume | ".format(float(j['last_price']), float(j['volume']))
     except:
         bot.say("Something borked ʕノ•ᴥ•ʔノ ︵ ┻━┻")
 
@@ -557,7 +557,7 @@ def xmrtall(bot, trigger):
     try:
         r = requests.get(krakbtc)
         j = r.json()
-        stringtosay += "Kraken last: {0:.6f} on {1:.2f} XMR volume;\n.".format(float(j['result']['XXMRXXBT']['c'][0]), float(j['result']['XXMRXXBT']['v'][1]))
+        stringtosend += "Kraken last: {0:.6f} on {1:.2f} XMR volume | ".format(float(j['result']['XXMRXXBT']['c'][0]), float(j['result']['XXMRXXBT']['v'][1]))
     except:
         bot.say("Something borked ¤\( `⌂´ )/¤")
 	
@@ -570,14 +570,15 @@ def xmrtall(bot, trigger):
         last=float(xmr['Last'])
 #       change=((last/float(xmr['PrevDay']))-1)
         vol=float(xmr['BaseVolume'])
-        stringtosay += "Bittrex last: {0:.8f} BTC on {2:.3f} BTC volume;\n".format(last, vol)
+        stringtosend += "Bittrex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
     except:
         bot.say("Something borked -_-")
 	
     # Cryptopia
-    coin = 'XMR'
-    pair = 'BTC'
-    r = requests.get(cryptopiaurl)
+    try:
+        coin = 'XMR'
+        pair = 'BTC'
+        r = requests.get(cryptopiaurl)
         j = r.json()
         found = False
         for i in j["Data"]:
@@ -585,7 +586,7 @@ def xmrtall(bot, trigger):
                 last=float(i['LastPrice'])
 #               change=float(i['Change'])
                 vol=float(i['Volume'])
-                stringtosend += "Cryptopia last: {1:.8f} {2} on  {4:.3f} {2} volume;\n".format(last, pair, vol*last)
+                stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
                 found = True
         if found == False:
             bot.say("WTF?!?")
@@ -604,7 +605,7 @@ def xmrtall(bot, trigger):
         last=float(coin['last'])
         vol=float(coin['baseVolume'])
 #       change=float(coin['percentChange'])
-        stringtosay += "Tux last: {1:.8f} BTC on {2:.3f} BTC volume.".format(last, vol)
+        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume.".format(last, vol)
     except:
         bot.say("Something borked ( ︶︿︶)_╭∩╮")
     #Finally... print to IRC
