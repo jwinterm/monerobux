@@ -507,6 +507,108 @@ def tall(bot, trigger):
         stringtosend += "Bitflyer last: {0:,.2f}, vol: {1:,.1f} | ".format(float(bitflyerjson['ltp'])/usdjpy, float(bitflyerjson['volume_by_product']))
     # Send the tickers to IRC
     bot.say(stringtosend)
+	
+
+@sopel.module.commands('xmrtall')
+def xmrtall(bot, trigger):
+    stringtosend = ''
+    # Polo
+    try:
+	r=requests.get(polourl)
+        j=r.json()
+        xmr=j["BTC_XMR"]
+        last=float(xmr['last'])
+#       change=float(xmr['percentChange'])	
+        vol=float(xmr['baseVolume'])		
+'''remove?
+        if change >= 0: 			
+            sign = '+'				
+        else:					
+            sign = ''				
+        face = ''
+        if change > 0.10:
+            face = u'\u263d'.encode('utf8')
+        if 0.10 >= change > 0.05:
+            face = u'\u2661'.encode('utf8')
+        if 0.05 >= change > 0.02:
+            face = u'\u263a'.encode('utf8')
+        if 0.02 >= change > -0.02:
+            face = u'\u2694'.encode('utf8')
+        if -0.02 >= change > -0.05:
+            face = u'\u2639'.encode('utf8')
+        if -0.05 >= change > -0.1:
+            face = u'\u2620'.encode('utf8')
+        if change < -0.1: 
+            face = u'\u262d'.encode('utf8')
+'''
+    	stringtosend += "Poloniex last: {0:.8f} BTC on {3:.3f} BTC volume;\n".format(last, vol)
+    except:
+        bot.say("Something borked ¯\(º_o)/¯") 
+    
+    # bfx
+    try:
+        r = requests.get(finexbtc)
+        j = r.json()
+        stringtosay += "Bitfinex last: {0:.6f} on {1:.2f} XMR volume;\n.".format(float(j['last_price']), float(j['volume']))
+    except:
+        bot.say("Something borked ʕノ•ᴥ•ʔノ ︵ ┻━┻")
+
+    # Kraken
+    try:
+        r = requests.get(krakbtc)
+        j = r.json()
+        stringtosay += "Kraken last: {0:.6f} on {1:.2f} XMR volume;\n.".format(float(j['result']['XXMRXXBT']['c'][0]), float(j['result']['XXMRXXBT']['v'][1]))
+    except:
+        bot.say("Something borked ¤\( `⌂´ )/¤")
+	
+    # Trex
+    geturl = trexurl+'xmr'
+    try:
+        r = requests.get(geturl)
+        j = r.json()
+        xmr=j['result'][0]
+        last=float(xmr['Last'])
+#       change=((last/float(xmr['PrevDay']))-1)
+        vol=float(xmr['BaseVolume'])
+        stringtosay += "Bittrex last: {0:.8f} BTC on {2:.3f} BTC volume;\n".format(last, vol)
+    except:
+        bot.say("Something borked -_-")
+	
+    # Cryptopia
+    coin = 'XMR'
+    pair = 'BTC'
+    r = requests.get(cryptopiaurl)
+        j = r.json()
+        found = False
+        for i in j["Data"]:
+            if i["Label"] == coin+"/"+pair:
+                last=float(i['LastPrice'])
+#               change=float(i['Change'])
+                vol=float(i['Volume'])
+                stringtosend += "Cryptopia last: {1:.8f} {2} on  {4:.3f} {2} volume;\n".format(last, pair, vol*last)
+                found = True
+        if found == False:
+            bot.say("WTF?!?")
+    except:
+        bot.say("Something borked （ -.-）ノ-=≡≡卍")
+	
+    # Tux
+    try:
+        r = requests.get('https://tuxexchange.com/api?method=getticker')
+        j = r.json()
+        if not trigger.group(2):
+            ticker='XMR'
+        else:
+            ticker=trigger.group(2).upper()
+        coin=j['BTC_{}'.format(ticker)]
+        last=float(coin['last'])
+        vol=float(coin['baseVolume'])
+#       change=float(coin['percentChange'])
+        stringtosay += "Tux last: {1:.8f} BTC on {2:.3f} BTC volume.".format(last, vol)
+    except:
+        bot.say("Something borked ( ︶︿︶)_╭∩╮")
+    #Finally... print to IRC
+    bot.say(stringtosend)
 
 
 @sopel.module.commands('usd')
@@ -724,7 +826,7 @@ def log(bot, trigger):
 @sopel.module.commands('price')
 def price(bot, trigger):
     try:
-        bot.say("1 XMR = $1000 USD (Offer valid in participating locations)")
+        bot.say("1 XMR = $1,000 USD (Offer valid in participating locations)")
     except:
         bot.say("C-cex sucks")
 
