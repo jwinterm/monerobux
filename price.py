@@ -23,6 +23,9 @@ kraktrig = 'https://api.kraken.com/0/public/Ticker?pair='  #append coin/trigger 
 okcquar = 'https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=quarter'
 krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
+thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in KRW
+thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
+
 
 @sopel.module.commands('bcc', 'bitcointrash')
 def bcc(bot, trigger):
@@ -512,6 +515,28 @@ def tall(bot, trigger):
 @sopel.module.commands('xmrtall')
 def xmrtall(bot, trigger):
     stringtosend = ''
+
+    # Bithumb (Note: Must calculate BTCXMR price from BTCKRW and XMRKRW)
+    try:
+	xmr_r = requests.get(thumbxmrurl)
+	btc_r = requests.get(thumbbtcurl)
+	xmrjson = xmr_r.json()
+	btcjson = btc_r.json()
+	# No last price in api.  Must average buy and sell price.
+	thumbXMRbuy = xmrjson['data']['buy_price']
+	thumbXMRsell = xmrjson['data']['sell_price']
+	thumbXMRkrw = (thumbXMRbuy + thumbXMRsell)/2
+	# Same for BTC
+	thumbBTCbuy = btcjson['data']['buy_price']
+	thumbBTCsell = btcjson['data']['sell_price']
+	thumbBTCkrw = (thumbBTCbuy + thumbBTCsell)/2
+	# Finally, price in BTC, and volume in XMR
+	thumbBTCxmr = thumbXMRkrw/thumbBTCkrw
+	thumbXMRVol = xmrjson['data']['volume_1day']
+	stringtosend = "Bithumb last: {0:.6f} BTC* on {1:.2f} XMR volume |".format(thumbBTCxmr,thumbXMRVol)
+    except:
+	pass
+    
     # Polo
     try:
 	r=requests.get(polourl)
