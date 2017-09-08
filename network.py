@@ -13,7 +13,7 @@ def fork(bot, trigger):
     pass
   try:
     height=j["network"]["height"]
-    forkheight=1288616
+    forkheight=1400000
     bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
   except:
     bot.say("Something borked -_-")

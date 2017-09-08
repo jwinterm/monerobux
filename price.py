@@ -523,17 +523,17 @@ def xmrtall(bot, trigger):
 	xmrjson = xmr_r.json()
 	btcjson = btc_r.json()
 	# No last price in api.  Must average buy and sell price.
-	thumbXMRbuy = xmrjson['data']['buy_price']
-	thumbXMRsell = xmrjson['data']['sell_price']
+	thumbXMRbuy = float(xmrjson['data']['buy_price'])
+	thumbXMRsell = float(xmrjson['data']['sell_price'])
 	thumbXMRkrw = (thumbXMRbuy + thumbXMRsell)/2
 	# Same for BTC
-	thumbBTCbuy = btcjson['data']['buy_price']
-	thumbBTCsell = btcjson['data']['sell_price']
+	thumbBTCbuy = float(btcjson['data']['buy_price'])
+	thumbBTCsell = float(btcjson['data']['sell_price'])
 	thumbBTCkrw = (thumbBTCbuy + thumbBTCsell)/2
 	# Finally, price in BTC, and volume in XMR
 	thumbBTCxmr = thumbXMRkrw/thumbBTCkrw
-	thumbXMRVol = xmrjson['data']['volume_1day']
-	stringtosend = "Bithumb last: {0:.6f} BTC* on {1:.2f} XMR volume |".format(thumbBTCxmr,thumbXMRVol)
+	thumbXMRVol = float(xmrjson['data']['volume_1day'])
+	stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume |".format(thumbBTCxmr,thumbXMRVol)
     except:
 	pass
     
