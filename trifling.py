@@ -371,6 +371,10 @@ def soon(bot, trigger):
 def shrug(bot, trigger):
     bot.say(u'¯\_(ツ)_/¯'.encode('utf8'))
 
+@sopel.module.commands('softich')
+def softich(bot, trigger):
+    bot.say(u'🐻🐻🐻 https://imgflip.com/i/1ve397 🐻🐻🐻'.encode('utf8'))
+
 @sopel.module.commands('summon')
 def summon(bot, trigger):
     if trigger.group(2) == None:
