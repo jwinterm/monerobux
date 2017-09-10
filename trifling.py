@@ -173,6 +173,10 @@ def hero(bot, trigger):
 def hotline(bot, trigger):
     bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))
 
+@sopel.module.commands('news')
+def pony(bot, trigger):
+    bot.say("https://www.youtube.com/watch?v=Gr_WtFW0a8Y")
+    
 @sopel.module.commands('invest')
 def invest(bot, trigger):
     bot.say('i think invest in bitcoin is much more safe and profitable because bitcoin price rising to higher value and we do not face to any risk when we invest our money in bitcoin and i if we invest our money in bitcoin we will be get a good profit from bitcoin in the future so i think bitcoin is much more profitable currency than altcoins.')
