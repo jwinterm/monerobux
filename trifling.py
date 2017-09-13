@@ -105,7 +105,11 @@ def donate(bot, trigger):
 @sopel.module.commands('dump')
 def dump(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=RHg8qIKJo1I')
-
+    
+@sopel.module.commands('encourage')
+def encourage(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=NXfC16rv_fs')
+    
 @sopel.module.commands('eth')
 def eth(bot, trigger):
     bot.say(u'The world computer 💻🌐'.encode('utf8'))
