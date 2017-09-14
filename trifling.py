@@ -174,7 +174,7 @@ def hotline(bot, trigger):
     bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))
 
 @sopel.module.commands('news')
-def pony(bot, trigger):
+def news(bot, trigger):
     bot.say("https://www.youtube.com/watch?v=Gr_WtFW0a8Y")
     
 @sopel.module.commands('invest')

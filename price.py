@@ -535,7 +535,7 @@ def xmrtall(bot, trigger):
 	thumbXMRVol = float(xmrjson['data']['volume_1day'])
 	stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume |".format(thumbBTCxmr,thumbXMRVol)
     except:
-	pass
+	bot.say("Error - bithumb korea is worst korea.")
     
     # Polo
     try:
