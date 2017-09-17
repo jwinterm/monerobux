@@ -54,6 +54,10 @@ def buyorsell(bot, trigger):
         silly_string = "Buy, buy, buy!"  
     bot.say(silly_string)
 
+@sopel.module.commands('cheerup')
+def cheerup(bot, trigger):
+      bot.say('https://www.youtube.com/watch?v=NXfC16rv_fs')
+
 @sopel.module.commands('china')
 def china(bot, trigger):
     bot.say('https://youtu.be/ZrNrleD2ZFs')
