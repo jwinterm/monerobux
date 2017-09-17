@@ -14,7 +14,10 @@ def fork(bot, trigger):
   try:
     height=j["network"]["height"]
     forkheight=1400000
-    bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
+    if forkheight > height:
+      bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
+    else:
+      bot.say("I don't know when the next fork is.")
   except:
     bot.say("Something borked -_-")
 
