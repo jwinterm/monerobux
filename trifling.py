@@ -200,9 +200,9 @@ def isittrue(bot, trigger):
 def jaxx(bot, trigger):
     bot.say(u'This command will be implemented soon. Honest. Especially if the devs can provide some unpaid assistance. Soon™...')
 
-@sopel.module.commands('joshua1234')
+@sopel.module.commands('john_alan')
 def joshua(bot, trigger):
-    bot.say(u'The first, second, third, and fourth amongst joshes.')
+    bot.say(u'I like smooth.')
 
 @sopel.module.commands('jwinterm')
 def jwinterm(bot, trigger):
