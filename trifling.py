@@ -494,7 +494,7 @@ def wat(bot, trigger):
     bot.say("https://www.destroyallsoftware.com/talks/wat")
     
 @sopel.module.commands('yoda')
-def wat(bot, trigger):
+def yoda(bot, trigger):
     bot.say("The optimism is strong in this one")
     
 @sopel.module.commands('xrp')
