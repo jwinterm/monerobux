@@ -749,6 +749,23 @@ def gbp(bot, trigger):
     except:
         bot.say("Failed to retrieve price.")
 
+@sopel.module.commands('inr')
+def inr(bot, trigger):
+    # Get conversion rate
+    try: 
+        fixerresult = requests.get(fixerurl)
+        fixerjson = fixerresult.json()
+        usdthb = fixerjson['rates']['INR']
+    except:
+        usdthb = 64
+    try:
+        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
+        j=r.json()
+        price=float(j[0]['price_usd'])*usdthb
+        bot.say("Monero price in INR = ₹{0:,.2f}".format(price))
+    except:
+        bot.say("Failed to retrieve price.")
+
 @sopel.module.commands('thb')
 def thb(bot, trigger):
     # Get conversion rate
