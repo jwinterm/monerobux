@@ -439,6 +439,7 @@ def tall(bot, trigger):
         usdcny = fixerjson['rates']['CNY']
         usdeur = fixerjson['rates']['EUR']
         usdjpy = fixerjson['rates']['JPY']
+        usdkrw = fixerjson['rates']['KRW']
     except:
         usdcny = 7
     # Bitstamp
@@ -484,14 +485,22 @@ def tall(bot, trigger):
 	finexjson = False
     if finexjson:
         stringtosend += "Bitfinex last: {0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
-    # BTCC
+    # Bitthumb
     try: 
-        btccresult = requests.get(btccurl)
-        btccjson = btccresult.json()
+        thumbresult = requests.get(thumbbtcurl)
+        thumbjson = thumbresult.json()
     except:
-	btccjson = False
-    if btccjson:
-        stringtosend += "BTCC last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btccjson['ticker']['last'])/usdcny, float(btccjson['ticker']['vol']))
+	thumbjson = False
+    if thumbjson:
+        stringtosend += "Bithumb last: {0:,.2f}, vol: {1:,.1f} | ".format(float(thumbjson['data']['buy_price'])/float(usdkrw), float(thumbjson['data']['volume_1day']))
+    # BTCC
+    # try: 
+    #     btccresult = requests.get(btccurl)
+    #     btccjson = btccresult.json()
+    # except:
+    #     btccjson = False
+    # if btccjson:
+    #     stringtosend += "BTCC last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btccjson['ticker']['last'])/usdcny, float(btccjson['ticker']['vol']))
     # Huobi
     try: 
         huobiresult = requests.get(huobiurl)
