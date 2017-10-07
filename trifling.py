@@ -478,6 +478,10 @@ urmomoptions = [
 def urmom(bot, trigger):
     bot.say(random.choice(urmomoptions))
 
+@sopel.module.commands('verge', 'xvg', 'wraith')
+def verge(bot, trigger):
+    bot.say(u"👻🐕 Don't wraith my dark doge bro! 👻🐕".encode('utf8'))
+    
 vitalikoptions = [
 "https://pbs.twimg.com/media/CrWjczJXgAExF2S.jpg",
 "mETH, not even once: https://cdn-az.allevents.in/banners/e7df519e0808bac49fa3aaf503aff87d",
@@ -487,7 +491,6 @@ vitalikoptions = [
 @sopel.module.commands('vitalik', 'buterin')
 def vitalik(bot, trigger):
     bot.say(random.choice(vitalikoptions))
-
 
 @sopel.module.commands('wat')
 def wat(bot, trigger):
