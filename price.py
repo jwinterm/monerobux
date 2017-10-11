@@ -442,6 +442,8 @@ def tall(bot, trigger):
         usdkrw = fixerjson['rates']['KRW']
     except:
         usdcny = 7
+        usdkrw = 1100
+        usdjpy = 112
     # Bitstamp
     try: 
         stampresult = requests.get(stampurl)

@@ -200,6 +200,13 @@ def isittrue(bot, trigger):
 def jaxx(bot, trigger):
     bot.say(u'This command will be implemented soon. Honest. Especially if the devs can provide some unpaid assistance. Soon™...')
 
+@sopel.module.commands('jimbell')
+def jaxx(bot, trigger):
+    if not trigger.group(2):
+        bot.say(u'https://en.wikipedia.org/wiki/Jim_Bell')
+    else:
+        bot.say(u'{} has opened an assasination futures market predicting the impending demise of {}.'.format(trigger.nick, trigger.group(2)))
+
 @sopel.module.commands('john_alan')
 def joshua(bot, trigger):
     bot.say(u'I like smooth.')
