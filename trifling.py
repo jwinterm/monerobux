@@ -205,7 +205,7 @@ def jaxx(bot, trigger):
     if not trigger.group(2):
         bot.say(u'https://en.wikipedia.org/wiki/Jim_Bell')
     else:
-        bot.say(u'{} has opened an assasination futures market predicting the impending demise of {}.'.format(trigger.nick, trigger.group(2)))
+        bot.say(u'{} has opened an assassination futures market predicting the impending demise of {}.'.format(trigger.nick, trigger.group(2)))
 
 @sopel.module.commands('john_alan')
 def joshua(bot, trigger):
