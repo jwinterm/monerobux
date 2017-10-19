@@ -62,3 +62,15 @@ def blocksize(bot, trigger):
     bot.say("Median blocksize over last 200 blocks is {0} bytes".format(size.group(1)))
   except:
     bot.say("Bomething sorked 0_0")
+
+@sopel.module.commands('b2x')
+def b2x(bot, trigger):
+  try: 
+    r=requests.get('https://blockchain.info/latestblock')
+    j=r.json()
+    height=j['height']
+    forkheight=494784
+    blocks=forkheight-int(height)
+    bot.say("Bitcoin S2X fork due to happen on block {}. Current block is {}. 10 min per block estimate gives {} min, or {:.2f} hour, or {:.2f} days.".format(forkheight, height, blocks*10, blocks*0.16666, blocks*0.006944))
+  except:
+    bot.say("Bitcoin sucks.")

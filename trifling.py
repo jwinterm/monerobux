@@ -104,7 +104,8 @@ def ded(bot, trigger):
 
 @sopel.module.commands('donate', 'donation')
 def donate(bot, trigger):
-    bot.say('45SkxgDmcLmW5ByS7w9AG78JuJRvCoVKCdGJWnd4US95CBUAtvdGAdM2oHgZgTGjkEAUcwdqcryM819aqdeiKxHSQC8HkmS', trigger.nick)
+    bot.say('XMR: 45SkxgDmcLmW5ByS7w9AG78JuJRvCoVKCdGJWnd4US95CBUAtvdGAdM2oHgZgTGjkEAUcwdqcryM819aqdeiKxHSQC8HkmS', trigger.nick)
+    bot.say('BTC: 14X8aMUtuxH2HWLtsNAxxN7j9uqQNUdMzB', trigger.nick)
 
 @sopel.module.commands('dump')
 def dump(bot, trigger):
@@ -530,6 +531,10 @@ def wave(bot, trigger):
 #@sopel.module.rule('[Tt]rump')
 #def politics(bot, trigger):
 #    bot.reply("politics is the mind killer")
+
+@sopel.module.rule('.*1Dj34exPs3S9qAV1aiGAAADzbashsSVKVP*.')
+def scamdouble(bot, trigger):
+    bot.say("{} is a scammer and bitcoin is a scam".format(trigger.nick))
     
 @sopel.module.commands('asp')
 def asp(bot, trigger):
