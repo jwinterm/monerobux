@@ -289,6 +289,10 @@ odboptions = [
 def odb(bot, trigger):
     bot.say(random.choice(odboptions))
 
+@sopel.module.commands('orff')
+def orff(bot, trigger):
+    bot.say("O Fortuna velut luna statu variabilis, semper crescis aut decrescis; vita detestabilis nunc obdurat et tunc curat ludo mentis aciem, egestatem, potestatem dissolvit ut glaciem.")
+
 @sopel.module.commands('pamp')
 def pamp(bot, trigger):
     bot.say("Pamp o clock yet?")
