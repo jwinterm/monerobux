@@ -314,6 +314,10 @@ def pony(bot, trigger):
 def primer(bot, trigger):
     bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
    
+@sopel.module.commands('pubg')
+def pubg(bot, trigger):
+    bot.say("https://i.redd.it/o6o5gqmetacz.jpg")
+   
 confirmoptions = [
 "I can confirm that it is true",
 "This is true",
