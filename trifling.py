@@ -111,6 +111,10 @@ def donate(bot, trigger):
 def dump(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=RHg8qIKJo1I')
 
+@sopel.module.commands('encrypt')
+def encrypt(bot, trigger):
+    bot.say("https doesn't hide the fact that i'm using https so that's why i don't use encryption because everyone is trying to crack encryption so i just don't use encryption because no one is looking at unencrypted data because everyone wants encrypted data to crack")
+
 @sopel.module.commands('eth')
 def eth(bot, trigger):
     bot.say(u'The world computer 💻🌐'.encode('utf8'))
