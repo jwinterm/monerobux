@@ -4,7 +4,7 @@ import random
 import re
 import requests
 import praw
-from client import *
+import client
 from threading import Timer
 
 @sopel.module.commands('4matter')
@@ -156,15 +156,17 @@ def hitler(bot, trigger):
 
 @sopel.module.commands('hmm', 'hmmm')
 def hmm(bot, trigger):
-    # try:
-        sub=reddit.subreddit('hmmm')
-        posts=sub.new(limit=100)
-        n=random.randint(0,100)
-        for i, post in enumerate(posts):
-            if i==n:
-                bot.say(post.url)
-    # except:
-    #     bot.say("Something something reddit's servers")
+    reddit = praw.Reddit(client_id=client.client_id, client_secret=client.client_secret, user_agent='asdfasdfasdfjhwrgth', username=client.username, password=client.password)
+
+    #try:
+    sub=reddit.subreddit('hmmm')
+    posts=sub.new(limit=100)
+    n=random.randint(0,100)
+    for i, post in enumerate(posts):
+        if i==n:
+            bot.say(post.url)
+    #except:
+    #    bot.say("Something something reddit's servers")
 
 herooptions = [
 "https://video.twimg.com/tweet_video/DEnItJjV0AI81CK.mp4",
@@ -444,13 +446,9 @@ def trivia(bot, trigger):
         bot.say("No trivia for you!")
 
 
-reddit=praw.Reddit(client_id=client_id, 
-                   client_secret=client_secret, 
-                   user_agent='monerobux',
-                   username=username,
-                   password=password)
 @sopel.module.commands('tinytrump')
 def tinytrump(bot, trigger):
+    reddit = praw.Reddit(client_id=client.client_id, client_secret=client.client_secret, user_agent='asdfasdfasdfjhwrgth', username=client.username, password=client.password)
     try:
         sub=reddit.subreddit('tinytrump')
         posts=sub.new(limit=100)
