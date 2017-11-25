@@ -82,6 +82,10 @@ def dash(bot, trigger):
 @sopel.module.commands('dealwithit')
 def dealwithit(bot, trigger):
     bot.say(u'(•_•)   ( •_•)>⌐■-■    (⌐■_■)'.encode('utf8'))
+    
+@sopel.module.commands('Deathtobitcoin', 'Deathtobitcoin2', 'deathtobitcoin', 'deathtobitcoin2')
+def deathtobitcoin2(bot, trigger):
+    bot.say('Devs, moderators, whoever you fucking are, please put my money back with interest. Or make my money appear in my wallet with interest!')
 
 @sopel.module.commands('diiorio')
 def diiorio(bot, trigger):
@@ -171,7 +175,10 @@ def hero(bot, trigger):
 
 @sopel.module.commands('hotline')
 def hotline(bot, trigger):
-    bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))
+    if random.random() > 0.3:
+        bot.say(u'☎  Call 1-800-273-8255 to reach the National Suicide Prevention Lifeline ☎' .encode('utf8'))
+    else:
+        bot.say('http://pixel.nymag.com/imgs/daily/vulture/2015/10/20/drake-dance/drake-4.w529.h352.gif')
 
 @sopel.module.commands('invest')
 def invest(bot, trigger):
