@@ -491,6 +491,8 @@ def tall(bot, trigger):
     try: 
         thumbresult = requests.get(thumbbtcurl)
         thumbjson = thumbresult.json()
+        if thumbjson['data']:
+            pass
     except:
 	thumbjson = False
     if thumbjson:

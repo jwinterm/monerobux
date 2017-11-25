@@ -63,14 +63,19 @@ def blocksize(bot, trigger):
   except:
     bot.say("Bomething sorked 0_0")
 
+@sopel.module.commands('mine')
+def mine(bot, trigger):
+  try: 
+    r=requests.get('https://supportxmr.com/api/network/stats')
+    j=r.json()
+    diff=float(j['difficulty'])
+    value=float(j['value'])/1e12
+    hashrate=float(trigger.group(2))
+    xmrperday=(hashrate/(diff/120))*720*value
+    bot.say("At {:.0f} h/s with network diff of {:.2e} and block reward {:.2f} you can expect {:.4f} XMR per day.".format(hashrate, diff, value, xmrperday))
+  except:
+    bot.say("Mining is for suckers.")
+
 @sopel.module.commands('b2x')
 def b2x(bot, trigger):
-  try: 
-    r=requests.get('https://blockchain.info/latestblock')
-    j=r.json()
-    height=j['height']
-    forkheight=494784
-    blocks=forkheight-int(height)
-    bot.say("Bitcoin S2X fork due to happen on block {}. Current block is {}. 10 min per block estimate gives {} min, or {:.2f} hour, or {:.2f} days.".format(forkheight, height, blocks*10, blocks*0.16666, blocks*0.006944))
-  except:
-    bot.say("Bitcoin sucks.")
+  bot.say("Fuck off \\x")
