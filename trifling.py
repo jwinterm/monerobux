@@ -226,6 +226,10 @@ def jwinterm(bot, trigger):
 def kid(bot, trigger):
     bot.say(u'What up kid?')
     
+@sopel.module.commands('koan')
+def koan(bot, trigger):
+    bot.say("The use cases are many and varied")
+    
 @sopel.module.commands('kramer')
 def kramer(bot, trigger):
     bot.say("Waiting for a retrace to 0.007")
