@@ -4,7 +4,7 @@ import random
 import re
 import requests
 import praw
-from client import *
+import client
 from threading import Timer
 
 @sopel.module.commands('4matter')
@@ -54,6 +54,10 @@ def buyorsell(bot, trigger):
         silly_string = "Buy, buy, buy!"  
     bot.say(silly_string)
 
+@sopel.module.commands('cheerup')
+def cheerup(bot, trigger):
+      bot.say('https://www.youtube.com/watch?v=NXfC16rv_fs')
+
 @sopel.module.commands('china')
 def china(bot, trigger):
     bot.say('https://youtu.be/ZrNrleD2ZFs')
@@ -100,11 +104,16 @@ def ded(bot, trigger):
 
 @sopel.module.commands('donate', 'donation')
 def donate(bot, trigger):
-    bot.say('45SkxgDmcLmW5ByS7w9AG78JuJRvCoVKCdGJWnd4US95CBUAtvdGAdM2oHgZgTGjkEAUcwdqcryM819aqdeiKxHSQC8HkmS', trigger.nick)
+    bot.say('XMR: 45SkxgDmcLmW5ByS7w9AG78JuJRvCoVKCdGJWnd4US95CBUAtvdGAdM2oHgZgTGjkEAUcwdqcryM819aqdeiKxHSQC8HkmS', trigger.nick)
+    bot.say('BTC: 14X8aMUtuxH2HWLtsNAxxN7j9uqQNUdMzB', trigger.nick)
 
 @sopel.module.commands('dump')
 def dump(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=RHg8qIKJo1I')
+
+@sopel.module.commands('encrypt')
+def encrypt(bot, trigger):
+    bot.say("https doesn't hide the fact that i'm using https so that's why i don't use encryption because everyone is trying to crack encryption so i just don't use encryption because no one is looking at unencrypted data because everyone wants encrypted data to crack")
 
 @sopel.module.commands('eth')
 def eth(bot, trigger):
@@ -151,15 +160,17 @@ def hitler(bot, trigger):
 
 @sopel.module.commands('hmm', 'hmmm')
 def hmm(bot, trigger):
-    # try:
-        sub=reddit.subreddit('hmmm')
-        posts=sub.new(limit=100)
-        n=random.randint(0,100)
-        for i, post in enumerate(posts):
-            if i==n:
-                bot.say(post.url)
-    # except:
-    #     bot.say("Something something reddit's servers")
+    reddit = praw.Reddit(client_id=client.client_id, client_secret=client.client_secret, user_agent='asdfasdfasdfjhwrgth', username=client.username, password=client.password)
+
+    #try:
+    sub=reddit.subreddit('hmmm')
+    posts=sub.new(limit=100)
+    n=random.randint(0,100)
+    for i, post in enumerate(posts):
+        if i==n:
+            bot.say(post.url)
+    #except:
+    #    bot.say("Something something reddit's servers")
 
 herooptions = [
 "https://video.twimg.com/tweet_video/DEnItJjV0AI81CK.mp4",
@@ -196,9 +207,16 @@ def isittrue(bot, trigger):
 def jaxx(bot, trigger):
     bot.say(u'This command will be implemented soon. Honest. Especially if the devs can provide some unpaid assistance. Soon™...')
 
-@sopel.module.commands('joshua1234')
+@sopel.module.commands('jimbell')
+def jaxx(bot, trigger):
+    if not trigger.group(2):
+        bot.say(u'https://en.wikipedia.org/wiki/Jim_Bell')
+    else:
+        bot.say(u'{} has opened an assassination futures market predicting the impending demise of {}.'.format(trigger.nick, trigger.group(2)))
+
+@sopel.module.commands('john_alan')
 def joshua(bot, trigger):
-    bot.say(u'The first, second, third, and fourth amongst joshes.')
+    bot.say(u'I like smooth.')
 
 @sopel.module.commands('jwinterm')
 def jwinterm(bot, trigger):
@@ -207,6 +225,10 @@ def jwinterm(bot, trigger):
 @sopel.module.commands('kid', 'rehrar')
 def kid(bot, trigger):
     bot.say(u'What up kid?')
+    
+@sopel.module.commands('koan')
+def koan(bot, trigger):
+    bot.say("The use cases are many and varied")
     
 @sopel.module.commands('kramer')
 def kramer(bot, trigger):
@@ -277,6 +299,10 @@ odboptions = [
 def odb(bot, trigger):
     bot.say(random.choice(odboptions))
 
+@sopel.module.commands('orff')
+def orff(bot, trigger):
+    bot.say("O Fortuna velut luna statu variabilis, semper crescis aut decrescis; vita detestabilis nunc obdurat et tunc curat ludo mentis aciem, egestatem, potestatem dissolvit ut glaciem.")
+
 @sopel.module.commands('pamp')
 def pamp(bot, trigger):
     bot.say("Pamp o clock yet?")
@@ -301,6 +327,10 @@ def pony(bot, trigger):
 @sopel.module.commands('primer')
 def primer(bot, trigger):
     bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
+   
+@sopel.module.commands('pubg')
+def pubg(bot, trigger):
+    bot.say("https://i.redd.it/o6o5gqmetacz.jpg")
    
 confirmoptions = [
 "I can confirm that it is true",
@@ -424,13 +454,9 @@ def trivia(bot, trigger):
         bot.say("No trivia for you!")
 
 
-reddit=praw.Reddit(client_id=client_id, 
-                   client_secret=client_secret, 
-                   user_agent='monerobux',
-                   username=username,
-                   password=password)
 @sopel.module.commands('tinytrump')
 def tinytrump(bot, trigger):
+    reddit = praw.Reddit(client_id=client.client_id, client_secret=client.client_secret, user_agent='asdfasdfasdfjhwrgth', username=client.username, password=client.password)
     try:
         sub=reddit.subreddit('tinytrump')
         posts=sub.new(limit=100)
@@ -474,6 +500,10 @@ urmomoptions = [
 def urmom(bot, trigger):
     bot.say(random.choice(urmomoptions))
 
+@sopel.module.commands('verge', 'xvg', 'wraith')
+def verge(bot, trigger):
+    bot.say(u"👻🐕 Don't wraith my dark doge bro! 👻🐕".encode('utf8'))
+    
 vitalikoptions = [
 "https://pbs.twimg.com/media/CrWjczJXgAExF2S.jpg",
 "mETH, not even once: https://cdn-az.allevents.in/banners/e7df519e0808bac49fa3aaf503aff87d",
@@ -484,13 +514,12 @@ vitalikoptions = [
 def vitalik(bot, trigger):
     bot.say(random.choice(vitalikoptions))
 
-
 @sopel.module.commands('wat')
 def wat(bot, trigger):
     bot.say("https://www.destroyallsoftware.com/talks/wat")
     
 @sopel.module.commands('yoda')
-def wat(bot, trigger):
+def yoda(bot, trigger):
     bot.say("The optimism is strong in this one")
     
 @sopel.module.commands('xrp')
@@ -516,6 +545,10 @@ def wave(bot, trigger):
 #@sopel.module.rule('[Tt]rump')
 #def politics(bot, trigger):
 #    bot.reply("politics is the mind killer")
+
+@sopel.module.rule('.*1Dj34exPs3S9qAV1aiGAAADzbashsSVKVP*.')
+def scamdouble(bot, trigger):
+    bot.say("{} is a scammer and bitcoin is a scam".format(trigger.nick))
     
 @sopel.module.commands('asp')
 def asp(bot, trigger):

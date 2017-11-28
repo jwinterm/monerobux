@@ -2,7 +2,7 @@ import sopel.module
 import requests
 import re
 
-networkurl = "http://api.minexmr.com:8080/stats"
+networkurl = "http://node.xmrbackb.one:18081/getinfo"
 
 @sopel.module.commands('fork', 'forkening')
 def fork(bot, trigger):
@@ -12,7 +12,7 @@ def fork(bot, trigger):
   except Exception,e:
     pass
   try:
-    height=j["network"]["height"]
+    height=j["height"]
     forkheight=1400000
     if forkheight > height:
       bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
@@ -29,8 +29,8 @@ def network(bot, trigger):
   except Exception,e:
     pass
   try:
-    height=j["network"]["height"]
-    diff=j["network"]["difficulty"]
+    height=j["height"]
+    diff=j["difficulty"]
     hashrate=float(diff)/120
     bot.say("The current block height is {0:,}. Difficulty is {1:,}. Hashrate is {2:.2f} Mh/s.".format(height,diff,hashrate/1e6))
   except:
@@ -62,3 +62,20 @@ def blocksize(bot, trigger):
     bot.say("Median blocksize over last 200 blocks is {0} bytes".format(size.group(1)))
   except:
     bot.say("Bomething sorked 0_0")
+
+@sopel.module.commands('mine')
+def mine(bot, trigger):
+  try: 
+    r=requests.get('https://supportxmr.com/api/network/stats')
+    j=r.json()
+    diff=float(j['difficulty'])
+    value=float(j['value'])/1e12
+    hashrate=float(trigger.group(2))
+    xmrperday=(hashrate/(diff/120))*720*value
+    bot.say("At {:.0f} h/s with network diff of {:.2e} and block reward {:.2f} you can expect {:.4f} XMR per day.".format(hashrate, diff, value, xmrperday))
+  except:
+    bot.say("Mining is for suckers.")
+
+@sopel.module.commands('b2x')
+def b2x(bot, trigger):
+  bot.say("Fuck off \\x")
