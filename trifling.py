@@ -83,7 +83,7 @@ def dash(bot, trigger):
 def dealwithit(bot, trigger):
     bot.say(u'(•_•)   ( •_•)>⌐■-■    (⌐■_■)'.encode('utf8'))
     
-@sopel.module.commands('Deathtobitcoin', 'Deathtobitcoin2', 'deathtobitcoin', 'deathtobitcoin2')
+@sopel.module.commands('Deathtobitcoin', 'Deathtobitcoin2')
 def deathtobitcoin2(bot, trigger):
     bot.say('Devs, moderators, whoever you fucking are, please put my money back with interest. Or make my money appear in my wallet with interest!')
 
