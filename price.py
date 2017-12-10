@@ -27,9 +27,9 @@ thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in
 thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
 
 
-@sopel.module.commands('bcc', 'bitcointrash')
-def bcc(bot, trigger):
-    url = 'https://api.coinmarketcap.com/v1/ticker/?bcc'
+@sopel.module.commands('bch', 'bitcointrash')
+def bch(bot, trigger):
+    url = 'https://api.coinmarketcap.com/v1/ticker/?bch'
     try:
         r = requests.get(url)
         j = r.json()
