@@ -3,7 +3,6 @@ import sopel.module
 import requests
 import time
 import random
-import math
 # from apikey import commodity_key
 
 polourl = "https://poloniex.com/public?command=returnTicker"
