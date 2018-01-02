@@ -3,6 +3,7 @@ import sopel.module
 import requests
 import time
 import random
+import math
 # from apikey import commodity_key
 
 polourl = "https://poloniex.com/public?command=returnTicker"
@@ -362,20 +363,20 @@ def cmc(bot, trigger):
         bot.say("Error parsing ticker")
 
 @sopel.module.commands('top')
-def cmc(bot, trigger):
+def top(bot, trigger):
     if not trigger.group(2):
-        bot.say("You want to see the CMC top... how many?  Pick a number 1 through 20")
+        bot.say("You want to see the CMC top... how many?  Pick a number 1 through 10")
     else:
 		if type(trigger.group(2)) in (float, int):
 			limit = float(trigger.group(2))
 			mylist = range(1,limit + 1)
-			if limit > 20:
-				bot.say("Too high!  Max is 20!")
+			if limit > 10:
+				bot.say("Too high!  Max is 10!")
 			else if limit < 1:
 				bot.say("Dude...")
 			else:
 				try:
-					r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
+					r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=50')
 					j = r.json()
 				except:
 					bot.say("Can't connect to API")
@@ -391,12 +392,18 @@ def cmc(bot, trigger):
 						rank = coin['rank']
 						price_usd = float(coin['price_usd'])
 						price_btc = float(coin['price_btc'])
-						topXstring += "{0}. ({1}) - {2}: Last price ${3:.2f} / ฿{4:.6f} | ".format(rank, symbol, name, price_usd, price_btc)
+						market_cap_usd = float(coin['market_cap_usd'])
+						if market_cap_usd >= 1000000000:
+							market_cap_short = int(round(market_cap_usd,-9)/1000000000
+							rounded_mcap = str(market_cap_short)+"B"
+						else:
+							rounded_mcap = "tiny"
+						topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
 					bot.say(topXstring) 
 				except:
 					bot.say("Error parsing ticker, or maybe double check the code")
 		else:
-			bot.say("The use is 'top' and then a digit 1 - 20")
+			bot.say("The use is 'top' and then a digit 1 - 10")
 
 @sopel.module.commands('okc', 'okcoin')
 def okc(bot, trigger):
