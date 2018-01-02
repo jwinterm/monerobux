@@ -361,6 +361,43 @@ def cmc(bot, trigger):
     except:
         bot.say("Error parsing ticker")
 
+@sopel.module.commands('top')
+def cmc(bot, trigger):
+    if not trigger.group(2):
+        bot.say("You want to see the CMC top... how many?  Pick a number 1 through 20")
+    else:
+		if type(trigger.group(2)) in (float, int):
+			limit = float(trigger.group(2))
+			mylist = range(1,limit + 1)
+			if limit > 20:
+				bot.say("Too high!  Max is 20!")
+			else if limit < 1:
+				bot.say("Dude...")
+			else:
+				try:
+					r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
+					j = r.json()
+				except:
+					bot.say("Can't connect to API")
+				try:
+					for therank in mylist:
+						for i in j:
+							try:
+								if i['rank'] == str(therank):
+									coin = i
+							except: pass
+						symbol = coin['symbol']    
+						name = coin['name']
+						rank = coin['rank']
+						price_usd = float(coin['price_usd'])
+						price_btc = float(coin['price_btc'])
+						topXstring += "{0}. ({1}) - {2}: Last price ${3:.2f} / ฿{4:.6f} | ".format(rank, symbol, name, price_usd, price_btc)
+					bot.say(topXstring) 
+				except:
+					bot.say("Error parsing ticker, or maybe double check the code")
+		else:
+			bot.say("The use is 'top' and then a digit 1 - 20")
+
 @sopel.module.commands('okc', 'okcoin')
 def okc(bot, trigger):
     try:
