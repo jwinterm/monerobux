@@ -11,6 +11,12 @@ from threading import Timer
 def fourmatter(bot, trigger):
     bot.say('Irish I be fookin <3 Milo')
 
+@sopel.module.commands('allah')
+def allah(bot, trigger):
+    bot.say('allah is doing')
+    bot.say('sun is not doing allah is doing')
+    bot.say('to accept Islam say that i bear witness that there is no deity worthy of worship except Allah and Muhammad peace be upon him is his slave and messenger')
+
 @sopel.module.commands('aminorex')
 def aminorex(bot, trigger):
     bot.say('if i could replace my wife with a robot...  i might seriously think about it')

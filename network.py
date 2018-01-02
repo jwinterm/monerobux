@@ -76,6 +76,18 @@ def mine(bot, trigger):
   except:
     bot.say("Mining is for suckers.")
 
+@sopel.module.commands('solo')
+def solo(bot, trigger):
+  try: 
+    r=requests.get('https://supportxmr.com/api/network/stats')
+    j=r.json()
+    diff=float(j['difficulty'])
+    hashrate=float(trigger.group(2))
+    timetoblock=(diff/hashrate)
+    bot.say("At {:.0f} h/s with network diff of {:.2e} your expected time for find a block is {:.2e} s or {:.2f} days.".format(hashrate, diff, timetoblock, timetoblock/(60*60*24)))
+  except:
+    bot.say("Mining is for suckers.")
+
 @sopel.module.commands('b2x')
 def b2x(bot, trigger):
   bot.say("Fuck off \\x")

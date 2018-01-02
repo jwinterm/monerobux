@@ -26,26 +26,22 @@ bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
 thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in KRW
 thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
 
-
-@sopel.module.commands('bch', 'bitcointrash')
-def bch(bot, trigger):
+@sopel.module.commands('forksum')
+def forksum(bot, trigger):
     url = 'https://api.coinmarketcap.com/v1/ticker/?bch'
     try:
         r = requests.get(url)
         j = r.json()
         for i in j:
             try:
+                if i['id'] == 'bitcoin':
+                    btcprice = float(i['price_usd'])
                 if i['id'] == 'bitcoin-cash':
-                    coin = i
+                    bcashprice = float(i['price_usd'])
+                if i['id'] == 'bitcoin-gold':
+                    bgoldprice = float(i['price_usd'])
             except: pass
-        symbol = coin['symbol']    
-        name = coin['name']
-        rank = coin['rank']
-        price_usd = float(coin['price_usd'])
-        price_btc = float(coin['price_btc'])
-        volume_usd = float(coin['24h_volume_usd'])
-        percent_change_24h = float(coin['percent_change_24h'])
-        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h)) 
+        bot.say("The sum of USD price of BTC, BCH, and BTG is ${:.2f}".format(btcprice+bcashprice+bgoldprice)) 
     except:
         bot.say("Error parsing ticker")
     
@@ -475,10 +471,12 @@ def tall(bot, trigger):
     try: 
         gdaxresult = requests.get(gdaxurl)
         gdaxjson = gdaxresult.json()
+        gdaxprice = float(gdaxjson['price'])
+        gdaxvolume = float(gdaxjson['volume'])
     except:
 	gdaxjson = False
     if gdaxjson:
-        stringtosend += "GDAX price: {0:,.2f}, vol: {1:,.1f} | ".format(float(gdaxjson['price']), float(gdaxjson['volume']))
+        stringtosend += "GDAX price: {0:,.2f}, vol: {1:,.1f} | ".format(gdaxprice, gdaxvolume)
     # Bitfinex
     try: 
         finexresult = requests.get(finexurl)
@@ -525,7 +523,7 @@ def tall(bot, trigger):
     bot.say(stringtosend)
 	
 
-@sopel.module.commands('xmrtall')
+@sopel.module.commands('xmrtall', 'xmr')
 def xmrtall(bot, trigger):
     stringtosend = ''
 
@@ -882,7 +880,7 @@ def log(bot, trigger):
 @sopel.module.commands('price')
 def price(bot, trigger):
     try:
-        bot.say("1 XMR = $1,000 USD (Offer valid in participating locations)")
+        bot.say("1 XMR = $12,345 USD (Offer valid in participating locations)")
     except:
         bot.say("C-cex sucks")
 
@@ -909,4 +907,36 @@ def commodity(bot, trigger):
         bot.say("Last price on {0} was ${1:.3f} per {2}.".format(commodity, last, unit))
     except:
         bot.say("Monerobux fails again...")
+
+@sopel.module.commands('xmy')
+def xmy(bot, trigger):
+    try:
+        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
+        j = r.json()
+    except:
+        bot.say("Can't connect to API")
+    symbol = 'XMY'
+    try:
+        for i in j:
+            try:
+                if i['symbol'] == symbol:
+                    coin = i
+            except: pass
+            try:
+                if i['rank'] == str(rank):
+                    coin = i
+            except: pass
+        symbol = coin['symbol']    
+        name = coin['name']
+        rank = coin['rank']
+        price_usd = float(coin['price_usd'])
+        price_btc = float(coin['price_btc'])
+        volume_usd = float(coin['24h_volume_usd'])
+        market_cap_usd = float(coin['market_cap_usd'])
+        available_supply = float(coin['available_supply'])
+        total_supply = float(coin['total_supply'])
+        percent_change_24h = float(coin['percent_change_24h'])
+        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply)) 
+    except:
+        bot.say("Error parsing ticker")
 
