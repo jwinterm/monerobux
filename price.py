@@ -360,12 +360,12 @@ def cmc(bot, trigger):
 @sopel.module.commands('top')
 def top(bot, trigger):
     if not trigger.group(2):
-        bot.say("You want to see the CMC top... how many?  Pick a number 1 through 10")
+        bot.say("You want to see the CMC top... how many?  Pick a number 1 through 20")
     else:
         try:
             limit = int(trigger.group(2))
-            if limit > 10:
-                bot.say("Too high!  Max is 10!")
+            if limit > 20:
+                bot.say("Too high!  Max is 20!")
             elif limit < 1:
                 bot.say("Dude...")
             else:
@@ -390,7 +390,7 @@ def top(bot, trigger):
                     topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
                 bot.say(topXstring) 
         except:
-	    bot.say("The use is 'top' and then a digit 1 - 10")
+	    bot.say("The use is 'top' and then a digit 1 - 20")
 
 @sopel.module.commands('okc', 'okcoin')
 def okc(bot, trigger):
