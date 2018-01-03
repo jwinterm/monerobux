@@ -319,7 +319,7 @@ def cryptopia(bot, trigger):
 @sopel.module.commands('cmc', 'coinmarketcap')
 def cmc(bot, trigger):
     try:
-        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
+        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=1000')
         j = r.json()
     except:
         bot.say("Can't connect to API")
@@ -329,7 +329,7 @@ def cmc(bot, trigger):
         if trigger.group(2).isdigit():
             rank = trigger.group(2)
         elif trigger.group(2) == 'random':
-            rank = random.randint(1,500)
+            rank = random.randint(1,1000)
         else:
             symbol = trigger.group(2)
             symbol = symbol.upper()
@@ -363,7 +363,7 @@ def top(bot, trigger):
         bot.say("You want to see the CMC top... how many?  Pick a number 1 through 10")
     else:
 		if type(trigger.group(2)) in (float, int):
-			limit = float(trigger.group(2))
+			limit = int(trigger.group(2))
 			mylist = range(1,limit + 1)
 			if limit > 10:
 				bot.say("Too high!  Max is 10!")
