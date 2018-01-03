@@ -367,7 +367,7 @@ def top(bot, trigger):
 			mylist = range(1,limit + 1)
 			if limit > 10:
 				bot.say("Too high!  Max is 10!")
-			else if limit < 1:
+			elif limit < 1:
 				bot.say("Dude...")
 			else:
 				try:
@@ -389,7 +389,7 @@ def top(bot, trigger):
 						price_btc = float(coin['price_btc'])
 						market_cap_usd = float(coin['market_cap_usd'])
 						if market_cap_usd >= 1000000000:
-							market_cap_short = int(round(market_cap_usd,-9)/1000000000
+							market_cap_short = int(int(round(market_cap_usd,-9))/int(1000000000))
 							rounded_mcap = str(market_cap_short)+"B"
 						else:
 							rounded_mcap = "tiny"
