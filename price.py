@@ -386,7 +386,10 @@ def top(bot, trigger):
                     price_btc = float(i['price_btc'])
                     market_cap_usd = float(i['market_cap_usd'])
                     if market_cap_usd >= 1000000000:
-                    	market_cap_short = int(int(round(market_cap_usd,-9))/int(1000000000))
+			if market_cap_usd >= 100000000000:
+                    	    market_cap_short = int(int(round(market_cap_usd,-9))/int(1000000000))
+			else:
+			    market_cap_short = float(int(round(market_cap_usd,-8))/int(1000000000))
                     	rounded_mcap = str(market_cap_short)+"B"
                     else:
                     	rounded_mcap = "tiny"
