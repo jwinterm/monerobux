@@ -318,6 +318,9 @@ def cryptopia(bot, trigger):
 
 @sopel.module.commands('cmc', 'coinmarketcap')
 def cmc(bot, trigger):
+    if trigger.group(2).lower() == 'trx':
+        bot.say("Fuck off with your scams scammer")
+        return
     try:
         r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=1000')
         j = r.json()
