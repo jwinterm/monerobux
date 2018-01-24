@@ -101,31 +101,10 @@ def krak(bot, trigger):
 	    stringtosay += "{0} at {1:.8f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
 	except:
             bot.say("Error connecting to Kraken")
-#        if len(coin) > 5 or len(coin) < 2:
-#            bot.say("Coin ticker is too long or short")
-#        elif coin == "PIVX":
-#            bot.say("Masternodes + PoS...what could possibly go wrong?")
-#        else:
 	try:
             bot.say(stringtosay)
         except:
             bot.say("Error getting data")
-	
-#   THIS WAS COPIED FROM THE POLO FUNCTION, AND IS UNUSED, AT LEAST FOR NOW
-#            label="BTC_" + coin
-#            try:
-#                ticker=j[label]
-#                last=float(ticker['last'])
-#                change=float(ticker['percentChange'])
-#                vol=float(ticker['baseVolume'])
-#                if change >= 0: 
-#                    sign = '+'
-#                else:
-#                    sign = ''
-#                bot.say("{0} at {1:.8f} BTC; {2}{3:.2f}% over 24 hours on {4:.3f} BTC volume".format(coin, last, sign, change*100, vol))
-#            except:
-#                bot.say("ERROR!")
-	
 
 @sopel.module.commands('usdt')
 def usdt(bot, trigger):
@@ -631,27 +610,6 @@ def xmrtall(bot, trigger):
         last=float(xmr['last'])
 #       change=float(xmr['percentChange'])	
         vol=float(xmr['baseVolume'])		
-# '''remove?
-#         if change >= 0: 			
-#             sign = '+'				
-#         else:					
-#             sign = ''				
-#         face = ''
-#         if change > 0.10:
-#             face = u'\u263d'.encode('utf8')
-#         if 0.10 >= change > 0.05:
-#             face = u'\u2661'.encode('utf8')
-#         if 0.05 >= change > 0.02:
-#             face = u'\u263a'.encode('utf8')
-#         if 0.02 >= change > -0.02:
-#             face = u'\u2694'.encode('utf8')
-#         if -0.02 >= change > -0.05:
-#             face = u'\u2639'.encode('utf8')
-#         if -0.05 >= change > -0.1:
-#             face = u'\u2620'.encode('utf8')
-#         if change < -0.1: 
-#             face = u'\u262d'.encode('utf8')
-# '''
     	stringtosend += "Poloniex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
     except:
         bot.say("Something borked ¯\(º_o)/¯") 
