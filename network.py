@@ -2,7 +2,8 @@ import sopel.module
 import requests
 import re
 
-networkurl = "http://node.xmrbackb.one:18081/getinfo"
+# networkurl = "http://node.xmrbackb.one:18081/getinfo"
+networkurl = "http://opennode.minemonero.pro:18081/getinfo"
 
 @sopel.module.commands('fork', 'forkening')
 def fork(bot, trigger):
@@ -48,7 +49,7 @@ def btcmempool(bot, trigger):
 def mempool(bot, trigger):
   try:
     # r=requests.get('http://node.moneroworld.com:18081/getinfo')
-    r=requests.get('http://node.xmrbackb.one:18081/getinfo')
+    r=requests.get(networkurl)
     j=r.json()
     bot.say("The current number of txs in Monero's mempool is {0}".format(j['tx_pool_size']))
   except:

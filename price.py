@@ -25,6 +25,7 @@ krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
 thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in KRW
 thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
+binanceurl = 'https://api.binance.com/api/v1/ticker/24hr'
 
 @sopel.module.commands('forksum')
 def forksum(bot, trigger):
@@ -286,6 +287,36 @@ def bsq(bot, trigger):
     except:
         bot.say("Error retrieving data from Bitsquare")
 
+@sopel.module.commands('binance')
+def binance(bot, trigger):
+    try:
+        if not trigger.group(2):
+             coin = 'XMR'
+             pair = 'BTC'
+        else: 
+            coin = trigger.group(2).split(' ')[0].upper()
+            try:
+                if len(trigger.group(2).split(' ')[1]) > 1:
+                    pair = trigger.group(2).split(' ')[1].upper()
+                else:
+                    pair = "BTC"
+            except:
+                pair = "BTC"
+        r = requests.get(binanceurl)
+        j = r.json()
+        found = False
+        for i in j:
+            if i["symbol"] == coin+pair:
+                last=float(i['lastPrice'])
+                change=float(i['priceChangePercent'])
+                vol=float(i['volume'])
+                bot.say("{0} on Binance at {1:.8f} {2}; {3:.2f}% over 24 hours on {4:.3f} {2} volume".format(coin, last, pair, change, vol*last))
+                found = True
+        if found == False:
+            bot.say("Too scammy even for Binance")
+    except:
+        bot.say("Error retrieving data from Binance")
+
 @sopel.module.commands('cryptopia', 'shitopia', 'topia', 'ctop')
 def cryptopia(bot, trigger):
     try:
@@ -318,9 +349,12 @@ def cryptopia(bot, trigger):
 
 @sopel.module.commands('cmc', 'coinmarketcap')
 def cmc(bot, trigger):
-    if trigger.group(2).lower() == 'trx':
-        bot.say("Fuck off with your scams scammer")
-        return
+    # try:
+    #     if trigger.group(2).lower() == 'trx':
+    #         bot.say("Fuck off with your scams scammer")
+    #         return
+    # except: 
+    #     pass
     try:
         r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=1000')
         j = r.json()
@@ -385,16 +419,16 @@ def top(bot, trigger):
                     price_usd = float(i['price_usd'])
                     price_btc = float(i['price_btc'])
                     market_cap_usd = float(i['market_cap_usd'])
-                    if market_cap_usd >= 1000000000:
-			if market_cap_usd >= 100000000000:
-                    	    market_cap_short = int(int(round(market_cap_usd,-9))/int(1000000000))
+                    if market_cap_usd >= 1e9:
+			if market_cap_usd >= 1e10:
+                    	    market_cap_short = int(int(round(market_cap_usd,-9))/int(1e9))
 			else:
-			    market_cap_short = float(int(round(market_cap_usd,-8))/int(1000000000))
+			    market_cap_short = float(round(market_cap_usd,-8)/1e9)
                     	rounded_mcap = str(market_cap_short)+"B"
                     else:
                     	rounded_mcap = "tiny"
                     topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
-                bot.say(topXstring) 
+                bot.say(topXstring[:-2]) 
         except:
 	    bot.say("The use is 'top' and then a digit 1 - 20")
 
@@ -545,13 +579,13 @@ def tall(bot, trigger):
     # if btccjson:
     #     stringtosend += "BTCC last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btccjson['ticker']['last'])/usdcny, float(btccjson['ticker']['vol']))
     # Huobi
-    try: 
-        huobiresult = requests.get(huobiurl)
-        huobijson = huobiresult.json()
-    except:
-	huobijson = False
-    if huobijson:
-        stringtosend += "Huobi last: {0:,.2f}, vol: {1:,.1f} | ".format(float(huobijson['ticker']['last'])/usdcny, float(huobijson['ticker']['vol']))
+    # try: 
+    #     huobiresult = requests.get(huobiurl)
+    #     huobijson = huobiresult.json()
+    # except:
+    #     huobijson = False
+    # if huobijson:
+    #     stringtosend += "Huobi last: {0:,.2f}, vol: {1:,.1f} | ".format(float(huobijson['ticker']['last'])/usdcny, float(huobijson['ticker']['vol']))
     # Bitflyer
     try: 
         bitflyerresult = requests.get(bitflyerurl)
@@ -561,7 +595,7 @@ def tall(bot, trigger):
     if bitflyerjson:
         stringtosend += "Bitflyer last: {0:,.2f}, vol: {1:,.1f} | ".format(float(bitflyerjson['ltp'])/usdjpy, float(bitflyerjson['volume_by_product']))
     # Send the tickers to IRC
-    bot.say(stringtosend)
+    bot.say(stringtosend[:-2])
 	
 
 @sopel.module.commands('xmrtall', 'xmr')
@@ -686,7 +720,7 @@ def xmrtall(bot, trigger):
     except:
         bot.say("Something borked ( ︶︿︶)_╭∩╮")
     #Finally... print to IRC
-    bot.say(stringtosend)
+    bot.say(stringtosend[:-2])
 
 
 @sopel.module.commands('usd')
