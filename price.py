@@ -375,51 +375,46 @@ def cmc(bot, trigger):
 
 @sopel.module.commands('top')
 def top(bot, trigger):
-    if not trigger.group(2):
-        bot.say("You want to see the CMC top... how many?  Pick a number 1 through 20")
-    else:
+    topXstring = ""
+    try:
         try:
+        	r = requests.get('https://api.coinmarketcap.com/v1/global/')
+        	j = r.json()
+        	usd_total_mkt_cap = float(j['total_market_cap_usd'])
+        	total_mcap_short = int(int(round(usd_total_mkt_cap,-9))/int(1e9))
+        	rounded_total_mcap = str(total_mcap_short)+"B"
+        	topXstring += "Total market cap $" + rounded_total_mcap + " | "
+        except:
+        	bot.say("Can't connect to coinmarketcap API")
+        if not trigger.group(2):
+            limit = 20
+        else:
             limit = int(trigger.group(2))
             if limit > 20:
                 bot.say("Too high!  Max is 20!")
             elif limit < 1:
                 bot.say("Dude...")
+    	r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit={}'.format(limit))
+    	j = r.json()
+        for i in j:
+            symbol = i['symbol']    
+            name = i['name']
+            rank = i['rank']
+            price_usd = float(i['price_usd'])
+            price_btc = float(i['price_btc'])
+            market_cap_usd = float(i['market_cap_usd'])
+            if market_cap_usd >= 1e9:
+    	        if market_cap_usd >= 1e10:
+                    market_cap_short = int(int(round(market_cap_usd,-9))/int(1e9))
+    	        else:
+    	            market_cap_short = float(round(market_cap_usd,-8)/1e9)
+               	rounded_mcap = str(market_cap_short)+"B"
             else:
-				topXstring = ""
-				try:
-					r = requests.get('https://api.coinmarketcap.com/v1/global/')
-					j = r.json()
-					usd_total_mkt_cap = float(j[0]['total_market_cap_usd'])
-					total_mcap_short = int(int(round(usd_total_mkt_cap,-9))/int(1e9)
-					rounded_total_mcap = str(total_mcap_short)+"B"
-					topXstring += "Total market cap $" + rounded_total_mcap + " | "
-				except:
-					bot.say("Can't connect to coinmarketcap API")
-                try:
-                    r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit={}'.format(limit))
-                    j = r.json()
-                except:
-                    bot.say("Can't connect to API")
-                
-                for i in j:
-                    symbol = i['symbol']    
-                    name = i['name']
-                    rank = i['rank']
-                    price_usd = float(i['price_usd'])
-                    price_btc = float(i['price_btc'])
-                    market_cap_usd = float(i['market_cap_usd'])
-                    if market_cap_usd >= 1e9:
-			if market_cap_usd >= 1e10:
-                    	    market_cap_short = int(int(round(market_cap_usd,-9))/int(1e9))
-			else:
-			    market_cap_short = float(round(market_cap_usd,-8)/1e9)
-                    	rounded_mcap = str(market_cap_short)+"B"
-                    else:
-                    	rounded_mcap = "tiny"
-                    topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
-                bot.say(topXstring[:-2]) 
-        except:
-	    bot.say("The use is 'top' and then a digit 1 - 20")
+            	rounded_mcap = "tiny"
+            topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
+        bot.say(topXstring[:-2]) 
+    except:
+        bot.say("The use is 'top' and then a digit 1 - 20")
 
 @sopel.module.commands('okc', 'okcoin')
 def okc(bot, trigger):
@@ -640,14 +635,13 @@ def xmrtall(bot, trigger):
     except:
         bot.say("Something borked ¤\( `⌂´ )/¤")
 	
-	# Binance
-	
-	try:
+    # Binance
+    try:
         r = requests.get(binanceurl)
         j = r.json()
         found = False
         for i in j:
-            if i["symbol"] == XMR+BTC:
+            if i["symbol"] == "XMRBTC":
                 last=float(i['lastPrice'])
                 vol=float(i['volume'])
                 stringtosend += ("Binance last: {0:.6f} on {1:.2f} BTC volume |".format(last, vol*last))
