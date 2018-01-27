@@ -385,12 +385,22 @@ def top(bot, trigger):
             elif limit < 1:
                 bot.say("Dude...")
             else:
+				topXstring = ""
+				try:
+					r = requests.get('https://api.coinmarketcap.com/v1/global/')
+					j = r.json()
+					usd_total_mkt_cap = float(j[0]['total_market_cap_usd'])
+					total_mcap_short = int(int(round(usd_total_mkt_cap,-9))/int(1e9)
+					rounded_total_mcap = str(total_mcap_short)+"B"
+					topXstring += "Total market cap $" + rounded_total_mcap + " | "
+				except:
+					bot.say("Can't connect to coinmarketcap API")
                 try:
                     r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit={}'.format(limit))
                     j = r.json()
                 except:
                     bot.say("Can't connect to API")
-                topXstring = ""
+                
                 for i in j:
                     symbol = i['symbol']    
                     name = i['name']
@@ -630,6 +640,21 @@ def xmrtall(bot, trigger):
     except:
         bot.say("Something borked ¤\( `⌂´ )/¤")
 	
+	# Binance
+	
+	try:
+        r = requests.get(binanceurl)
+        j = r.json()
+        found = False
+        for i in j:
+            if i["symbol"] == XMR+BTC:
+                last=float(i['lastPrice'])
+                vol=float(i['volume'])
+                stringtosend += ("Binance last: {0:.6f} on {1:.2f} BTC volume |".format(last, vol*last))
+                found = True
+    except:
+        bot.say("Borka borka ┌∩┐(◣_◢)┌∩┐")
+	
     # Trex
     geturl = trexurl+'xmr'
     try:
@@ -674,11 +699,11 @@ def xmrtall(bot, trigger):
         last=float(coin['last'])
         vol=float(coin['baseVolume'])
 #       change=float(coin['percentChange'])
-        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume.".format(last, vol)
+        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume. ".format(last, vol)
     except:
         bot.say("Something borked ( ︶︿︶)_╭∩╮")
     #Finally... print to IRC
-    bot.say(stringtosend[:-2])
+    bot.say(stringtosend[:-1])
 
 
 @sopel.module.commands('usd')
