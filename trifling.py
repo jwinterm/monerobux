@@ -216,6 +216,10 @@ def lambo(bot, trigger):
 def lenny(bot, trigger):
     bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
 
+@sopel.module.commands('lietome')
+def lietome(bot, trigger):
+    bot.say(u'https://www.youtube.com/watch?v=R5AsQbLHWbw'.encode('utf8'))    
+    
 @sopel.module.commands('livermore')
 def livermore(bot, trigger):
     bot.say(u'https://en.wikipedia.org/wiki/Reminiscences_of_a_Stock_Operator'.encode('utf8'))
