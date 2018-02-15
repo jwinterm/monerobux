@@ -674,12 +674,12 @@ def xmrtall(bot, trigger):
                 last=float(i['LastPrice'])
 #               change=float(i['Change'])
                 vol=float(i['Volume'])
-                stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
+#                stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
                 found = True
-        if found == False:
-            bot.say("WTF?!?")
-    except:
-        bot.say("Something borked （ -.-）ノ-=≡≡卍")
+#        if found == False:
+#            bot.say("WTF?!?")
+#    except:
+#        bot.say("Something borked （ -.-）ノ-=≡≡卍")
 	
     # Tux
     try:
@@ -693,9 +693,9 @@ def xmrtall(bot, trigger):
         last=float(coin['last'])
         vol=float(coin['baseVolume'])
 #       change=float(coin['percentChange'])
-        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume. ".format(last, vol)
-    except:
-        bot.say("Something borked ( ︶︿︶)_╭∩╮")
+#        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume. ".format(last, vol)
+#    except:
+#        bot.say("Something borked ( ︶︿︶)_╭∩╮")
     #Finally... print to IRC
     bot.say(stringtosend[:-1])
 
