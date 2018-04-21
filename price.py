@@ -3,6 +3,7 @@ import sopel.module
 import requests
 import time
 import random
+import datetime
 # from apikey import commodity_key
 
 polourl = "https://poloniex.com/public?command=returnTicker"
@@ -46,6 +47,32 @@ def forksum(bot, trigger):
     except:
         bot.say("Error parsing ticker")
     
+@sopel.module.commands('ath')
+def ath(bot, trigger):
+    with open('/root/.sopel/modules/ath.log', 'r') as f:
+        text = f.read()
+    btcath = float(text.split(' ')[0])
+    btcathdate = text.split(' ')[1]
+    usdath = float(text.split(' ')[2])
+    usdathdate = text.split(' ')[3]
+    update = False
+    url = 'https://api.coinmarketcap.com/v1/ticker/monero'
+    r = requests.get(url)
+    j = r.json()
+    price_btc = float(j[0]['price_btc'])
+    price_usd = float(j[0]['price_usd'])
+    if price_btc > btcath:
+        btcath = price_btc
+        update = True
+        btcathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+    if price_usd > usdath:
+        usdath = price_usd
+        update = True
+        usdathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+    if update == True:
+        with open('/root/.sopel/modules/ath.log', 'w') as f:
+            f.write("{} {} {} {}".format(btcath, btcathdate, usdath, usdathdate))
+    bot.say("BTC ath = {} on {}. USD ath = ${} on {}".format(btcath, btcathdate, usdath, usdathdate))
 
 @sopel.module.commands('bfx', 'bitfinex')
 def bfx(bot, trigger):
@@ -335,43 +362,90 @@ def cmc(bot, trigger):
     # except: 
     #     pass
     try:
-        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=1000')
+        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=1500')
         j = r.json()
     except:
         bot.say("Can't connect to API")
     if not trigger.group(2):
-        symbol = 'XMR'
+        c1 = 'XMR'
     else:
-        if trigger.group(2).isdigit():
-            rank = trigger.group(2)
-        elif trigger.group(2) == 'random':
-            rank = random.randint(1,1000)
+        if ' ' in trigger.group(2):
+            c1 = trigger.group(2).split(' ')[0].upper()
+            c2 = trigger.group(2).split(' ')[1].upper()
         else:
-            symbol = trigger.group(2)
-            symbol = symbol.upper()
+            if trigger.group(2).isdigit():
+                rank = trigger.group(2)
+            elif trigger.group(2) == 'random':
+                rank = random.randint(1,1500)
+            else:
+                c1 = trigger.group(2).upper()
     try:
-        for i in j:
-            try:
-                if i['symbol'] == symbol:
-                    coin = i
-            except: pass
-            try:
-                if i['rank'] == str(rank):
-                    coin = i
-            except: pass
-        symbol = coin['symbol']    
-        name = coin['name']
-        rank = coin['rank']
-        price_usd = float(coin['price_usd'])
-        price_btc = float(coin['price_btc'])
-        volume_usd = float(coin['24h_volume_usd'])
-        market_cap_usd = float(coin['market_cap_usd'])
-        available_supply = float(coin['available_supply'])
-        total_supply = float(coin['total_supply'])
-        percent_change_24h = float(coin['percent_change_24h'])
-        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply)) 
+        if not 'c2' in locals():
+            for i in j:
+                try:
+                    if i['symbol'] == c1:
+                        coin = i
+                except: pass
+                try:
+                    if i['rank'] == str(rank):
+                        coin = i
+                except: pass
+            symbol = coin['symbol']    
+            name = coin['name']
+            rank = coin['rank']
+            price_usd = float(coin['price_usd'])
+            price_btc = float(coin['price_btc'])
+            volume_usd = float(coin['24h_volume_usd'])
+            market_cap_usd = float(coin['market_cap_usd'])
+            available_supply = float(coin['available_supply'])
+            total_supply = float(coin['total_supply'])
+            percent_change_24h = float(coin['percent_change_24h'])
+            bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply)) 
+        else:
+            for i in j:
+                try:
+                    if i['symbol'] == c1:
+                        coin = i
+                    if i['symbol'] == c2:
+                        c2coin = i
+                except: pass
+            symbol = coin['symbol']    
+            c2symbol = c2coin['symbol']    
+            name = coin['name']
+            rank = coin['rank']
+            price_usd = float(coin['price_usd'])
+            price_btc = float(coin['price_btc'])
+            c2price_btc = float(c2coin['price_btc'])
+            volume_usd = float(coin['24h_volume_usd'])
+            market_cap_usd = float(coin['market_cap_usd'])
+            available_supply = float(coin['available_supply'])
+            total_supply = float(coin['total_supply'])
+            percent_change_24h = float(coin['percent_change_24h'])
+            bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / {4:.8f} {1}/{5}. 24h volume ${6:,.0f}. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc/c2price_btc, c2symbol, volume_usd, market_cap_usd, available_supply, total_supply)) 
     except:
         bot.say("Error parsing ticker")
+    try: 
+        if c1 == 'XMR':
+            with open('/root/.sopel/modules/ath.log', 'r') as f:
+                text = f.read()
+            btcath = float(text.split(' ')[0])
+            btcathdate = text.split(' ')[1]
+            usdath = float(text.split(' ')[2])
+            usdathdate = text.split(' ')[3]
+            update = False
+            if price_btc > btcath:
+                btcath = price_btc
+                update = True
+                btcathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+            if price_usd > usdath:
+                usdath = price_usd
+                update = True
+                usdathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+            if update == True:
+                with open('/root/.sopel/modules/ath.log', 'w') as f:
+                    f.write("{} {} {} {}".format(btcath, btcathdate, usdath, usdathdate))
+    except:
+        pass
 
 @sopel.module.commands('top')
 def top(bot, trigger):
@@ -672,32 +746,32 @@ def xmrtall(bot, trigger):
         for i in j["Data"]:
             if i["Label"] == coin+"/"+pair:
                 last=float(i['LastPrice'])
-#               change=float(i['Change'])
+                change=float(i['Change'])
                 vol=float(i['Volume'])
-#                stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
+                stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
                 found = True
-#        if found == False:
-#            bot.say("WTF?!?")
-#    except:
-#        bot.say("Something borked （ -.-）ノ-=≡≡卍")
+        if found == False:
+            bot.say("WTF?!?")
+    except:
+        bot.say("Something borked （ -.-）ノ-=≡≡卍")
 	
     # Tux
-    try:
-        r = requests.get('https://tuxexchange.com/api?method=getticker')
-        j = r.json()
-        if not trigger.group(2):
-            ticker='XMR'
-        else:
-            ticker=trigger.group(2).upper()
-        coin=j['BTC_{}'.format(ticker)]
-        last=float(coin['last'])
-        vol=float(coin['baseVolume'])
-#       change=float(coin['percentChange'])
-#        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume. ".format(last, vol)
-#    except:
-#        bot.say("Something borked ( ︶︿︶)_╭∩╮")
+    # try:
+    #     r = requests.get('https://tuxexchange.com/api?method=getticker')
+    #     j = r.json()
+    #     if not trigger.group(2):
+    #         ticker='XMR'
+    #     else:
+    #         ticker=trigger.group(2).upper()
+    #     coin=j['BTC_{}'.format(ticker)]
+    #     last=float(coin['last'])
+    #     vol=float(coin['baseVolume'])
+    #     change=float(coin['percentChange'])
+    #      stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume. ".format(last, vol)
+    #  except:
+    #      bot.say("Something borked ( ︶︿︶)_╭∩╮")
     #Finally... print to IRC
-    bot.say(stringtosend[:-1])
+    bot.say(stringtosend[:-2])
 
 
 @sopel.module.commands('usd')

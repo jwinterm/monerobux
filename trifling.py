@@ -114,8 +114,8 @@ def ded(bot, trigger):
 
 @sopel.module.commands('donate', 'donation')
 def donate(bot, trigger):
-    bot.say('XMR: 45SkxgDmcLmW5ByS7w9AG78JuJRvCoVKCdGJWnd4US95CBUAtvdGAdM2oHgZgTGjkEAUcwdqcryM819aqdeiKxHSQC8HkmS', trigger.nick)
-    bot.say('BTC: 14X8aMUtuxH2HWLtsNAxxN7j9uqQNUdMzB', trigger.nick)
+    bot.say('XMR: 41kroikMqj9YdcXMDt7HH7LFkhBPURMXXKtwAVu8bNA8ci9BF15tYAoQsHHotUPQuAUd9ene3sUXuJHePnZq6kcBUoQk5n8', trigger.nick)
+    bot.say('BTC: 1PFjRGE61szAZqM89f73CpZT54xH98tHkC', trigger.nick)
 
 @sopel.module.commands('dump')
 def dump(bot, trigger):
@@ -229,7 +229,7 @@ def jaxx(bot, trigger):
 
 @sopel.module.commands('john_alan')
 def joshua(bot, trigger):
-    bot.say(u'I like smooth.')
+    bot.say(u'Ps the coverage blackspot I reported 37 times in 2016/2017 is STILL DOWN. If I were running Virigin Mobile I’d be so ashamed of myself.')
 
 @sopel.module.commands('jwinterm')
 def jwinterm(bot, trigger):
