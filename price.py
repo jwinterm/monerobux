@@ -285,17 +285,17 @@ def trex(bot, trigger):
 @sopel.module.commands('tradeogre', 'ogre')
 def ogre(bot, trigger):
     if not trigger.group(2):
-         pair = 'BTC-XMR'
+        pair = 'BTC-XMR'
     else:
-        coin = 'BTC-'+trigger.group(2).upper()
+        pair = 'BTC-'+trigger.group(2).upper()
     try:
         r = requests.get(ogreurl)
         j = r.json()
         for i in j:
-            if pair == i.keys():
+            if pair == i.keys()[0]:
                 last=float(i[pair]['price'])
                 vol=float(i[pair]['volume'])
-        bot.say("Tradeogre at {0:.8f} BTC; on {1:.3f} BTC volume".format(last, vol))
+        bot.say("{0} on Tradeogre at {1:.8f} BTC on {2:.3f} BTC volume".format(pair, last, vol))
     except:
         bot.say("Error retrieving data from Ogre")
 
