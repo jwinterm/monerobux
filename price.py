@@ -774,9 +774,24 @@ def price(bot, trigger):
 
 @sopel.module.commands('comm')
 def comm(bot, trigger):
-    pass
-
-
+    commurl = 'https://api.commoprices.com/v1/wrb/'
+    apitoken = '?api_token=9gdRSeoek4N0AnZHUvP0TSIR74jmyQpsjz5HuGRjfDmsCDxppYiG76GuxaF1'
+    try:
+        r = requests.get(commurl+apitoken)
+        data = r.json()['data']
+        for i in data:
+            if trigger.group(2).lower() in i['name'].lower():
+                print(i)
+                code = i['code']
+    except:
+        bot.say("Error getting data or commodity not priced")
+        break
+    try:
+        r2 = requests.get(commurl+code+'/data/'+apitoken)
+        j = r2.json()
+        bot.say("{0} last price at {1:.2f} {2} on {3}".format(j['data']['info']['name'], j['data']['request']['dataseries'][-1][1], j['data']['info']['original_price_unit']['name'], j['data']['request']['dataseries'][-1][0]))
+    except:
+        bot.say("Error parsing some shit")
 
 @sopel.module.commands('xmy')
 def xmy(bot, trigger):
