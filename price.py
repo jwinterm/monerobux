@@ -27,6 +27,7 @@ bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
 thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in KRW
 thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
 binanceurl = 'https://api.binance.com/api/v1/ticker/24hr'
+localmonerousd = 'https://localmonero.co/api/ticker?currencyCode=USD'
 
 @sopel.module.commands('forksum')
 def forksum(bot, trigger):
@@ -1069,3 +1070,16 @@ def xmy(bot, trigger):
     except:
         bot.say("Error parsing ticker")
 
+@sopel.module.commands('localmonero', 'localxmr', 'lxmr', 'lm', 'street')
+def localmonero(bot, trigger):
+    stringtosay = ''
+    try:
+        r = requests.get(localmonerousd)
+        j = r.json()
+        stringtosay += "LocalMonero XMR/USD 1h-avg: ${0:.2f}, 6h-avg: ${0:.2f}, 12h-avg: ${0:.2f}, 24h-avg: ${0:.2f}.".format(float(j['USD']['avg_1h']), float(j['USD']['avg_6h']), float(j['USD']['avg_12h']), float(j['USD']['avg_24h']))
+    except:
+        bot.say("Error getting XMR/USD data")
+    try:
+        bot.say(stringtosay)
+    except:
+        bot.say("Error getting data")
