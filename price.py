@@ -27,6 +27,7 @@ thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in
 thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
 binanceurl = 'https://api.binance.com/api/v1/ticker/24hr'
 localmonerousd = 'https://localmonero.co/api/ticker?currencyCode=USD'
+ogreurl = 'https://tradeogre.com/api/v1/markets'
 
 @sopel.module.commands('forksum')
 def forksum(bot, trigger):
@@ -280,6 +281,23 @@ def trex(bot, trigger):
         bot.say("Bittrex at {0:.8f} BTC; {1:.2f}% over 24 hours on {2:.3f} BTC volume".format(last, change*100, vol))
     except:
         bot.say("Error retrieving data from Bittrex")
+
+@sopel.module.commands('tradeogre', 'ogre')
+def ogre(bot, trigger):
+    if not trigger.group(2):
+         coin = 'XMR'
+    else:
+        coin = trigger.group(2).upper()
+    try:
+        r = requests.get(ogreurl)
+        j = r.json()
+        for i in j:
+            if "BTC-"+coin == i.key():
+                last=float(i['price'])
+                vol=float(i['volume'])
+        bot.say("Tradeogre at {0:.8f} BTC; on {1:.3f} BTC volume".format(last, vol))
+    except:
+        bot.say("Error retrieving data from Ogre")
 
 @sopel.module.commands('bsq', 'bitsquare')
 def bsq(bot, trigger):
@@ -753,6 +771,12 @@ def price(bot, trigger):
         bot.say("1 XMR = $12,345 USD (Offer valid in participating locations)")
     except:
         bot.say("C-cex sucks")
+
+@sopel.module.commands('comm')
+def comm(bot, trigger):
+    pass
+
+
 
 @sopel.module.commands('xmy')
 def xmy(bot, trigger):
