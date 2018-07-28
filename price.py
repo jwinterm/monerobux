@@ -788,14 +788,10 @@ def xmy(bot, trigger):
 
 @sopel.module.commands('localmonero', 'localxmr', 'lxmr', 'lm', 'street')
 def localmonero(bot, trigger):
-    stringtosay = ''
     try:
         r = requests.get(localmonerousd)
         j = r.json()
-        stringtosay += "LocalMonero XMR/USD 1h-avg: ${0:.2f}, 6h-avg: ${0:.2f}, 12h-avg: ${0:.2f}, 24h-avg: ${0:.2f}.".format(float(j['USD']['avg_1h']), float(j['USD']['avg_6h']), float(j['USD']['avg_12h']), float(j['USD']['avg_24h']))
-    except:
-        bot.say("Error getting XMR/USD data")
-    try:
+        stringtosay = "LocalMonero XMR/USD 12h-avg: ${0:.2f}, 24h-avg: ${0:.2f}.".format(float(j['USD']['avg_12h']), float(j['USD']['avg_24h']))
         bot.say(stringtosay)
     except:
         bot.say("Error getting data")
