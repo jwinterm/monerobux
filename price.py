@@ -616,8 +616,11 @@ def tall(bot, trigger):
         finexjson = finexresult.json()
     except:
 	finexjson = False
-    if finexjson:
-        stringtosend += "Bitfinex last: {0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
+    try:
+        if finexjson:
+            stringtosend += "Bitfinex last: {0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
+    except:
+        stringtosend += "Finex sucks | "
     # Bitthumb
     try: 
         thumbresult = requests.get(thumbbtcurl)

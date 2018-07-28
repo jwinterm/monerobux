@@ -2,8 +2,10 @@ import sopel.module
 import requests
 import re
 
+# networkurl = "http://node.marty.cf:18019/getinfo"
 # networkurl = "http://node.xmrbackb.one:18081/getinfo"
-networkurl = "http://opennode.minemonero.pro:18081/getinfo"
+# networkurl = "http://opennode.minemonero.pro:18081/getinfo"
+networkurl = "http://node.xmr.pt:18081/getinfo"
 
 @sopel.module.commands('fork', 'forkening')
 def fork(bot, trigger):
