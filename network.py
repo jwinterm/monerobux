@@ -16,7 +16,7 @@ def fork(bot, trigger):
     pass
   try:
     height=j["height"]
-    forkheight=1685555
+    forkheight=1686275
     if forkheight > height:
       bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
     else:
