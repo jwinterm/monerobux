@@ -602,7 +602,19 @@ def tall(bot, trigger):
     except:
 	gdaxjson = False
     if gdaxjson:
-        stringtosend += "GDAX last: ${0:,.2f}, vol: {1:,.1f} | ".format(gdaxprice, gdaxvolume)
+        stringtosend += "CBP last: ${0:,.2f}, vol: {1:,.1f} | ".format(gdaxprice, gdaxvolume)
+    # Binance
+    try:
+        binanceresult = requests.get(binanceurl)
+        binancejson = binanceresult.json()
+        for i in binancejson:
+            if i["symbol"] == "BTCUSDT":
+                binanceprice = float(i['lastPrice'])
+                binancevolume = float(i['volume'])
+    except:
+	binancejson = False
+    if binancejson:
+        stringtosend += "Binance last: ${0:,.2f}, vol: {1:,.1f} | ".format(binanceprice, binancevolume)
     # Bitfinex
     try:
         finexresult = requests.get(finexurl)
@@ -785,7 +797,7 @@ def comm(bot, trigger):
                 code = i['code']
     except:
         bot.say("Error getting data or commodity not priced")
-        break
+        return
     try:
         r2 = requests.get(commurl+code+'/data/'+apitoken)
         j = r2.json()
