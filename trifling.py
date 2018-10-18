@@ -11,11 +11,15 @@ from threading import Timer
 def fourmatter(bot, trigger):
     bot.say('Irish I be fookin <3 Milo')
 
-@sopel.module.commands('allah')
-def allah(bot, trigger):
-    bot.say('allah is doing')
-    bot.say('sun is not doing allah is doing')
-    bot.say('to accept Islam say that i bear witness that there is no deity worthy of worship except Allah and Muhammad peace be upon him is his slave and messenger')
+# @sopel.module.commands('allah')
+# def allah(bot, trigger):
+#     bot.say('allah is doing')
+#     bot.say('sun is not doing allah is doing')
+#     bot.say('to accept Islam say that i bear witness that there is no deity worthy of worship except Allah and Muhammad peace be upon him is his slave and messenger')
+
+@sopel.module.commands('ada', 'hoskinson')
+def ada(bot, trigger):
+    bot.say('DO YOU KNOW WHO I AM?')
 
 @sopel.module.commands('aminorex')
 def aminorex(bot, trigger):
@@ -48,6 +52,10 @@ def bear(bot, trigger):
 @sopel.module.commands('brothers')
 def brothers(bot, trigger):
     bot.say(u'http://www.trollaxor.com/2011/11/brief-history-of-ascii-penis.html'.encode('utf8'))
+
+@sopel.module.commands('bp', 'bps', 'bulletproof', 'bulletproofs')
+def bulletproofs(bot, trigger):
+    bot.say(u'https://www.youtube.com/watch?v=Kk8eJh4i8Lo'.encode('utf8'))
 
 @sopel.module.commands('buyorsell')
 def buyorsell(bot, trigger):
@@ -279,6 +287,10 @@ def major(bot, trigger):
 def masternode(bot, trigger):
     bot.say('http://hadoopilluminated.com/hadoop_illuminated/images/hdfs3.jpg')
 
+@sopel.module.commands('monerov', 'v')
+def monerov(bot, trigger):
+    bot.say(u"🔒🔒🔒 MoneroV is more secured than others. That's why it is better invest on moneroV. 💰💰💰".encode('utf8'))
+
 @sopel.module.commands('moon')
 def moon(bot, trigger):
     bot.say(u'┗(°0°)┛'.encode('utf8'))
@@ -297,7 +309,7 @@ def needmoney(bot, trigger):
 
 @sopel.module.commands('nioc')
 def nioc(bot, trigger):
-    bot.say(u'If I had a monero for every time I went to the salt mines...I would have a lot of moneros'.encode('utf8'))
+    bot.say(u'https://ifunny.co/fun/laeIohx56'.encode('utf8'))
 
 @sopel.module.commands('nomnomnom')
 def nomnomnom(bot, trigger):
@@ -306,6 +318,10 @@ def nomnomnom(bot, trigger):
 @sopel.module.commands('noom')
 def noom(bot, trigger):
     bot.say(u'┏(.0.)┓'.encode('utf8'))
+
+@sopel.module.commands('notbad', 'dorian')
+def notbad(bot, trigger):
+    bot.say(u'（´ー｀） http://hackingdistributed.com/images/2014-01-01-bitcoin/dorian1.jpg （´ー｀）'.encode('utf8'))
 
 odboptions = [
 "FBI don't you be watching me",
@@ -344,6 +360,10 @@ def pony(bot, trigger):
 @sopel.module.commands('primer')
 def primer(bot, trigger):
     bot.say("The point is not how much i made, point is fluffy did this on purpose, more than 10 people were in on it. His commit access needs to be revoked asap!")
+
+@sopel.module.commands('praise')
+def praise(bot, trigger):
+    bot.say("https://praisemonero.com")
 
 @sopel.module.commands('pubg')
 def pubg(bot, trigger):
