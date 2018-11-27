@@ -29,6 +29,24 @@ binanceurl = 'https://api.binance.com/api/v1/ticker/24hr'
 localmonerousd = 'https://localmonero.co/api/ticker?currencyCode=USD'
 ogreurl = 'https://tradeogre.com/api/v1/markets'
 
+@sopel.module.commands('stock')
+def stock(bot, trigger):
+    if trigger.group(2):
+        ticker = trigger.group(2).upper()
+    else: ticker = 'WOW'
+    try:
+        r = requests.get('https://api.iextrading.com/1.0/stock/{}/batch?types=quote,news,chart&range=1m&last=10'.format(ticker))
+        j = r.json()
+        name = j['quote']['companyName']
+        exchange = j['quote']['primaryExchange']
+        date = j['quote']['latestTime']
+        high = j['quote']['high']
+        low = j['quote']['low']
+        last = j['quote']['latestPrice']
+        bot.say("{} ({}) trading at {} on {} had a high of {:.2f}, a low of {:.2f}, and last price of {:.2f}".format(name, ticker, exchange, date, high, low, last))
+    except:
+        bot.say("Can't find {}".format(ticker))
+
 @sopel.module.commands('forksum')
 def forksum(bot, trigger):
     url = 'https://api.coinmarketcap.com/v1/ticker/?bch'
@@ -94,6 +112,26 @@ def bfx(bot, trigger):
         bot.say(stringtosay)
     except:
         bot.say("Error getting data")
+
+@sopel.module.commands('gecko', 'cg', 'gec')
+def gecko(bot, trigger):
+    if not trigger.group(2):
+        coin = "monero"
+    else:
+        coin = trigger.group(2)
+    try:
+        r = requests.get('https://api.coingecko.com/api/v3/coins/'+coin)
+        j = r.json()
+        coinid = j['id']
+        mcaprank = j['market_cap_rank']
+        geckorank = j['coingecko_rank']
+        btcprice = j['market_data']['current_price']['btc']
+        usdprice = j['market_data']['current_price']['usd']
+        athbtc = j['market_data']['ath']['btc']
+        athusd = j['market_data']['ath']['usd']
+        bot.say("{} ({}) is #{:.0f} by mcap and #{:.0f} by coingecko rank. Current price is {:.8f} BTC / ${:.3f}. ATH price is {:.8f} BTC / ${:.3f}.".format(coin, coinid, mcaprank, geckorank, btcprice, usdprice, athbtc, athusd))
+    except:
+        bot.say("Couldn't find {} on le gecko".format(coin))
 
 @sopel.module.commands('krak', 'kraken')
 def krak(bot, trigger):
