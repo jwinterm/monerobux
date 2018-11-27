@@ -652,3 +652,9 @@ def whaleornot(bot, trigger):
 @sopel.module.commands('trebuchet')
 def trebuchet(bot, trigger):
     bot.say("Can YOU use a counterweight to launch a 90 kg projectile over 300 meters? Yeah, I thought not.")
+    
+@sopel.module.commands('baka')
+def baka(bot, trigger):
+    bot.say(u'https://www.youtube.com/watch?v=n5n7CSGPzqw'.encode(utf8))
+    
+    
