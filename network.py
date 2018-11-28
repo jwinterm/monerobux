@@ -2,7 +2,10 @@ import sopel.module
 import requests
 import re
 
-networkurl = "http://node.xmrbackb.one:18081/getinfo"
+# networkurl = "http://node.marty.cf:18019/getinfo"
+# networkurl = "http://node.xmrbackb.one:18081/getinfo"
+# networkurl = "http://opennode.minemonero.pro:18081/getinfo"
+networkurl = "http://node.xmr.pt:18081/getinfo"
 
 @sopel.module.commands('fork', 'forkening')
 def fork(bot, trigger):
@@ -13,7 +16,7 @@ def fork(bot, trigger):
     pass
   try:
     height=j["height"]
-    forkheight=1400000
+    forkheight=1686275
     if forkheight > height:
       bot.say("The current block height is {0:,}. Fork height is {1:,}. {2:,} blocks to go, happening in approximately {3:.2f} hours.".format(height,forkheight,forkheight-height,(forkheight-height)/30.0))
     else:
@@ -48,7 +51,7 @@ def btcmempool(bot, trigger):
 def mempool(bot, trigger):
   try:
     # r=requests.get('http://node.moneroworld.com:18081/getinfo')
-    r=requests.get('http://node.xmrbackb.one:18081/getinfo')
+    r=requests.get(networkurl)
     j=r.json()
     bot.say("The current number of txs in Monero's mempool is {0}".format(j['tx_pool_size']))
   except:
@@ -73,6 +76,18 @@ def mine(bot, trigger):
     hashrate=float(trigger.group(2))
     xmrperday=(hashrate/(diff/120))*720*value
     bot.say("At {:.0f} h/s with network diff of {:.2e} and block reward {:.2f} you can expect {:.4f} XMR per day.".format(hashrate, diff, value, xmrperday))
+  except:
+    bot.say("Mining is for suckers.")
+
+@sopel.module.commands('solo')
+def solo(bot, trigger):
+  try: 
+    r=requests.get('https://supportxmr.com/api/network/stats')
+    j=r.json()
+    diff=float(j['difficulty'])
+    hashrate=float(trigger.group(2))
+    timetoblock=(diff/hashrate)
+    bot.say("At {:.0f} h/s with network diff of {:.2e} your expected time for find a block is {:.2e} s or {:.2f} days.".format(hashrate, diff, timetoblock, timetoblock/(60*60*24)))
   except:
     bot.say("Mining is for suckers.")
 

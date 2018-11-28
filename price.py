@@ -3,6 +3,7 @@ import sopel.module
 import requests
 import time
 import random
+import datetime
 # from apikey import commodity_key
 
 polourl = "https://poloniex.com/public?command=returnTicker"
@@ -12,7 +13,6 @@ prevamnt, prevtime = 0, 0
 trexurl = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-"
 cryptopiaurl = "https://www.cryptopia.co.nz/api/GetMarkets"
 bitsquareurl = "https://market.bitsquare.io/api/ticker/?market=xmr_btc"
-fixerurl = 'http://api.fixer.io/latest?base=USD'
 finexbtc = 'https://api.bitfinex.com/v1/pubticker/XMRBTC'
 finexusd = 'https://api.bitfinex.com/v1/pubticker/XMRUSD'
 krakbtc = 'https://api.kraken.com/0/public/Ticker?pair=XMRXBT'
@@ -25,30 +25,73 @@ krakusdt = 'http://api.kraken.com/0/public/Ticker?pair=USDTUSD'
 bitflyerurl = 'https://api.bitflyer.jp/v1/ticker'
 thumbxmrurl = 'https://api.bithumb.com/public/ticker/xmr'	# measured natively in KRW
 thumbbtcurl = 'https://api.bithumb.com/public/ticker/btc'	# measured natively in KRW
+binanceurl = 'https://api.binance.com/api/v1/ticker/24hr'
+localmonerousd = 'https://localmonero.co/api/ticker?currencyCode=USD'
+ogreurl = 'https://tradeogre.com/api/v1/markets'
 
+@sopel.module.commands('stock')
+def stock(bot, trigger):
+    if trigger.group(2):
+        ticker = trigger.group(2).upper()
+    else: ticker = 'WOW'
+    try:
+        r = requests.get('https://api.iextrading.com/1.0/stock/{}/batch?types=quote,news,chart&range=1m&last=10'.format(ticker))
+        j = r.json()
+        name = j['quote']['companyName']
+        exchange = j['quote']['primaryExchange']
+        date = j['quote']['latestTime']
+        high = j['quote']['high']
+        low = j['quote']['low']
+        last = j['quote']['latestPrice']
+        bot.say("{} ({}) trading at {} on {} had a high of {:.2f}, a low of {:.2f}, and last price of {:.2f}".format(name, ticker, exchange, date, high, low, last))
+    except:
+        bot.say("Can't find {}".format(ticker))
 
-@sopel.module.commands('bcc', 'bitcointrash')
-def bcc(bot, trigger):
-    url = 'https://api.coinmarketcap.com/v1/ticker/?bcc'
+@sopel.module.commands('forksum')
+def forksum(bot, trigger):
+    url = 'https://api.coinmarketcap.com/v1/ticker/?bch'
     try:
         r = requests.get(url)
         j = r.json()
         for i in j:
             try:
+                if i['id'] == 'bitcoin':
+                    btcprice = float(i['price_usd'])
                 if i['id'] == 'bitcoin-cash':
-                    coin = i
+                    bcashprice = float(i['price_usd'])
+                if i['id'] == 'bitcoin-gold':
+                    bgoldprice = float(i['price_usd'])
             except: pass
-        symbol = coin['symbol']    
-        name = coin['name']
-        rank = coin['rank']
-        price_usd = float(coin['price_usd'])
-        price_btc = float(coin['price_btc'])
-        volume_usd = float(coin['24h_volume_usd'])
-        percent_change_24h = float(coin['percent_change_24h'])
-        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h)) 
+        bot.say("The sum of USD price of BTC, BCH, and BTG is ${:.2f}".format(btcprice+bcashprice+bgoldprice))
     except:
         bot.say("Error parsing ticker")
-    
+
+@sopel.module.commands('ath')
+def ath(bot, trigger):
+    with open('/root/.sopel/modules/ath.log', 'r') as f:
+        text = f.read()
+    btcath = float(text.split(' ')[0])
+    btcathdate = text.split(' ')[1]
+    usdath = float(text.split(' ')[2])
+    usdathdate = text.split(' ')[3]
+    update = False
+    url = 'https://api.coinmarketcap.com/v1/ticker/monero'
+    r = requests.get(url)
+    j = r.json()
+    price_btc = float(j[0]['price_btc'])
+    price_usd = float(j[0]['price_usd'])
+    if price_btc > btcath:
+        btcath = price_btc
+        update = True
+        btcathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+    if price_usd > usdath:
+        usdath = price_usd
+        update = True
+        usdathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+    if update == True:
+        with open('/root/.sopel/modules/ath.log', 'w') as f:
+            f.write("{} {} {} {}".format(btcath, btcathdate, usdath, usdathdate))
+    bot.say("BTC ath = {} on {}. USD ath = ${} on {}".format(btcath, btcathdate, usdath, usdathdate))
 
 @sopel.module.commands('bfx', 'bitfinex')
 def bfx(bot, trigger):
@@ -69,6 +112,26 @@ def bfx(bot, trigger):
         bot.say(stringtosay)
     except:
         bot.say("Error getting data")
+
+@sopel.module.commands('gecko', 'cg', 'gec')
+def gecko(bot, trigger):
+    if not trigger.group(2):
+        coin = "monero"
+    else:
+        coin = trigger.group(2)
+    try:
+        r = requests.get('https://api.coingecko.com/api/v3/coins/'+coin)
+        j = r.json()
+        coinid = j['id']
+        mcaprank = j['market_cap_rank']
+        geckorank = j['coingecko_rank']
+        btcprice = j['market_data']['current_price']['btc']
+        usdprice = j['market_data']['current_price']['usd']
+        athbtc = j['market_data']['ath']['btc']
+        athusd = j['market_data']['ath']['usd']
+        bot.say("{} ({}) is #{:.0f} by mcap and #{:.0f} by coingecko rank. Current price is {:.8f} BTC / ${:.3f}. ATH price is {:.8f} BTC / ${:.3f}.".format(coin, coinid, mcaprank, geckorank, btcprice, usdprice, athbtc, athusd))
+    except:
+        bot.say("Couldn't find {} on le gecko".format(coin))
 
 @sopel.module.commands('krak', 'kraken')
 def krak(bot, trigger):
@@ -95,7 +158,7 @@ def krak(bot, trigger):
         try:
             bot.say(stringtosay)
         except:
-            bot.say("Error getting data")		
+            bot.say("Error getting data")
     else:
         coin = trigger.group(2).upper()
         try:
@@ -104,31 +167,10 @@ def krak(bot, trigger):
 	    stringtosay += "{0} at {1:.8f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
 	except:
             bot.say("Error connecting to Kraken")
-#        if len(coin) > 5 or len(coin) < 2:
-#            bot.say("Coin ticker is too long or short")
-#        elif coin == "PIVX":
-#            bot.say("Masternodes + PoS...what could possibly go wrong?")
-#        else:
 	try:
             bot.say(stringtosay)
         except:
             bot.say("Error getting data")
-	
-#   THIS WAS COPIED FROM THE POLO FUNCTION, AND IS UNUSED, AT LEAST FOR NOW
-#            label="BTC_" + coin
-#            try:
-#                ticker=j[label]
-#                last=float(ticker['last'])
-#                change=float(ticker['percentChange'])
-#                vol=float(ticker['baseVolume'])
-#                if change >= 0: 
-#                    sign = '+'
-#                else:
-#                    sign = ''
-#                bot.say("{0} at {1:.8f} BTC; {2}{3:.2f}% over 24 hours on {4:.3f} BTC volume".format(coin, last, sign, change*100, vol))
-#            except:
-#                bot.say("ERROR!")
-	
 
 @sopel.module.commands('usdt')
 def usdt(bot, trigger):
@@ -161,7 +203,7 @@ def chart(bot, trigger):
 @sopel.module.commands('polo', 'poloniex', 'marco')
 @sopel.module.interval(3600)
 def polo(bot, trigger):
-    if not trigger.group(2): 
+    if not trigger.group(2):
         try:
             r=requests.get(polourl)
             j=r.json()
@@ -169,7 +211,7 @@ def polo(bot, trigger):
             last=float(xmr['last'])
             change=float(xmr['percentChange'])
             vol=float(xmr['baseVolume'])
-            if change >= 0: 
+            if change >= 0:
                 sign = '+'
             else:
                 sign = ''
@@ -186,7 +228,7 @@ def polo(bot, trigger):
                 face = u'\u2639'.encode('utf8')
             if -0.05 >= change > -0.1:
                 face = u'\u2620'.encode('utf8')
-            if change < -0.1: 
+            if change < -0.1:
                 face = u'\u262d'.encode('utf8')
             bot.say("Poloniex at {0:.8f} BTC; {1}{2:.2f}% over 24 hours on {3:.3f} BTC volume {4}".format(last, sign, change*100, vol, face))
         except:
@@ -213,7 +255,7 @@ def polo(bot, trigger):
                 last=float(ticker['last'])
                 change=float(ticker['percentChange'])
                 vol=float(ticker['baseVolume'])
-                if change >= 0: 
+                if change >= 0:
                     sign = '+'
                 else:
                     sign = ''
@@ -224,7 +266,7 @@ def polo(bot, trigger):
 @sopel.module.commands('lending')
 def lending(bot, trigger):
     try:
-        r=requests.get(poloxmrlendurl) 
+        r=requests.get(poloxmrlendurl)
         j=r.json()
         amnt=0
         currenttime=time.time()
@@ -237,11 +279,11 @@ def lending(bot, trigger):
         prevtime=currenttime
     except:
         bot.say("Something bad happened :o")
-    
+
 @sopel.module.commands('btclending')
 def btclending(bot, trigger):
     try:
-        r=requests.get(polobtclendurl) 
+        r=requests.get(polobtclendurl)
         j=r.json()
         amnt=0
         amnt10=0
@@ -259,13 +301,13 @@ def btclending(bot, trigger):
         bot.say("Minimum rate is {0:.3f}%. To borrow {1:,.2f} BTC need up to rate {2:.3f}%. To borrow {3:,.2f} BTC need up to rate {4:.3f}%. Total amount is {5:,.2f} BTC at max rate {6:.3f}%".format(float(j['offers'][0]['rate'])*100, amnt10, rate10*100, amnt100, rate100*100, amnt, float(j['offers'][-1]['rate'])*100))
     except:
         bot.say("Something bad happened :o")
-    
+
 
 @sopel.module.commands('trex', 'bittrex')
 def trex(bot, trigger):
     if not trigger.group(2):
          geturl = trexurl+'xmr'
-    else: 
+    else:
         geturl = trexurl + trigger.group(2)
     try:
         r = requests.get(geturl)
@@ -277,6 +319,23 @@ def trex(bot, trigger):
         bot.say("Bittrex at {0:.8f} BTC; {1:.2f}% over 24 hours on {2:.3f} BTC volume".format(last, change*100, vol))
     except:
         bot.say("Error retrieving data from Bittrex")
+
+@sopel.module.commands('tradeogre', 'ogre')
+def ogre(bot, trigger):
+    if not trigger.group(2):
+        pair = 'BTC-XMR'
+    else:
+        pair = 'BTC-'+trigger.group(2).upper()
+    try:
+        r = requests.get(ogreurl)
+        j = r.json()
+        for i in j:
+            if pair == i.keys()[0]:
+                last=float(i[pair]['price'])
+                vol=float(i[pair]['volume'])
+        bot.say("{0} on Tradeogre at {1:.8f} BTC on {2:.3f} BTC volume".format(pair, last, vol))
+    except:
+        bot.say("Error retrieving data from Ogre")
 
 @sopel.module.commands('bsq', 'bitsquare')
 def bsq(bot, trigger):
@@ -290,13 +349,43 @@ def bsq(bot, trigger):
     except:
         bot.say("Error retrieving data from Bitsquare")
 
+@sopel.module.commands('binance')
+def binance(bot, trigger):
+    try:
+        if not trigger.group(2):
+             coin = 'XMR'
+             pair = 'BTC'
+        else:
+            coin = trigger.group(2).split(' ')[0].upper()
+            try:
+                if len(trigger.group(2).split(' ')[1]) > 1:
+                    pair = trigger.group(2).split(' ')[1].upper()
+                else:
+                    pair = "BTC"
+            except:
+                pair = "BTC"
+        r = requests.get(binanceurl)
+        j = r.json()
+        found = False
+        for i in j:
+            if i["symbol"] == coin+pair:
+                last=float(i['lastPrice'])
+                change=float(i['priceChangePercent'])
+                vol=float(i['volume'])
+                bot.say("{0} on Binance at {1:.8f} {2}; {3:.2f}% over 24 hours on {4:.3f} {2} volume".format(coin, last, pair, change, vol*last))
+                found = True
+        if found == False:
+            bot.say("Too scammy even for Binance")
+    except:
+        bot.say("Error retrieving data from Binance")
+
 @sopel.module.commands('cryptopia', 'shitopia', 'topia', 'ctop')
 def cryptopia(bot, trigger):
     try:
         if not trigger.group(2):
              coin = 'XMR'
              pair = 'BTC'
-        else: 
+        else:
             coin = trigger.group(2).split(' ')[0].upper()
             try:
                 if len(trigger.group(2).split(' ')[1]) > 1:
@@ -322,44 +411,140 @@ def cryptopia(bot, trigger):
 
 @sopel.module.commands('cmc', 'coinmarketcap')
 def cmc(bot, trigger):
+    # try:
+    #     if trigger.group(2).lower() == 'trx':
+    #         bot.say("Fuck off with your scams scammer")
+    #         return
+    # except:
+    #     pass
     try:
-        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
+        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=1500')
         j = r.json()
     except:
         bot.say("Can't connect to API")
     if not trigger.group(2):
-        symbol = 'XMR'
+        c1 = 'XMR'
     else:
-        if trigger.group(2).isdigit():
-            rank = trigger.group(2)
-        elif trigger.group(2) == 'random':
-            rank = random.randint(1,500)
+        if ' ' in trigger.group(2):
+            c1 = trigger.group(2).split(' ')[0].upper()
+            c2 = trigger.group(2).split(' ')[1].upper()
         else:
-            symbol = trigger.group(2)
-            symbol = symbol.upper()
+            if trigger.group(2).isdigit():
+                rank = trigger.group(2)
+            elif trigger.group(2) == 'random':
+                rank = random.randint(1,1500)
+            else:
+                c1 = trigger.group(2).upper()
     try:
-        for i in j:
-            try:
-                if i['symbol'] == symbol:
-                    coin = i
-            except: pass
-            try:
-                if i['rank'] == str(rank):
-                    coin = i
-            except: pass
-        symbol = coin['symbol']    
-        name = coin['name']
-        rank = coin['rank']
-        price_usd = float(coin['price_usd'])
-        price_btc = float(coin['price_btc'])
-        volume_usd = float(coin['24h_volume_usd'])
-        market_cap_usd = float(coin['market_cap_usd'])
-        available_supply = float(coin['available_supply'])
-        total_supply = float(coin['total_supply'])
-        percent_change_24h = float(coin['percent_change_24h'])
-        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply)) 
+        if not 'c2' in locals():
+            for i in j:
+                try:
+                    if i['symbol'] == c1:
+                        coin = i
+                except: pass
+                try:
+                    if i['rank'] == str(rank):
+                        coin = i
+                except: pass
+            symbol = coin['symbol']
+            name = coin['name']
+            rank = coin['rank']
+            price_usd = float(coin['price_usd'])
+            price_btc = float(coin['price_btc'])
+            volume_usd = float(coin['24h_volume_usd'])
+            market_cap_usd = float(coin['market_cap_usd'])
+            available_supply = float(coin['available_supply'])
+            total_supply = float(coin['total_supply'])
+            percent_change_24h = float(coin['percent_change_24h'])
+            bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply))
+        else:
+            for i in j:
+                try:
+                    if i['symbol'] == c1:
+                        coin = i
+                    if i['symbol'] == c2:
+                        c2coin = i
+                except: pass
+            symbol = coin['symbol']
+            c2symbol = c2coin['symbol']
+            name = coin['name']
+            rank = coin['rank']
+            price_usd = float(coin['price_usd'])
+            price_btc = float(coin['price_btc'])
+            c2price_btc = float(c2coin['price_btc'])
+            volume_usd = float(coin['24h_volume_usd'])
+            market_cap_usd = float(coin['market_cap_usd'])
+            available_supply = float(coin['available_supply'])
+            total_supply = float(coin['total_supply'])
+            percent_change_24h = float(coin['percent_change_24h'])
+            bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / {4:.8f} {1}/{5}. 24h volume ${6:,.0f}. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc/c2price_btc, c2symbol, volume_usd, market_cap_usd, available_supply, total_supply))
     except:
         bot.say("Error parsing ticker")
+    try:
+        if c1 == 'XMR':
+            with open('/root/.sopel/modules/ath.log', 'r') as f:
+                text = f.read()
+            btcath = float(text.split(' ')[0])
+            btcathdate = text.split(' ')[1]
+            usdath = float(text.split(' ')[2])
+            usdathdate = text.split(' ')[3]
+            update = False
+            if price_btc > btcath:
+                btcath = price_btc
+                update = True
+                btcathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+            if price_usd > usdath:
+                usdath = price_usd
+                update = True
+                usdathdate = datetime.datetime.fromtimestamp(int(coin['last_updated'])).strftime('%Y-%m-%d')
+            if update == True:
+                with open('/root/.sopel/modules/ath.log', 'w') as f:
+                    f.write("{} {} {} {}".format(btcath, btcathdate, usdath, usdathdate))
+    except:
+        pass
+
+@sopel.module.commands('top')
+def top(bot, trigger):
+    topXstring = ""
+    try:
+        try:
+        	r = requests.get('https://api.coinmarketcap.com/v1/global/')
+        	j = r.json()
+        	usd_total_mkt_cap = float(j['total_market_cap_usd'])
+        	total_mcap_short = int(int(round(usd_total_mkt_cap,-9))/int(1e9))
+        	rounded_total_mcap = str(total_mcap_short)+"B"
+        	topXstring += "Total market cap $" + rounded_total_mcap + " | "
+        except:
+        	bot.say("Can't connect to coinmarketcap API")
+        if not trigger.group(2):
+            limit = 20
+        else:
+            limit = int(trigger.group(2))
+            if limit > 20:
+                bot.say("Too high!  Max is 20!")
+            elif limit < 1:
+                bot.say("Dude...")
+    	r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit={}'.format(limit))
+    	j = r.json()
+        for i in j:
+            symbol = i['symbol']
+            name = i['name']
+            rank = i['rank']
+            price_usd = float(i['price_usd'])
+            price_btc = float(i['price_btc'])
+            market_cap_usd = float(i['market_cap_usd'])
+            if market_cap_usd >= 1e9:
+    	        if market_cap_usd >= 1e10:
+                    market_cap_short = int(int(round(market_cap_usd,-9))/int(1e9))
+    	        else:
+    	            market_cap_short = float(round(market_cap_usd,-8)/1e9)
+               	rounded_mcap = str(market_cap_short)+"B"
+            else:
+            	rounded_mcap = "tiny"
+            topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
+        bot.say(topXstring[:-2])
+    except:
+        bot.say("The use is 'top' and then a digit 1 - 20")
 
 @sopel.module.commands('okc', 'okcoin')
 def okc(bot, trigger):
@@ -422,73 +607,65 @@ def pepexmr(bot, trigger):
 @sopel.module.commands('tall')
 def tall(bot, trigger):
     stringtosend = ''
-    fixerurl = 'http://api.fixer.io/latest?base=USD'
     stampurl = 'https://www.bitstamp.net/api/ticker/'
-    btceurl  = 'https://btc-e.com/api/3/ticker/btc_usd'
     finexurl = 'https://api.bitfinex.com/v1/pubticker/BTCUSD'
-    # btccurl  = 'https://pro-data.btcc.com/data/pro/ticker?symbol=XBTCNY'
     btccurl  = 'https://data.btcchina.com/data/ticker?market=btccny'
-    huobiurl = 'http://api.huobi.com/staticmarket/ticker_btc_json.js'
     gemiurl  = 'https://api.gemini.com/v1/pubticker/btcusd'
-    # gdaxurl  = 'https://api.coinbase.com/v2/exchange-rates?currency=BTC'
     gdaxurl  = 'https://api.gdax.com/products/BTC-USD/ticker'
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdcny = fixerjson['rates']['CNY']
-        usdeur = fixerjson['rates']['EUR']
-        usdjpy = fixerjson['rates']['JPY']
-        usdkrw = fixerjson['rates']['KRW']
-    except:
-        usdcny = 7
-        usdkrw = 1100
-        usdjpy = 112
     # Bitstamp
-    try: 
+    try:
         stampresult = requests.get(stampurl)
         stampjson = stampresult.json()
     except:
 	stampjson = False
     if stampjson:
-        stringtosend += "Bitstamp last: {0:,.2f}, vol: {1:,.1f} | ".format(float(stampjson['last']), float(stampjson['volume']))
-    # BTC-E
-    # try: 
-    #     btceresult = requests.get(btceurl)
-    #     btcejson = btceresult.json()
-    # except:
-    #     btcejson = False
-    # if btcejson:
-    #     stringtosend += "BTC-E last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btcejson['btc_usd']['last']), float(btcejson['btc_usd']['vol_cur']))
+        stringtosend += "Bitstamp last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(stampjson['last']), float(stampjson['volume']))
     # Gemini
-    try: 
+    try:
         gemiresult = requests.get(gemiurl)
         gemijson = gemiresult.json()
     except:
 	gemijson = False
     if gemijson:
         try:
-            stringtosend += "Gemini last: {0:,.2f}, vol: {1:,.1f} | ".format(float(gemijson['last']), float(gemijson['volume']['BTC']))
+            stringtosend += "Gemini last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(gemijson['last']), float(gemijson['volume']['BTC']))
         except:
             pass
     # Gdax
-    try: 
+    try:
         gdaxresult = requests.get(gdaxurl)
         gdaxjson = gdaxresult.json()
+        gdaxprice = float(gdaxjson['price'])
+        gdaxvolume = float(gdaxjson['volume'])
     except:
 	gdaxjson = False
     if gdaxjson:
-        stringtosend += "GDAX price: {0:,.2f}, vol: {1:,.1f} | ".format(float(gdaxjson['price']), float(gdaxjson['volume']))
+        stringtosend += "CBP last: ${0:,.2f}, vol: {1:,.1f} | ".format(gdaxprice, gdaxvolume)
+    # Binance
+    try:
+        binanceresult = requests.get(binanceurl)
+        binancejson = binanceresult.json()
+        for i in binancejson:
+            if i["symbol"] == "BTCUSDT":
+                binanceprice = float(i['lastPrice'])
+                binancevolume = float(i['volume'])
+    except:
+	binancejson = False
+    if binancejson:
+        stringtosend += "Binance last: ${0:,.2f}, vol: {1:,.1f} | ".format(binanceprice, binancevolume)
     # Bitfinex
-    try: 
+    try:
         finexresult = requests.get(finexurl)
         finexjson = finexresult.json()
     except:
 	finexjson = False
-    if finexjson:
-        stringtosend += "Bitfinex last: {0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
+    try:
+        if finexjson:
+            stringtosend += "Bitfinex last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
+    except:
+        stringtosend += "Finex sucks | "
     # Bitthumb
-    try: 
+    try:
         thumbresult = requests.get(thumbbtcurl)
         thumbjson = thumbresult.json()
         if thumbjson['data']:
@@ -496,36 +673,20 @@ def tall(bot, trigger):
     except:
 	thumbjson = False
     if thumbjson:
-        stringtosend += "Bithumb last: {0:,.2f}, vol: {1:,.1f} | ".format(float(thumbjson['data']['buy_price'])/float(usdkrw), float(thumbjson['data']['volume_1day']))
-    # BTCC
-    # try: 
-    #     btccresult = requests.get(btccurl)
-    #     btccjson = btccresult.json()
-    # except:
-    #     btccjson = False
-    # if btccjson:
-    #     stringtosend += "BTCC last: {0:,.2f}, vol: {1:,.1f} | ".format(float(btccjson['ticker']['last'])/usdcny, float(btccjson['ticker']['vol']))
-    # Huobi
-    try: 
-        huobiresult = requests.get(huobiurl)
-        huobijson = huobiresult.json()
-    except:
-	huobijson = False
-    if huobijson:
-        stringtosend += "Huobi last: {0:,.2f}, vol: {1:,.1f} | ".format(float(huobijson['ticker']['last'])/usdcny, float(huobijson['ticker']['vol']))
+        stringtosend += "Bithumb last: ₩{0:,.2f}, vol: {1:,.1f} | ".format(float(thumbjson['data']['buy_price']), float(thumbjson['data']['volume_1day']))
     # Bitflyer
-    try: 
+    try:
         bitflyerresult = requests.get(bitflyerurl)
         bitflyerjson = bitflyerresult.json()
     except:
 	bitflyerjson = False
     if bitflyerjson:
-        stringtosend += "Bitflyer last: {0:,.2f}, vol: {1:,.1f} | ".format(float(bitflyerjson['ltp'])/usdjpy, float(bitflyerjson['volume_by_product']))
+        stringtosend += "Bitflyer last: ¥{0:,.2f}, vol: {1:,.1f} | ".format(float(bitflyerjson['ltp']), float(bitflyerjson['volume_by_product']))
     # Send the tickers to IRC
-    bot.say(stringtosend)
-	
+    bot.say(stringtosend[:-2])
 
-@sopel.module.commands('xmrtall')
+
+@sopel.module.commands('xmrtall', 'xmr')
 def xmrtall(bot, trigger):
     stringtosend = ''
 
@@ -546,43 +707,22 @@ def xmrtall(bot, trigger):
 	# Finally, price in BTC, and volume in XMR
 	thumbBTCxmr = thumbXMRkrw/thumbBTCkrw
 	thumbXMRVol = float(xmrjson['data']['volume_1day'])
-	stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume |".format(thumbBTCxmr,thumbXMRVol)
+	stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume | ".format(thumbBTCxmr,thumbXMRVol)
     except:
 	bot.say("Error - bithumb korea is worst korea.")
-    
+
     # Polo
     try:
 	r=requests.get(polourl)
         j=r.json()
         xmr=j["BTC_XMR"]
         last=float(xmr['last'])
-#       change=float(xmr['percentChange'])	
-        vol=float(xmr['baseVolume'])		
-# '''remove?
-#         if change >= 0: 			
-#             sign = '+'				
-#         else:					
-#             sign = ''				
-#         face = ''
-#         if change > 0.10:
-#             face = u'\u263d'.encode('utf8')
-#         if 0.10 >= change > 0.05:
-#             face = u'\u2661'.encode('utf8')
-#         if 0.05 >= change > 0.02:
-#             face = u'\u263a'.encode('utf8')
-#         if 0.02 >= change > -0.02:
-#             face = u'\u2694'.encode('utf8')
-#         if -0.02 >= change > -0.05:
-#             face = u'\u2639'.encode('utf8')
-#         if -0.05 >= change > -0.1:
-#             face = u'\u2620'.encode('utf8')
-#         if change < -0.1: 
-#             face = u'\u262d'.encode('utf8')
-# '''
+#       change=float(xmr['percentChange'])
+        vol=float(xmr['baseVolume'])
     	stringtosend += "Poloniex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
     except:
-        bot.say("Something borked ¯\(º_o)/¯") 
-    
+        bot.say("Something borked ¯\(º_o)/¯")
+
     # bfx
     try:
         r = requests.get(finexbtc)
@@ -598,7 +738,21 @@ def xmrtall(bot, trigger):
         stringtosend += "Kraken last: {0:.6f} on {1:.2f} XMR volume | ".format(float(j['result']['XXMRXXBT']['c'][0]), float(j['result']['XXMRXXBT']['v'][1]))
     except:
         bot.say("Something borked ¤\( `⌂´ )/¤")
-	
+
+    # Binance
+    try:
+        r = requests.get(binanceurl)
+        j = r.json()
+        found = False
+        for i in j:
+            if i["symbol"] == "XMRBTC":
+                last=float(i['lastPrice'])
+                vol=float(i['volume'])
+                stringtosend += ("Binance last: {0:.6f} on {1:.2f} BTC volume | ".format(last, vol*last))
+                found = True
+    except:
+        bot.say("Borka borka ┌∩┐(◣_◢)┌∩┐")
+
     # Trex
     geturl = trexurl+'xmr'
     try:
@@ -611,7 +765,7 @@ def xmrtall(bot, trigger):
         stringtosend += "Bittrex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
     except:
         bot.say("Something borked -_-")
-	
+
     # Cryptopia
     try:
         coin = 'XMR'
@@ -622,7 +776,7 @@ def xmrtall(bot, trigger):
         for i in j["Data"]:
             if i["Label"] == coin+"/"+pair:
                 last=float(i['LastPrice'])
-#               change=float(i['Change'])
+                change=float(i['Change'])
                 vol=float(i['Volume'])
                 stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
                 found = True
@@ -630,24 +784,24 @@ def xmrtall(bot, trigger):
             bot.say("WTF?!?")
     except:
         bot.say("Something borked （ -.-）ノ-=≡≡卍")
-	
+
     # Tux
-    try:
-        r = requests.get('https://tuxexchange.com/api?method=getticker')
-        j = r.json()
-        if not trigger.group(2):
-            ticker='XMR'
-        else:
-            ticker=trigger.group(2).upper()
-        coin=j['BTC_{}'.format(ticker)]
-        last=float(coin['last'])
-        vol=float(coin['baseVolume'])
-#       change=float(coin['percentChange'])
-        stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume.".format(last, vol)
-    except:
-        bot.say("Something borked ( ︶︿︶)_╭∩╮")
+    # try:
+    #     r = requests.get('https://tuxexchange.com/api?method=getticker')
+    #     j = r.json()
+    #     if not trigger.group(2):
+    #         ticker='XMR'
+    #     else:
+    #         ticker=trigger.group(2).upper()
+    #     coin=j['BTC_{}'.format(ticker)]
+    #     last=float(coin['last'])
+    #     vol=float(coin['baseVolume'])
+    #     change=float(coin['percentChange'])
+    #      stringtosend += "Tux last: {0:.6f} BTC on {1:.2f} BTC volume. ".format(last, vol)
+    #  except:
+    #      bot.say("Something borked ( ︶︿︶)_╭∩╮")
     #Finally... print to IRC
-    bot.say(stringtosend)
+    bot.say(stringtosend[:-2])
 
 
 @sopel.module.commands('usd')
@@ -660,253 +814,73 @@ def usd(bot, trigger):
     except:
         bot.say("Failed to retrieve price.")
 
-@sopel.module.commands('aud')
-def aud(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdaud = fixerjson['rates']['AUD']
-    except:
-        usdaud = 1.35
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdaud
-        bot.say("Monero price in AUD = ${0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('cny')
-def cny(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdcny = fixerjson['rates']['CNY']
-    except:
-        usdjpy = 6.8
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdcny
-        bot.say("Monero price in CNY = ¥{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('jpy')
-def jpy(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdjpy = fixerjson['rates']['JPY']
-    except:
-        usdjpy = 110
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdjpy
-        bot.say("Monero price in JPY = ¥{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('eur')
-def eur(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdeur = fixerjson['rates']['EUR']
-    except:
-        usdeur = 0.95
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdeur
-        bot.say("Monero price in EUR = €{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('cad')
-def cad(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdcad = fixerjson['rates']['CAD']
-    except:
-        usdcad = 1.35
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdcad
-        bot.say("Monero price in CAD = ${0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('gbp')
-def gbp(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdgbp = fixerjson['rates']['GBP']
-    except:
-        usdgbp = 0.81
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdgbp
-        bot.say("Monero price in GBP = £{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('inr')
-def inr(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdthb = fixerjson['rates']['INR']
-    except:
-        usdthb = 64
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdthb
-        bot.say("Monero price in INR = ₹{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('thb')
-def thb(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdthb = fixerjson['rates']['THB']
-    except:
-        usdthb = 1.35
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdthb
-        bot.say("Monero price in THB = ฿{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('zar')
-def zar(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdzar = fixerjson['rates']['ZAR']
-    except:
-        usdzar = 13.05
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdzar
-        bot.say("Monero price in ZAR = R{0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('nzd')
-def nzd(bot, trigger):
-    # Get conversion rate
-    try: 
-        fixerresult = requests.get(fixerurl)
-        fixerjson = fixerresult.json()
-        usdnzd = fixerjson['rates']['NZD']
-    except:
-        usdnzd = 1.405
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdnzd
-        bot.say("Monero price in NZD = ${0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('ntd')
-def ntd(bot, trigger):
-    # Get conversion rate
-    try: 
-        ntdurl = r'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20("USDTWD")&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
-        fixerresult = requests.get(ntdurl)
-        fixerjson = fixerresult.json()
-        usdntd = float(fixerjson['query']['results']['rate']['Rate'])
-    except:
-        bot.say("Failed to get NTD value")
-        usdntd = 32
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdntd
-        bot.say("Monero price in NTD = ${0:,.2f}".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('ugx')
-def ugx(bot, trigger):
-    # Get conversion rate
-    try:
-        ugxurl = r'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.xchange%20where%20pair%20in%20("USDUGX")&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback='
-        fixerresult = requests.get(ntdurl)
-        fixerjson = fixerresult.json()
-        usdugx = florat(fixerjson['query']['results']['rate']['Rate'])
-    except:
-        usdugx = 3200
-    try:
-        r=requests.get('https://api.coinmarketcap.com/v1/ticker/monero/')
-        j=r.json()
-        price=float(j[0]['price_usd'])*usdugx
-        bot.say("Monero price in UGX = {0:,.2f} shillings".format(price))
-    except:
-        bot.say("Failed to retrieve price.")
-
-@sopel.module.commands('log')
-def log(bot, trigger):
-    volurl='https://c-cex.com/t/volume_btc.json'
-    try:
-        r=requests.get(volurl)
-        j=r.json()
-        last=float(j['ticker']['log']['last'])
-        vol=float(j['ticker']['log']['vol'])
-        bot.say("Last price on c-cex for LOG at {0:.8f} BTC on {1:.3f} BTC volume.".format(last, vol))
-    except:
-        bot.say("C-cex sucks")
 
 @sopel.module.commands('price')
 def price(bot, trigger):
     try:
-        bot.say("1 XMR = $1,000 USD (Offer valid in participating locations)")
+        bot.say("1 XMR = $12,345 USD (Offer valid in participating locations)")
     except:
         bot.say("C-cex sucks")
 
-@sopel.module.commands('commodity', 'com')
-def commodity(bot, trigger):
-    commodity_key = 'B1ZnykTmG6_A1vkwzt9u'
-    input_com = trigger.group(2).upper()
-    if input_com == ('AU' or 'GOLD' or 'XAU'):
-        commodity = 'AU_EIB'
-        unit = 'oz'
-    elif input_com == ('AG' or 'SILVER' or 'XAG'):
-        commodity = 'AG_USD'
-        unit = 'oz'
-    elif input_com == ('PT' or 'PLATINUM' or 'XPT'):
-        commodity = 'WLD_PLATINUM'
-        unit = 'oz'
-    elif input_com == ('COFFEE'):
-        commodity = 'COFFEE_BRZL'
-        unit = 'lb'
+@sopel.module.commands('comm')
+def comm(bot, trigger):
+    commurl = 'https://api.commoprices.com/v1/wrb/'
+    apitoken = '?api_token=9gdRSeoek4N0AnZHUvP0TSIR74jmyQpsjz5HuGRjfDmsCDxppYiG76GuxaF1'
     try:
-        r=requests.get("https://www.quandl.com/api/v3/datasets/COM/{0}.json?&api_key={1}".format(commodity, commodity_key))
-        j=r.json()
-        last=j['dataset']['data'][0][1]
-        bot.say("Last price on {0} was ${1:.3f} per {2}.".format(commodity, last, unit))
+        r = requests.get(commurl+apitoken)
+        data = r.json()['data']
+        for i in data:
+            if trigger.group(2).lower() in i['name'].lower():
+                print(i)
+                code = i['code']
     except:
-        bot.say("Monerobux fails again...")
+        bot.say("Error getting data or commodity not priced")
+        return
+    try:
+        r2 = requests.get(commurl+code+'/data/'+apitoken)
+        j = r2.json()
+        bot.say("{0} last price at {1:.2f} {2} on {3}".format(j['data']['info']['name'], j['data']['request']['dataseries'][-1][1], j['data']['info']['original_price_unit']['name'], j['data']['request']['dataseries'][-1][0]))
+    except:
+        bot.say("Error parsing some shit")
 
+@sopel.module.commands('xmy')
+def xmy(bot, trigger):
+    try:
+        r = requests.get('https://api.coinmarketcap.com/v1/ticker?limit=500')
+        j = r.json()
+    except:
+        bot.say("Can't connect to API")
+    symbol = 'XMY'
+    try:
+        for i in j:
+            try:
+                if i['symbol'] == symbol:
+                    coin = i
+            except: pass
+            try:
+                if i['rank'] == str(rank):
+                    coin = i
+            except: pass
+        symbol = coin['symbol']
+        name = coin['name']
+        rank = coin['rank']
+        price_usd = float(coin['price_usd'])
+        price_btc = float(coin['price_btc'])
+        volume_usd = float(coin['24h_volume_usd'])
+        market_cap_usd = float(coin['market_cap_usd'])
+        available_supply = float(coin['available_supply'])
+        total_supply = float(coin['total_supply'])
+        percent_change_24h = float(coin['percent_change_24h'])
+        bot.say("{0} ({1}) is #{2}. Last price ${3:.2f} / ฿{4:.8f}. 24h volume ${5:,.0f} changed {6}%. Market cap ${7:,.0f}. Available / total coin supply {8:,.0f} / {9:,.0f}.".format(name, symbol, rank, price_usd, price_btc, volume_usd, percent_change_24h, market_cap_usd, available_supply, total_supply))
+    except:
+        bot.say("Error parsing ticker")
+
+@sopel.module.commands('localmonero', 'localxmr', 'lxmr', 'lm', 'street')
+def localmonero(bot, trigger):
+    try:
+        r = requests.get(localmonerousd)
+        j = r.json()
+        stringtosay = "LocalMonero XMR/USD 12h-avg: ${0:.2f}, 24h-avg: ${0:.2f}.".format(float(j['USD']['avg_12h']), float(j['USD']['avg_24h']))
+        bot.say(stringtosay)
+    except:
+        bot.say("Error getting data")

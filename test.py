@@ -1,7 +1,7 @@
 import requests
 
 
-url = 'https://api.coinmarketcap.com/v1/ticker/?bcc'
+url = 'https://api.coinmarketcap.com/v1/ticker/?bch'
 
 r = requests.get(url)
 j = r.json()
