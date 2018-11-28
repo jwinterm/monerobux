@@ -430,6 +430,10 @@ def romerito(bot, trigger):
         silly_string = "Et tu, Romerito!"
     bot.say(silly_string)
 
+@sopel.module.commands('ryo')
+def ryo(bot, trigger):
+    bot.say(u'https://i.imgflip.com/2nn22t.jpg')
+
 @sopel.module.commands('scam')
 def scam(bot, trigger):
     bot.say(u'http://i.imgflip.com/is8.jpg')
