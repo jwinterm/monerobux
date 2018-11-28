@@ -438,6 +438,10 @@ def scam(bot, trigger):
 def soon(bot, trigger):
     bot.say(u'Two weeks™'.encode('utf8'))
 
+@sopel.module.commands('shillo', 'cid')
+def shillo(bot, trigger):
+    bot.say(u'☠☠☠ Crypto is ded https://cryptocurrencydiy.net/wp-content/uploads/2018/03/bitcoin-is-dead-exit-all-crypto-1024x576-1024x585.jpg ☠☠☠ '.encode('utf8'))
+
 @sopel.module.commands('shrug')
 def shrug(bot, trigger):
     bot.say(u'¯\_(ツ)_/¯'.encode('utf8'))
@@ -655,6 +659,9 @@ def trebuchet(bot, trigger):
     
 @sopel.module.commands('baka')
 def baka(bot, trigger):
-    bot.say(u'https://www.youtube.com/watch?v=n5n7CSGPzqw'.encode(utf8))
+    bot.say('https://www.youtube.com/watch?v=n5n7CSGPzqw')
     
+@sopel.module.commands('btcdwed')
+def btcdwed(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=JZYZoQQ6LJQ')
     
