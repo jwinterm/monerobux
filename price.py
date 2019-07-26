@@ -690,27 +690,6 @@ def tall(bot, trigger):
 def xmrtall(bot, trigger):
     stringtosend = ''
 
-    # Bithumb (Note: Must calculate BTCXMR price from BTCKRW and XMRKRW)
-    try:
-	xmr_r = requests.get(thumbxmrurl)
-	btc_r = requests.get(thumbbtcurl)
-	xmrjson = xmr_r.json()
-	btcjson = btc_r.json()
-	# No last price in api.  Must average buy and sell price.
-	thumbXMRbuy = float(xmrjson['data']['buy_price'])
-	thumbXMRsell = float(xmrjson['data']['sell_price'])
-	thumbXMRkrw = (thumbXMRbuy + thumbXMRsell)/2
-	# Same for BTC
-	thumbBTCbuy = float(btcjson['data']['buy_price'])
-	thumbBTCsell = float(btcjson['data']['sell_price'])
-	thumbBTCkrw = (thumbBTCbuy + thumbBTCsell)/2
-	# Finally, price in BTC, and volume in XMR
-	thumbBTCxmr = thumbXMRkrw/thumbBTCkrw
-	thumbXMRVol = float(xmrjson['data']['volume_1day'])
-	stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume | ".format(thumbBTCxmr,thumbXMRVol)
-    except:
-	bot.say("Error - bithumb korea is worst korea.")
-
     # Polo
     try:
 	r=requests.get(polourl)
@@ -784,6 +763,28 @@ def xmrtall(bot, trigger):
             bot.say("WTF?!?")
     except:
         bot.say("Something borked （ -.-）ノ-=≡≡卍")
+
+# Bithumb (Note: Must calculate BTCXMR price from BTCKRW and XMRKRW)
+    try:
+	  xmr_r = requests.get(thumbxmrurl)
+	  btc_r = requests.get(thumbbtcurl)
+	  xmrjson = xmr_r.json()
+	  btcjson = btc_r.json()
+	# No last price in api.  Must average buy and sell price.
+	  thumbXMRbuy = float(xmrjson['data']['buy_price'])
+	  thumbXMRsell = float(xmrjson['data']['sell_price'])
+	  thumbXMRkrw = (thumbXMRbuy + thumbXMRsell)/2
+	# Same for BTC
+	  thumbBTCbuy = float(btcjson['data']['buy_price'])
+	  thumbBTCsell = float(btcjson['data']['sell_price'])
+	  thumbBTCkrw = (thumbBTCbuy + thumbBTCsell)/2
+	# Finally, price in BTC, and volume in XMR
+	  thumbBTCxmr = thumbXMRkrw/thumbBTCkrw
+	  thumbXMRVol = float(xmrjson['data']['volume_1day'])
+	  stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume | ".format(thumbBTCxmr,thumbXMRVol)
+    except:
+	  bot.say("Error - bithumb korea is worst korea.")
+
 
     # Tux
     # try:
