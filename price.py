@@ -540,7 +540,9 @@ def top(bot, trigger):
     	            market_cap_short = float(round(market_cap_usd,-8)/1e9)
                	rounded_mcap = str(market_cap_short)+"B"
             else:
-            	rounded_mcap = "tiny"
+            	#rounded_mcap = "tiny"
+    	        market_cap_short = float(round(market_cap_usd,-5)/1e6)
+               	rounded_mcap = str(market_cap_short)+"M"
             topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
         bot.say(topXstring[:-2])
     except:
@@ -766,24 +768,24 @@ def xmrtall(bot, trigger):
     except:
         bot.say("Something borked -_-")
 
-    # Cryptopia
-    try:
-        coin = 'XMR'
-        pair = 'BTC'
-        r = requests.get(cryptopiaurl)
-        j = r.json()
-        found = False
-        for i in j["Data"]:
-            if i["Label"] == coin+"/"+pair:
-                last=float(i['LastPrice'])
-                change=float(i['Change'])
-                vol=float(i['Volume'])
-                stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
-                found = True
-        if found == False:
-            bot.say("WTF?!?")
-    except:
-        bot.say("Something borked （ -.-）ノ-=≡≡卍")
+    # # Cryptopia
+    # try:
+    #     coin = 'XMR'
+    #     pair = 'BTC'
+    #     r = requests.get(cryptopiaurl)
+    #     j = r.json()
+    #     found = False
+    #     for i in j["Data"]:
+    #         if i["Label"] == coin+"/"+pair:
+    #             last=float(i['LastPrice'])
+    #             change=float(i['Change'])
+    #             vol=float(i['Volume'])
+    #             stringtosend += "Cryptopia last: {0:.6f} {1} on {2:.2f} {1} volume | ".format(last, pair, vol*last)
+    #             found = True
+    #     if found == False:
+    #         bot.say("WTF?!?")
+    # except:
+    #     bot.say("Something borked （ -.-）ノ-=≡≡卍 (<-- this is a ninja star, nothing naziish)")
 
     # Tux
     # try:

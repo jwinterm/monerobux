@@ -68,6 +68,10 @@ def buyorsell(bot, trigger):
         silly_string = "Buy, buy, buy!"
     bot.say(silly_string)
 
+@sopel.module.commands('chad')
+def chad(bot, trigger):
+      bot.say('https://i.redd.it/6pvmtwkoy0a21.jpg')
+
 @sopel.module.commands('cheerup')
 def cheerup(bot, trigger):
       bot.say('https://www.youtube.com/watch?v=NXfC16rv_fs')
@@ -136,6 +140,10 @@ def encrypt(bot, trigger):
 @sopel.module.commands('eth')
 def eth(bot, trigger):
     bot.say(u'The world computer 💻🌐'.encode('utf8'))
+
+@sopel.module.commands('ferret', 'ferretinjapan')
+def ferret(bot, trigger):
+    bot.say(u'♥‿♥ https://crypto314.com/wp-content/uploads/2017/09/monero-1505185532555-723x1024.png ♥‿♥'.encode('utf8'))
 
 @sopel.module.commands('fib', 'fibonacci')
 def fib(bot, trigger):
@@ -323,6 +331,10 @@ def noom(bot, trigger):
 def notbad(bot, trigger):
     bot.say(u'（´ー｀） http://hackingdistributed.com/images/2014-01-01-bitcoin/dorian1.jpg （´ー｀）'.encode('utf8'))
 
+@sopel.module.commands('obama')
+def obama(bot, trigger):
+    bot.say('https://media0.giphy.com/media/9W4FM9Eis7Vyo/giphy.gif')
+
 odboptions = [
 "FBI don't you be watching me",
 "Ooo baby I like it raw",
@@ -390,6 +402,10 @@ projectingoptions = [
 @sopel.module.commands('projecting')
 def projecting(bot, trigger):
     bot.say(random.choice(projectingoptions))
+
+@sopel.module.commands('purge')
+def purge(bot, trigger):
+    bot.say(u'♔♔♔ Bow to the king https://preview.redd.it/fr8q7x9utnzy.png?width=612&auto=webp&s=8bf7aa7674d2dc3157b776ae07771144833cd879  ♔♔♔'.encode('utf8'))
 
 @sopel.module.commands('rarepepe', 'rare')
 def rarepepe(bot, trigger):
@@ -473,6 +489,10 @@ suraeoptions = [
 @sopel.module.commands('surae')
 def surae(bot, trigger):
     bot.say(random.choice(suraeoptions))
+
+@sopel.module.commands('thicc')
+def thicc(bot, trigger):
+    bot.say("https://pics.me.me/you-on-the-beach-and-luigi-walk-pass-and-give-42542268.png")
 
 @sopel.module.commands('timetravelpp')
 def timetravelpp(bot, trigger):
