@@ -200,7 +200,7 @@ def krakeur(bot, trigger):
 def chart(bot, trigger):
     bot.say('https://cryptowat.ch/poloniex/xmrbtc')
 
-@sopel.module.commands('polo', 'poloniex', 'marco')
+@sopel.module.commands('polo', 'poloniex', 'marco', 'plol')
 @sopel.module.interval(3600)
 def polo(bot, trigger):
     if not trigger.group(2):
