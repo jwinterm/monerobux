@@ -783,7 +783,7 @@ def xmrtall(bot, trigger):
 	# Finally, price in BTC, and volume in XMR
 	  thumbBTCxmr = thumbXMRkrw/thumbBTCkrw
 	  thumbXMRVol = float(xmrjson['data']['volume_1day'])
-	  stringtosend = "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume | ".format(thumbBTCxmr,thumbXMRVol)
+	  stringtosend += "Bithumb last: {0:.6f} BTC on {1:.2f} XMR volume | ".format(thumbBTCxmr,thumbXMRVol)
     except:
 	  bot.say("Error - bithumb korea is worst korea.")
 
