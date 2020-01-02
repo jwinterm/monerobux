@@ -80,6 +80,81 @@ def cheerup(bot, trigger):
 def china(bot, trigger):
     bot.say('https://youtu.be/ZrNrleD2ZFs')
 
+@sopel.module.commands('collect')
+def collect(bot, trigger):
+    syntax_err_msg = 'The syntax is: .collect <what> <quantity>'
+
+    # check for too many args
+    if trigger.group(5):
+        bot.say('Too many arguments!  ' + syntax_err_msg)
+        return
+
+    # check for enough args
+    if not trigger.group(4):
+        bot.say('Too few arguments!  ' + syntax_err_msg)
+        return
+
+    # make sure second arg is a number
+    try:
+        float(trigger.group(4))
+    else:
+        bot.say('Second arg must be a number!  ' + syntax_err_msg)
+        return
+
+    item = trigger.group(3).lowercase()
+    quantity = float(trigger.group(4))
+
+    # the values must be ints or floats
+    Prices = { \
+        "bottle": .05, "bottles": .05, \
+        "can": .03, "cans": .03 \
+    }
+
+    # check if we know the value for the item
+    if Prices.contains(item):
+        pass
+    else:
+        bot.say(item + "!?!  I don't know the value!")
+        return
+
+    coin = "monero"
+    coin_price = 0
+
+    # try to get the USD, first from gecko
+    try:
+        r = requests.get('https://api.coingecko.com/api/v3/coins/' + coin)
+        j = r.json()
+        coin_price = j['market_data']['current_price']['usd']
+    except:
+        # try once more before giving up
+        try:
+            r=requests.get('https://api.coinmarketcap.com/v1/ticker/' + coin)
+            j=r.json()
+            coin_price=float(j[0]['price_usd'])
+        except:
+            bot.say("Failed to retrieve price for {}.".format(coin))
+            return
+
+    if coin_price == 0:
+        # this should never execute, right?
+        bot.say("{} is worth nothing.".format(coin))
+        return
+    else:
+        value_of_one_item = 0
+
+        try:
+            value_of_one_item = float(Prices.get(item))
+        else:
+            # the values in Prices must be ints or floats, of course
+            bot.say("Couldn't convert item value to a float!  How?!?  Why?!?")
+            return
+        
+        value_of_items_collected_in_one_day = quantity * value_of_one_item
+        weekly_coins_to_buy = value_of_items_collected_in_one_day * 7 / coin_price
+
+        bot.say('{0} price: ${1:,.2f}, and {2} price: ${3:,.3f}'.format(item.capitalize(), value_of_one_item, coin.capitalize(), coin_price))
+        bot.say('{0}: collect {1} per day to exchange for {2:,.5f} {3} each week!'.format(item.capitalize(), quantity, weekly_coins_to_buy, coin))
+
 @sopel.module.commands('cryptosid', 'sid')
 def cryptosid(bot, trigger):
     bot.say('https://img.huffingtonpost.com/asset/58acbbd0280000d59899a57a.jpeg?ops=crop_5_33_460_393,scalefit_720_noupscale')
