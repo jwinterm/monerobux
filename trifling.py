@@ -97,11 +97,11 @@ def collect(bot, trigger):
     # make sure second arg is a number
     try:
         float(trigger.group(4))
-    else:
+    except:
         bot.say('Second arg must be a number!  ' + syntax_err_msg)
         return
 
-    item = trigger.group(3).lowercase()
+    item = str(trigger.group(3)).lower()
     quantity = float(trigger.group(4))
 
     # the values must be ints or floats
@@ -111,7 +111,7 @@ def collect(bot, trigger):
     }
 
     # check if we know the value for the item
-    if Prices.contains(item):
+    if item in Prices:
         pass
     else:
         bot.say(item + "!?!  I don't know the value!")
@@ -144,7 +144,7 @@ def collect(bot, trigger):
 
         try:
             value_of_one_item = float(Prices.get(item))
-        else:
+        except:
             # the values in Prices must be ints or floats, of course
             bot.say("Couldn't convert item value to a float!  How?!?  Why?!?")
             return
