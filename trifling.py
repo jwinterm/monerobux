@@ -521,6 +521,19 @@ def romerito(bot, trigger):
         silly_string = "Et tu, Romerito!"
     bot.say(silly_string)
 
+@sopel.module.commands('rotten')
+def rotten(bot, trigger):
+    reddit = praw.Reddit(client_id=client.client_id, client_secret=client.client_secret, user_agent='asdfasdfasdfjhwrgth', username=client.username, password=client.password)
+    try:
+        sub=reddit.subreddit('4chan')
+        posts=sub.hot(limit=100)
+        n=random.randint(0,100)
+        for i, post in enumerate(posts):
+            if i==n:
+                bot.say(post.url)
+    except:
+        bot.say("Something something reddit's servers")
+
 @sopel.module.commands('ryo')
 def ryo(bot, trigger):
     bot.say(u'https://i.imgflip.com/2nn22t.jpg')
