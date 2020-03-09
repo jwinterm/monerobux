@@ -351,7 +351,7 @@ def stock(bot, trigger):
         low = j['l']
         last = j['c']
         pc = j['pc']
-        bot.say("On {} {} had a high of {:.2f}, a low of {:.2f}, and last price of {:.2f} w/ {:.2f}% change".format(datetime.datetime.fromtimestamp(date), ticker, high, low, last, (last-pc)/pc))
+        bot.say("On {} {} had a high of {:.2f}, a low of {:.2f}, and last price of {:.2f} w/ {:.2f}% change".format(datetime.datetime.fromtimestamp(date), ticker, high, low, last, float(((last-pc)/pc))*100))
     except:
         bot.say("Can't find {}".format(ticker))
 
