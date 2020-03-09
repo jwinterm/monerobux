@@ -201,8 +201,8 @@ def ded(bot, trigger):
 
 @sopel.module.commands('donate', 'donation')
 def donate(bot, trigger):
-    bot.say('XMR: 41kroikMqj9YdcXMDt7HH7LFkhBPURMXXKtwAVu8bNA8ci9BF15tYAoQsHHotUPQuAUd9ene3sUXuJHePnZq6kcBUoQk5n8', trigger.nick)
-    bot.say('BTC: 1PFjRGE61szAZqM89f73CpZT54xH98tHkC', trigger.nick)
+    bot.say('XMR: 848bZGkKWNwi588P5EN3cwE7n8UZtCWYVQ3ppWutYkSj6ihLQRawivEgdj6AddpDZ9eCZEr5B6kpih3U2vQzhpPnRhNkfut', trigger.nick)
+    bot.say('BTC: 38JoVcr49qKZTfweNKDkZSmPYdGu86AYqr', trigger.nick)
 
 @sopel.module.commands('dump')
 def dump(bot, trigger):
@@ -777,3 +777,26 @@ def baka(bot, trigger):
 def btcdwed(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=JZYZoQQ6LJQ')
     
+@sopel.module.commands('weather')
+def weather(bot, trigger):
+    wk = client.weather_key
+    try:
+        if not trigger.group(2):
+            location = q="san%20francisco" 
+        elif trigger.group(2) == 'nioc':
+            location = 'new york city'
+        else: 
+            location = trigger.group(2)
+        if location.isdigit():
+            location = "zip="+location
+        else:
+            location = "q="+location.replace(' ', '%20')
+        r = requests.get('https://api.openweathermap.org/data/2.5/weather?{}&appid={}'.format(location, wk))
+        j = r.json()
+        try:
+            bot.say("In {} it is {:.2f} C with a low of {:.2f} and high of {:.2f} C, humidity is {}%, winds of {} m/s at an angle of {} deg with {}.".format(j['name']+', '+j['sys']['country'], float(j['main']['temp'])-273, float(j['main']['temp_min'])-273, float(j['main']['temp_max'])-273, j['main']['humidity'], j['wind']['speed'], j['wind']['deg'], j['weather'][0]['description']))
+        except:
+            bot.say("In {} it is {:.2f} C with a low of {:.2f} and high of {:.2f} C, humidity is {}%, winds of {} m/s with {}.".format(j['name']+', '+j['sys']['country'], float(j['main']['temp'])-273, float(j['main']['temp_min'])-273, float(j['main']['temp_max'])-273, j['main']['humidity'], j['wind']['speed'], j['weather'][0]['description']))
+
+    except:
+        bot.say("The earth is on fire 🌎🔥")
