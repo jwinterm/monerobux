@@ -155,6 +155,41 @@ def collect(bot, trigger):
         bot.say('{0} price: ${1:,.2f}, and {2} price: ${3:,.3f}'.format(item.capitalize(), value_of_one_item, coin.capitalize(), coin_price))
         bot.say('{0}: collect {1} per day to exchange for {2:,.5f} {3} each week!'.format(item.capitalize(), quantity, weekly_coins_to_buy, coin))
 
+@sopel.module.commands('covid', 'corona', 'conv')
+def covid(bot, trigger):
+    if not trigger.group(2):
+        try:
+            r = requests.get(
+                'https://corona.lmao.ninja/all')
+            j = r.json()
+            cases = j['cases']
+            deaths = j['deaths']
+            recovered = j['recovered']
+            active = j['active']
+            affectedCountries = j['affectedCountries']
+            bot.say("Total Cases : {0} || Total Deaths : {1} || Recovered Cases : {2} || Active Cases : {3} || Affected Countries : {4} ".format(
+                cases, deaths, recovered, active, affectedCountries))
+        except:
+            bot.say("API fucked up :(")
+    else:
+        try:
+            countryname = trigger.group(2)
+            r = requests.get(
+                'https://corona.lmao.ninja/countries/{0}'.format(countryname))
+            j = r.json()
+            country = j['country']
+            cases = j['cases']
+            todayCases = j['todayCases']
+            deaths = j['deaths']
+            todayDeaths = j['todayDeaths']
+            recovered = j['recovered']
+            active = j['active']
+            critical = j['critical']
+            bot.say("Country : {0} || Total Cases : {1} || Today Cases : {2} || Total Deaths : {3} || Today Deaths : {4} || Recovered Cases : {5} || Active Cases : {6} || Cricital Cases : {7} ".format(
+                country, cases, todayCases, deaths, todayDeaths, recovered, active, critical))
+        except:
+            bot.say("API fucked up :(")
+
 @sopel.module.commands('cryptosid', 'sid')
 def cryptosid(bot, trigger):
     bot.say('https://img.huffingtonpost.com/asset/58acbbd0280000d59899a57a.jpeg?ops=crop_5_33_460_393,scalefit_720_noupscale')
