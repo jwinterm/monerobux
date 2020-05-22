@@ -319,7 +319,7 @@ def paprika(bot, trigger):
                     id = i['id']
         r = requests.get('https://api.coinpaprika.com/v1/tickers/{}'.format(id))
         j = r.json()
-        bot.say("{} ({}) is #{} by marketcap, trading at ${:.2f} with a 24h vol of ${:.2e}. It's changed {}% over 24h, {}% over 7d, {}% over 30d, and {}% over 1y with an ath of ${} on {}.".format(j['name'], j['symbol'], j['rank'], float(j['quotes']['USD']['price']), float(j['quotes']['USD']['volume_24h']), j['quotes']['USD']['percent_change_24h'], j['quotes']['USD']['percent_change_7d'], j['quotes']['USD']['percent_change_30d'], j['quotes']['USD']['percent_change_1y'], j['quotes']['USD']['ath_price'], j['quotes']['USD']['ath_date']))
+        bot.say("{} ({}) is #{} by marketcap (${:.2e}), trading at ${:.4f} with a 24h vol of ${:.2e}. It's changed {}% over 24h, {}% over 7d, {}% over 30d, and {}% over 1y with an ath of ${} on {}.".format(j['name'], j['symbol'], j['rank'], float(j['quotes']['USD']['market_cap']), float(j['quotes']['USD']['price']), float(j['quotes']['USD']['volume_24h']), j['quotes']['USD']['percent_change_24h'], j['quotes']['USD']['percent_change_7d'], j['quotes']['USD']['percent_change_30d'], j['quotes']['USD']['percent_change_1y'], j['quotes']['USD']['ath_price'], j['quotes']['USD']['ath_date']))
     except:
         bot.say('No paprika only salt')
 
@@ -360,6 +360,8 @@ def stock(bot, trigger):
 def ogre(bot, trigger):
     if not trigger.group(2):
         pair = 'BTC-XMR'
+    elif "hidden" in trigger.group(2) or "gem" in trigger.group(2):
+        pair = 'BTC-WOW'
     else:
         pair = 'BTC-'+trigger.group(2).upper()
     try:
@@ -497,14 +499,13 @@ def tall(bot, trigger):
             stringtosend += "Bitfinex last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
     except:
         stringtosend += "Finex sucks | "
-    # Bitflyer
+    # Krak euro price
     try:
-        bitflyerresult = requests.get(bitflyerurl)
-        bitflyerjson = bitflyerresult.json()
+        r = requests.get(krakbtceur)
+        j = r.json()
+        stringtosend += "Kraken last: €{0:,.2f}, vol: {1:,.1f} | ".format(float(j['result']['XXBTZEUR']['c'][0]), float(j['result']['XXBTZEUR']['v'][0]))
     except:
-	bitflyerjson = False
-    if bitflyerjson:
-        stringtosend += "Bitflyer last: ¥{0:,.2f}, vol: {1:,.1f} | ".format(float(bitflyerjson['ltp']), float(bitflyerjson['volume_by_product']))
+        bot.say("Error getting BTC/EUR data")
     # Send the tickers to IRC
     bot.say(stringtosend[:-2])
 

@@ -45,6 +45,19 @@ def barolo(bot, trigger):
 def bb(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=_VvbP0QNmF0')
 
+bbloptions = [
+"don't worry",
+"it's fine",
+"everything is good",
+"😇🤣",
+"afk",
+"it's all good",
+"please go back and re-read it, it's good",
+]
+@sopel.module.commands('bbl')
+def bbl(bot, trigger):
+    bot.say(random.choice(bbloptions))
+
 @sopel.module.commands('bear')
 def bear(bot, trigger):
     bot.say(u'ʕ ·(エ)· ʔ'.encode('utf8'))
@@ -160,7 +173,7 @@ def covid(bot, trigger):
     if not trigger.group(2):
         try:
             r = requests.get(
-                'https://corona.lmao.ninja/all')
+                'https://corona.lmao.ninja/v2/all')
             j = r.json()
             cases = j['cases']
             deaths = j['deaths']
@@ -175,7 +188,7 @@ def covid(bot, trigger):
         try:
             countryname = trigger.group(2)
             r = requests.get(
-                'https://corona.lmao.ninja/countries/{0}'.format(countryname))
+                'https://corona.lmao.ninja/v2/countries/{0}'.format(countryname))
             j = r.json()
             country = j['country']
             cases = j['cases']
@@ -388,6 +401,10 @@ def lietome(bot, trigger):
 @sopel.module.commands('livermore')
 def livermore(bot, trigger):
     bot.say(u'https://en.wikipedia.org/wiki/Reminiscences_of_a_Stock_Operator'.encode('utf8'))
+
+@sopel.module.commands('loki')
+def loki(bot, trigger):
+    bot.say(u'Only $13 to run a masternode 🤑🤡 https://i.imgur.com/aK5kiwi.png')
 
 @sopel.module.commands('luigi')
 def luigi(bot, trigger):
@@ -613,6 +630,10 @@ suraeoptions = [
 def surae(bot, trigger):
     bot.say(random.choice(suraeoptions))
 
+@sopel.module.commands('tech', 'initforthetech')
+def tech(bot, trigger):
+    bot.say("I'm in it for the tech https://i.imgur.com/h2g7wSe.png 👩‍💻⚙")
+
 @sopel.module.commands('thicc')
 def thicc(bot, trigger):
     bot.say("https://pics.me.me/you-on-the-beach-and-luigi-walk-pass-and-give-42542268.png")
@@ -729,6 +750,10 @@ def zcash(bot, trigger):
 @sopel.module.commands('zooko')
 def zcash(bot, trigger):
     bot.say("And by the way, I think we can successfully make Zcash too traceable for criminals like WannaCry, but still completely private & fungible.")
+
+@sopel.module.rule('[Tt]est*.')
+def test(bot, trigger):
+    bot.say("Test failed")
 
 @sopel.module.rule('monerobux o\/')
 def wave(bot, trigger):
