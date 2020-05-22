@@ -53,6 +53,14 @@ bbloptions = [
 "afk",
 "it's all good",
 "please go back and re-read it, it's good",
+"don't worry about me, I'm relaxed for a reason",
+"I will be back expectedly an hr or more later",
+"you didn't understand what you read, I'll be back later",
+"pls wait for a little",
+".....ok I'm back",
+"actual bbl",
+"Then you need to review it again. Take it from the author who apparently knows what he's talking about. Otherwise just ignore it and pretend I didn't post it OK, bbl",
+"As a matter of fact it sounds like you have an actually understood or read all of the details yet so I will give you some more timei, bbl"
 ]
 @sopel.module.commands('bbl')
 def bbl(bot, trigger):
