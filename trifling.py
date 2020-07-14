@@ -6,6 +6,7 @@ import requests
 import praw
 import client
 from threading import Timer
+from HTMLParser import HTMLParser
 
 @sopel.module.commands('4matter')
 def fourmatter(bot, trigger):
@@ -652,16 +653,22 @@ def timetravelpp(bot, trigger):
 
 @sopel.module.commands('trivia')
 def trivia(bot, trigger):
+    h = HTMLParser()
     try:
         triviaurl = 'https://opentdb.com/api.php?amount=1&type=multiple'
         r = requests.get(triviaurl)
         j = r.json()
         category = j['results'][0]['category']
         difficulty = j['results'][0]['difficulty']
-        question = j['results'][0]['question']
+        question = h.unescape(j['results'][0]['question'])
+	answers = [j['results'][0]['correct_answer']]
+	for i in j['results'][0]['incorrect_answers']:
+		answers.append(i)
+	random.shuffle(answers)
         correct_answer = j['results'][0]['correct_answer']
         incorrect_answers = j['results'][0]['incorrect_answers']
         bot.say("This question is in the field of {} and is of {} difficulty: {}".format(category, difficulty, question))
+	bot.say("The possible answers are: {}, {}, {}, or {}".format(answers[0], answers[1], answers[2], answers[3]))
         replystr = "If you said {} you are correct, but if you said {}, {}, or {} you should call your parents and complain.".format(correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2])
         def f():
             bot.say(replystr)
@@ -759,7 +766,7 @@ def zcash(bot, trigger):
 def zcash(bot, trigger):
     bot.say("And by the way, I think we can successfully make Zcash too traceable for criminals like WannaCry, but still completely private & fungible.")
 
-@sopel.module.rule('[Tt]est*.')
+@sopel.module.rule('[Tt]est.*')
 def test(bot, trigger):
     bot.say("Test failed")
 
