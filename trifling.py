@@ -599,6 +599,15 @@ def rotten(bot, trigger):
 def ryo(bot, trigger):
     bot.say(u'https://i.imgflip.com/2nn22t.jpg')
 
+sadminoptions = [
+    u"Hi all i was setupping a mining pool and in trynd on virtual box (install It on PC make me Crazy with wifi driver...i really dont know how make them work) So...when i try run monerod said something like that an HDD Is too slow d'oro Sync and stops...but im on VM and a virtual box with NVME emulated dont LET me boot Ubuntu...",
+    u"POOL ONLINE, ALL WORK AND FEE 0% i had problems",
+    u"Im tryng fixing things",
+    u"Idk why now pool say Can connect webui and stop work...in gonna recompile It...back in 30 minutes"
+]
+@sopel.module.commands('sadmin')
+    bot.say(random.choice(sadminoptions))
+
 @sopel.module.commands('scam')
 def scam(bot, trigger):
     bot.say(u'http://i.imgflip.com/is8.jpg')
