@@ -606,6 +606,7 @@ sadminoptions = [
     u"Idk why now pool say Can connect webui and stop work...in gonna recompile It...back in 30 minutes"
 ]
 @sopel.module.commands('sadmin')
+def sadmin(bot, trigger):
     bot.say(random.choice(sadminoptions))
 
 @sopel.module.commands('scam')
