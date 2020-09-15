@@ -861,6 +861,10 @@ def baka(bot, trigger):
 @sopel.module.commands('btcdwed')
 def btcdwed(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=JZYZoQQ6LJQ')
+
+@sopel.module.commands('wayshegoes')
+def wayshegoes(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=3SpihGKmYgY')
     
 @sopel.module.commands('weather')
 def weather(bot, trigger):
