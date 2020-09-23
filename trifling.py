@@ -889,3 +889,11 @@ def weather(bot, trigger):
 
     except:
         bot.say("The earth is on fire 🌎🔥")
+
+@sopel.module.commands('yeezy')
+def yeezy(bot, trigger):
+    try:
+        res = requests.get('https://api.kanye.rest')
+	bot.say(res.json()['quote'])
+    except Exception as e:
+        bot.say('borked: {}'.format(e)
