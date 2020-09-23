@@ -170,7 +170,7 @@ def collect(bot, trigger):
             # the values in Prices must be ints or floats, of course
             bot.say("Couldn't convert item value to a float!  How?!?  Why?!?")
             return
-        
+
         value_of_items_collected_in_one_day = quantity * value_of_one_item
         weekly_coins_to_buy = value_of_items_collected_in_one_day * 7 / coin_price
 
@@ -853,11 +853,11 @@ def whaleornot(bot, trigger):
 @sopel.module.commands('trebuchet')
 def trebuchet(bot, trigger):
     bot.say("Can YOU use a counterweight to launch a 90 kg projectile over 300 meters? Yeah, I thought not.")
-    
+
 @sopel.module.commands('baka')
 def baka(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=n5n7CSGPzqw')
-    
+
 @sopel.module.commands('btcdwed')
 def btcdwed(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=JZYZoQQ6LJQ')
@@ -865,16 +865,16 @@ def btcdwed(bot, trigger):
 @sopel.module.commands('wayshegoes')
 def wayshegoes(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=3SpihGKmYgY')
-    
+
 @sopel.module.commands('weather')
 def weather(bot, trigger):
     wk = client.weather_key
     try:
         if not trigger.group(2):
-            location = q="san%20francisco" 
+            location = q="san%20francisco"
         elif trigger.group(2) == 'nioc':
             location = 'new york city'
-        else: 
+        else:
             location = trigger.group(2)
         if location.isdigit():
             location = "zip="+location
@@ -892,8 +892,10 @@ def weather(bot, trigger):
 
 @sopel.module.commands('yeezy')
 def yeezy(bot, trigger):
-    try:
-        res = requests.get('https://api.kanye.rest')
-	bot.say(res.json()['quote'])
-    except Exception as e:
-        bot.say('borked: {}'.format(e)
+    headers = {'User-Agent': 'monerobux-irc-bot-#wownero'}
+    resp = requests.get('https://api.kanye.rest', headers=headers, timeout=3)
+    resp.raise_for_status()
+    blob = resp.json()
+    if 'quote' not in blob or not isinstance(blob['quote'], str):
+        raise Exception('malformed response')
+    bot.say(blob['quote'])
