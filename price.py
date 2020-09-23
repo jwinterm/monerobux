@@ -6,6 +6,7 @@ import random
 import datetime
 import re
 import client
+import csv
 
 polourl = "https://poloniex.com/public?command=returnTicker"
 poloxmrlendurl = "https://poloniex.com/public?command=returnLoanOrders&currency=XMR&limit=999999"
@@ -155,6 +156,24 @@ def gecko(bot, trigger):
     except:
         bot.say("Couldn't find {} on le gecko".format(coin))
 
+@sopel.module.commands('coin', 'coinex')
+def coinex(bot, trigger):
+    if not trigger.group(2):
+        bot.say(".coin <coin-name> <currency-code>")
+    else:
+        try:
+            coinname = trigger.group(2).split(" ")[0]
+            currencyname = trigger.group(2).split(" ")[1]
+            r = requests.get(
+                'https://api.coingecko.com/api/v3/coins/markets?vs_currency={0}&ids={1}&sparkline=false'.
+                format(currencyname, coinname))
+            j = r.json()
+            bot.say("{0} price {1:,.2f} {2}".format(j[0]['name'],
+                                                    float(
+                                                        j[0]['current_price']),
+                                                    currencyname.upper()))
+        except:
+            bot.say("Failed to retrieve price.")
 
 @sopel.module.commands('krak', 'kraken')
 def krak(bot, trigger):
@@ -509,6 +528,61 @@ def tall(bot, trigger):
     # Send the tickers to IRC
     bot.say(stringtosend[:-2])
 
+addys = []
+@sopel.module.commands('uni')
+def uni(bot, trigger):
+    addy = trigger.group(2)
+    if len(addy) == 42 and addy[0:2] == "0x":
+        try:
+            r = requests.get("https://api.ethplorer.io/getTokenInfo/{}?apiKey=freekey".format(addy))
+            j = r.json()
+            name = j["name"]
+            symbol = j["symbol"]
+            holders = j["holdersCount"]
+            price = j["price"]["rate"]
+            mcap = j["price"]["marketCapUsd"]
+            vol = j["price"]["volume24h"]
+            bot.say("{} ({}) last price ${:.2f} on {:.2e} vol. Marketcap is ${:.2e} with {:.0f} addresses holding.".format(name, symbol, price, vol, mcap, holders))
+            existflag = False
+            for i in addys:
+                if i[0] == addy:
+                    existflag == True
+            if not existflag:
+                addys.append([addy, name, symbol])
+        except:
+            bot.say("Can't find this piece of trash")
+            return
+    else:
+        existflag = False
+        for i in addys:
+            if addy == i[1] or addy == i[2]:
+                addy = i[0]
+                existflag = True
+        if not existflag:
+            bot.say("Can't find {}".format(addy))
+            return
+        try:
+            r = requests.get("https://api.ethplorer.io/getTokenInfo/{}?apiKey=freekey".format(addy))
+            j = r.json()
+            name = j["name"]
+            symbol = j["symbol"]
+            holders = j["holdersCount"]
+            price = j["price"]["rate"]
+            mcap = j["price"]["marketCapUsd"]
+            vol = j["price"]["volume24h"]
+            bot.say("{} ({}) last price ${:.2f} on {:.2e} vol. Marketcap is ${:.2e} with {:.0f} addresses holding.".format(name, symbol, price, vol, mcap, holders))
+            existflag = False
+            for i in addys:
+                if i[0] == addy:
+                    existflag == True
+            if not existflag:
+                addys.append([addy, name, symbol])
+        except:
+            bot.say("Can't find this piece of trash")
+            return
+    with open('addys.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(addys)
 
 @sopel.module.commands('usd')
 def usd(bot, trigger):

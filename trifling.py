@@ -890,12 +890,12 @@ def weather(bot, trigger):
     except:
         bot.say("The earth is on fire 🌎🔥")
 
-@sopel.module.commands('yeezy')
+@sopel.module.commands('yeezy', 'kanye', 'ye')
 def yeezy(bot, trigger):
-    headers = {'User-Agent': 'monerobux-irc-bot-#wownero'}
-    resp = requests.get('https://api.kanye.rest', headers=headers, timeout=3)
-    resp.raise_for_status()
-    blob = resp.json()
-    if 'quote' not in blob or not isinstance(blob['quote'], str):
-        raise Exception('malformed response')
-    bot.say(blob['quote'])
+    #headers = {'User-Agent': 'monerobux-irc-bot-#wownero'}
+    r = requests.get('https://api.kanye.rest')
+    #resp.raise_for_status()
+    j = r.json()
+    #if 'quote' not in blob or not isinstance(blob['quote'], str):
+    #    raise Exception('malformed response')
+    bot.say(j['quote'])

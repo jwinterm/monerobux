@@ -95,3 +95,27 @@ def solo(bot, trigger):
 @sopel.module.commands('b2x')
 def b2x(bot, trigger):
   bot.say("Fuck off \\x")
+
+def get_pools(coin = 'monero'):
+  resp = requests.get("https://data.miningpoolstats.stream/data/time")
+  time = int(resp.text)
+  resp = requests.get("https://data.miningpoolstats.stream/data/{}.js?t={}".format(coin, time))
+  j = resp.json()
+  return j
+@sopel.module.commands('miners')
+def print_monero_miners_counter(bot, trigger):
+  pools = get_pools()
+  result = {
+    'website counter': pools['poolsminers'],
+    'website counter recalculated': sum([
+        e['miners'] if ('miners' in e and isinstance(e['miners'], int) and e['miners'] >= 0) else (
+            e['workers'] if ('workers' in e and isinstance(e['workers'], int) and e['workers'] >= 0) else (
+                0
+              )
+          )
+        for e in pools['data']
+      ]),
+    'count(miners) where miners >= 0': sum([e['miners'] for e in pools['data'] if 'miners' in e and isinstance(e['miners'], int) and e['miners'] > 0]),
+    'count(workers) where workers >= 0': sum([e['workers'] for e in pools['data'] if 'workers' in e and isinstance(e['workers'], int) and e['workers'] > 0]),
+    }
+  bot.say(result)
