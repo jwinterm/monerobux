@@ -71,6 +71,10 @@ def bbl(bot, trigger):
 def bear(bot, trigger):
     bot.say(u'ʕ ·(エ)· ʔ'.encode('utf8'))
 
+@sopel.module.commands('billions')
+def billions(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=u_aLESDql1U')
+
 @sopel.module.commands('brothers')
 def brothers(bot, trigger):
     bot.say(u'http://www.trollaxor.com/2011/11/brief-history-of-ascii-penis.html'.encode('utf8'))
@@ -454,6 +458,10 @@ def needmoney(bot, trigger):
 @sopel.module.commands('nioc')
 def nioc(bot, trigger):
     bot.say(u'https://ifunny.co/fun/laeIohx56'.encode('utf8'))
+
+@sopel.module.commands('nobody')
+def nobody(bot, trigger):
+    bot.say('https://www.youtube.com/watch?v=YA631bMT9g8')
 
 @sopel.module.commands('nomnomnom')
 def nomnomnom(bot, trigger):
