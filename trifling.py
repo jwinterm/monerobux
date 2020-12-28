@@ -907,3 +907,7 @@ def yeezy(bot, trigger):
     #if 'quote' not in blob or not isinstance(blob['quote'], str):
     #    raise Exception('malformed response')
     bot.say(j['quote'])
+
+sopel.module.commands('mental')
+def mental(bot, trigger):
+    bot.say('Ahhhhhhhh!!!!')
