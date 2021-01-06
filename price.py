@@ -418,12 +418,21 @@ def top(bot, trigger):
     topXstring = ""
     try:
         try:
-        	r = requests.get('https://api.coingecko.com/api/v3/global')
-        	j = r.json()
-        	usd_total_mkt_cap = float(j['data']['total_market_cap']['usd'])
-        	total_mcap_short = int(int(round(usd_total_mkt_cap,-9))/int(1e9))
-        	rounded_total_mcap = str(total_mcap_short)+"B"
-        	topXstring += "Total market cap $" + rounded_total_mcap + " | "
+            r = requests.get('https://api.coingecko.com/api/v3/global')
+            j = r.json()
+            usd_total_mkt_cap = float(j['data']['total_market_cap']['usd'])
+            total_mcap_short = 0
+            magnitude_sym = "M"
+            if usd_total_mkt_cap >= 1e12:
+                total_mcap_short = round(usd_total_mkt_cap/float(1e12),2)
+                magnitude_sym = "T"
+            elif usd_total_mkt_cap >= 1e9:
+                total_mcap_short = round(usd_total_mkt_cap/float(1e9),1)
+                magnitude_sym = "B"
+            else:
+                total_mcap_short = round(usd_total_mkt_cap/float(1e6),0)
+            rounded_total_mcap = str(total_mcap_short)+magnitude_sym
+            topXstring += "Total market cap $" + rounded_total_mcap + " | "
         except:
         	bot.say("Can't connect to coinmarketcap API")
         if not trigger.group(2):
@@ -442,16 +451,18 @@ def top(bot, trigger):
             rank = i['market_cap_rank']
             price_usd = float(i['current_price'])
             market_cap_usd = float(i['market_cap'])
-            if market_cap_usd >= 1e9:
-    	        if market_cap_usd >= 1e10:
-                    market_cap_short = int(int(round(market_cap_usd,-9))/int(1e9))
-    	        else:
-    	            market_cap_short = float(round(market_cap_usd,-8)/1e9)
-               	rounded_mcap = str(market_cap_short)+"B"
+            mcap_short = 0
+            magnitude_sym = "M"
+            if market_cap_usd >= 1e12:
+                mcap_short = round(market_cap_usd/float(1e12),2)
+                magnitude_sym = "T"
+            elif market_cap_usd >= 1e9:
+                mcap_short = round(market_cap_usd/float(1e9),1)
+                magnitude_sym = "B"
             else:
-            	#rounded_mcap = "tiny"
-    	        market_cap_short = float(round(market_cap_usd,-5)/1e6)
-               	rounded_mcap = str(market_cap_short)+"M"
+                #mcap_short = "tiny"
+                mcap_short = round(market_cap_usd/float(1e6),0)
+            rounded_mcap = str(mcap_short)+magnitude_sym
             topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
         bot.say(topXstring[:-2])
     except:
