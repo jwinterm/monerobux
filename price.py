@@ -418,22 +418,23 @@ def top(bot, trigger):
     topXstring = ""
     try:
         try:
-        	r = requests.get('https://api.coingecko.com/api/v3/global')
-        	j = r.json()
-        	usd_total_mkt_cap = float(j['data']['total_market_cap']['usd'])
-        	total_mcap_short = int(int(round(usd_total_mkt_cap,-9))/int(1e9))
-        	rounded_total_mcap = str(total_mcap_short)+"B"
-        	topXstring += "Total market cap $" + rounded_total_mcap + " | "
+            r = requests.get('https://api.coingecko.com/api/v3/global')
+            j = r.json()
+            usd_total_mkt_cap = float(j['data']['total_market_cap']['usd'])
+            rounded_total_mcap = trim_mcap(usd_total_mkt_cap)
+            topXstring += "Total market cap $" + rounded_total_mcap + " | "
         except:
-        	bot.say("Can't connect to coinmarketcap API")
+        	bot.say("Can't connect to coingecko API")
         if not trigger.group(2):
             limit = 20
         else:
             limit = int(trigger.group(2))
             if limit > 20:
                 bot.say("Too high!  Max is 20!")
+                limit = 20
             elif limit < 1:
                 bot.say("Dude...")
+                return
     	r = requests.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page={}&page=1&sparkline=false'.format(limit))
     	j = r.json()
         for i in j:
@@ -442,21 +443,32 @@ def top(bot, trigger):
             rank = i['market_cap_rank']
             price_usd = float(i['current_price'])
             market_cap_usd = float(i['market_cap'])
-            if market_cap_usd >= 1e9:
-    	        if market_cap_usd >= 1e10:
-                    market_cap_short = int(int(round(market_cap_usd,-9))/int(1e9))
-    	        else:
-    	            market_cap_short = float(round(market_cap_usd,-8)/1e9)
-               	rounded_mcap = str(market_cap_short)+"B"
-            else:
-            	#rounded_mcap = "tiny"
-    	        market_cap_short = float(round(market_cap_usd,-5)/1e6)
-               	rounded_mcap = str(market_cap_short)+"M"
+            rounded_mcap = trim_mcap(market_cap_usd)
             topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
         bot.say(topXstring[:-2])
     except:
         bot.say("The use is 'top' and then a digit 1 - 20")
 
+def trim_mcap(val):
+    mcap = 0
+    magnitude_sym = "M"
+    if val >= 1e12: # >= 1T
+        magnitude_sym = "T"
+        if val >= 1e13:
+          mcap = round(val/float(1e12),1) # >= 10T show one decimal
+        else:
+          mcap = round(val/float(1e12),2) # 1T <= x < 10T show two decimals
+    elif val >= 1e9: # >= 1B
+        magnitude_sym = "B"
+        if val >= 1e11:
+          mcap = int(round(val/float(1e9),0)) # >= 100B show no decimals
+        else:
+          mcap = round(val/float(1e9),1) # 1B <= x < 100B show one decimal
+    else: # < 1B
+      # mcap = "tiny"
+      mcap = int(round(val/float(1e6),0)) # < 1B show no decimals
+    rounded_mcap = str(mcap) + magnitude_sym
+    return rounded_mcap
 
 @sopel.module.commands('tall')
 def tall(bot, trigger):
