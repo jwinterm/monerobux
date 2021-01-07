@@ -431,10 +431,10 @@ def top(bot, trigger):
             limit = int(trigger.group(2))
             if limit > 20:
                 bot.say("Too high!  Max is 20!")
-		limit = 20
+                limit = 20
             elif limit < 1:
                 bot.say("Dude...")
-		return
+                return
     	r = requests.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page={}&page=1&sparkline=false'.format(limit))
     	j = r.json()
         for i in j:
