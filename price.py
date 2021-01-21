@@ -397,10 +397,16 @@ def ogre(bot, trigger):
 
 @sopel.module.commands('trex', 'bittrex')
 def trex(bot, trigger):
+    geturl = ""
     if not trigger.group(2):
-         geturl = trexurl+'xmr'
+         bot.say("spineless...")
+         break
     else:
-        geturl = trexurl + trigger.group(2)
+        if trigger.group(2) == "xmr":
+            bot.say("spineless")
+            break
+        else:
+            geturl = trexurl + trigger.group(2)
     try:
         r = requests.get(geturl)
         j = r.json()
@@ -664,17 +670,17 @@ def xmrtall(bot, trigger):
         bot.say("Borka borka ┌∩┐(◣_◢)┌∩┐")
 
     # Trex
-    geturl = trexurl+'xmr'
-    try:
-        r = requests.get(geturl)
-        j = r.json()
-        xmr=j['result'][0]
-        last=float(xmr['Last'])
+#    geturl = trexurl+'xmr'
+#    try:
+#        r = requests.get(geturl)
+#        j = r.json()
+#        xmr=j['result'][0]
+#        last=float(xmr['Last'])
 #       change=((last/float(xmr['PrevDay']))-1)
-        vol=float(xmr['BaseVolume'])
-        stringtosend += "Bittrex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
-    except:
-        bot.say("Something borked -_-")
+#        vol=float(xmr['BaseVolume'])
+#        stringtosend += "Bittrex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
+#    except:
+#        bot.say("Something borked -_-")
 
     #Finally... print to IRC
     bot.say(stringtosend[:-2])
