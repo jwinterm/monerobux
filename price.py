@@ -400,11 +400,11 @@ def trex(bot, trigger):
     geturl = ""
     if not trigger.group(2):
          bot.say("spineless...")
-         break
+         return
     else:
         if trigger.group(2) == "xmr":
             bot.say("spineless")
-            break
+            return
         else:
             geturl = trexurl + trigger.group(2)
     try:

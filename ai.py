@@ -11,7 +11,7 @@ def gp2(bot, trigger):
         data={
             'text': text,
         },
-        headers={'api-key': '34b2c164-0c2e-4896-90ab-98dd56eeb290'}
+        headers={'api-key': '4509ed67-e409-4e68-821a-05a15ce6b052'}
     )
     #bot.say(r.json())
     bot.say(r.json()['output'].split('\n\n')[0])

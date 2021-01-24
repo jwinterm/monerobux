@@ -908,6 +908,6 @@ def yeezy(bot, trigger):
     #    raise Exception('malformed response')
     bot.say(j['quote'])
 
-sopel.module.commands('mental')
+@sopel.module.commands('mental')
 def mental(bot, trigger):
     bot.say('Ahhhhhhhh!!!!')
