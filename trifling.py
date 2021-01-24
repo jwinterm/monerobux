@@ -911,3 +911,7 @@ def yeezy(bot, trigger):
 @sopel.module.commands('mental')
 def mental(bot, trigger):
     bot.say('Ahhhhhhhh!!!!')
+
+@sopel.module.commands('biden')
+def mental(bot, trigger):
+    bot.say('Come on man...')
