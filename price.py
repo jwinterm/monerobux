@@ -432,12 +432,21 @@ def top(bot, trigger):
         except:
         	bot.say("Can't connect to coingecko API")
         if not trigger.group(2):
-            limit = 20
+            try:
+                r = requests.get('https://api.coingecko.com/api/v3/coins/'+'monero')
+                j = r.json()
+                mcaprank = j['market_cap_rank']
+                if mcaprank > 20:
+                    limit = mcaprank
+                else:
+                    limit = 20
+            except:
+                limit = 20
         else:
             limit = int(trigger.group(2))
-            if limit > 20:
-                bot.say("Too high!  Max is 20!")
-                limit = 20
+            if limit > 30:
+                bot.say("Too high!  Max is 30!")
+                limit = 30
             elif limit < 1:
                 bot.say("Dude...")
                 return
