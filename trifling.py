@@ -661,6 +661,10 @@ def surae(bot, trigger):
 def tech(bot, trigger):
     bot.say("I'm in it for the tech https://i.imgur.com/h2g7wSe.png 👩‍💻⚙")
 
+@sopel.module.commands('tether')
+def chad(bot, trigger):
+      bot.say("For downvoters: You are downvoting facts and truth, quite far from your scientific beliefs. Just read the actual whitepaper and then come and downvote. Don't repeat what you read or heard or think is obvious, obviously.")
+
 @sopel.module.commands('thicc')
 def thicc(bot, trigger):
     bot.say("https://pics.me.me/you-on-the-beach-and-luigi-walk-pass-and-give-42542268.png")
