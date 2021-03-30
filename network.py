@@ -7,6 +7,7 @@ import re
 # networkurl = "http://opennode.minemonero.pro:18081/getinfo"
 # networkurl = "http://node.xmr.pt:18081/getinfo"
 networkurl = "http://node.supportxmr.com:18081/getinfo"
+lastblock = "http://node.supportxmr.com:18081/get_last_block_header"
 
 @sopel.module.commands('fork', 'forkening')
 def fork(bot, trigger):
@@ -55,6 +56,15 @@ def mempool(bot, trigger):
     r=requests.get(networkurl)
     j=r.json()
     bot.say("The current number of txs in Monero's mempool is {0}".format(j['tx_pool_size']))
+  except:
+    bot.say("Something borked o_O")
+    
+@sopel.module.commands('lastblock')
+def mempool(bot, trigger):
+  try:    
+    r=requests.get(lastblock)
+    j=r.json()
+    bot.say("The current number of txs in Monero's Last Block is {0}".format(j['block_header']['num_txes']))
   except:
     bot.say("Something borked o_O")
 
