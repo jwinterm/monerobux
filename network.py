@@ -8,7 +8,7 @@ import re
 # networkurl = "http://node.xmr.pt:18081/getinfo"
 networkurl = "http://node.supportxmr.com:18081/getinfo"
 
-jsonurl = "http://node.supportxmr.com:18081/json_rpc"
+jsonurl = "http://node1.keepitmonero.com:18089/json_rpc"
 headers = {
     'Content-Type': 'application/json',
 }
