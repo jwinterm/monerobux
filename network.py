@@ -1,6 +1,7 @@
 import sopel.module
 import requests
 import re
+import time
 
 # networkurl = "http://node.marty.cf:18019/getinfo"
 # networkurl = "http://node.xmrbackb.one:18081/getinfo"
@@ -8,7 +9,7 @@ import re
 # networkurl = "http://node.xmr.pt:18081/getinfo"
 networkurl = "http://node.supportxmr.com:18081/getinfo"
 
-jsonurl = "http://node.supportxmr.com:18081/json_rpc"
+jsonurl = "http://node1.keepitmonero.com:18089/json_rpc"
 headers = {
     'Content-Type': 'application/json',
 }
@@ -66,14 +67,14 @@ def mempool(bot, trigger):
     
 @sopel.module.commands('lastblock')
 def lastblock(bot, trigger):
-  try:    
-    r=requests.get(lastblock)
+  #try:    
+  #  r=requests.get(lastblock)
     r=requests.post(jsonurl, headers=headers, data=requestdata)
     j=r.json()
     block=j['result']['block_header']
-    bot.say("Last block height is {0} with {1} transactions".format(block['height'],block['num_txes']))
-  except:
-    bot.say("Something borked o_O")
+    bot.say("Last block found {0:.2f} minutes ago with height {1} included {2} transactions".format((time.time() - float(block['timestamp']))/60, block['height'], block['num_txes']))
+  #except:
+  #  bot.say("Something borked o_O")
 
 @sopel.module.commands('blocksize')
 def blocksize(bot, trigger):

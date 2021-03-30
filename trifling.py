@@ -18,6 +18,10 @@ def fourmatter(bot, trigger):
 #     bot.say('sun is not doing allah is doing')
 #     bot.say('to accept Islam say that i bear witness that there is no deity worthy of worship except Allah and Muhammad peace be upon him is his slave and messenger')
 
+@sopel.module.commands('_.')
+def faceflip(bot, trigger):
+    bot.say(':|   .¯.   |:   ._.   :|   .¯.   |:   ._.   :|   .¯.   |:   ._.')
+   
 @sopel.module.commands('ada', 'hoskinson')
 def ada(bot, trigger):
     bot.say('DO YOU KNOW WHO I AM?')
