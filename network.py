@@ -66,8 +66,7 @@ def mempool(bot, trigger):
     
 @sopel.module.commands('lastblock')
 def lastblock(bot, trigger):
-  try:    
-    r=requests.get(lastblock)
+  try:        
     r=requests.post(jsonurl, headers=headers, data=requestdata)
     j=r.json()
     block=j['result']['block_header']
