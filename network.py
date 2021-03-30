@@ -60,7 +60,7 @@ def mempool(bot, trigger):
     bot.say("Something borked o_O")
     
 @sopel.module.commands('lastblock')
-def mempool(bot, trigger):
+def lastblock(bot, trigger):
   try:    
     r=requests.get(lastblock)
     j=r.json()
