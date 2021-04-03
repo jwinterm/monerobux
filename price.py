@@ -141,20 +141,35 @@ def gecko(bot, trigger):
     if not trigger.group(2):
         coin = "monero"
     else:
-        coin = trigger.group(2)
+        coin = trigger.group(2).lower()
     try:
-        r = requests.get('https://api.coingecko.com/api/v3/coins/'+coin)
+        r = requests.get('https://api.coingecko.com/api/v3/coins/list')
         j = r.json()
-        coinid = j['id']
+        for i in j:
+            if coin == i['symbol'] or coin == i['name'].lower():
+                id = i['id']
+    except:
+        bot.say("Failed to find {}".format(coin))
+    try:
+        if coin == 'wow' or coin == 'wownero': id = 'wownero'
+        r = requests.get('https://api.coingecko.com/api/v3/coins/'+id)
+        j = r.json()
+        name = j['name']
+        ticker = j['symbol'].upper()
         mcaprank = j['market_cap_rank']
+        mcap = j['market_data']['market_cap']['usd']
         geckorank = j['coingecko_rank']
         btcprice = j['market_data']['current_price']['btc']
         usdprice = j['market_data']['current_price']['usd']
         athbtc = j['market_data']['ath']['btc']
         athusd = j['market_data']['ath']['usd']
-        bot.say("{} ({}) is #{:.0f} by mcap and #{:.0f} by coingecko rank. Current price is {:.8f} BTC / ${:.3f}. ATH price is {:.8f} BTC / ${:.3f}.".format(coin, coinid, mcaprank, geckorank, btcprice, usdprice, athbtc, athusd))
+        change_1d = j['market_data']['price_change_percentage_24h_in_currency']['usd']
+        change_1w = j['market_data']['price_change_percentage_7d_in_currency']['usd']
+        change_1m = j['market_data']['price_change_percentage_30d_in_currency']['usd']
+        change_1y = j['market_data']['price_change_percentage_1y_in_currency']['usd']
+        bot.say("{} ({}) is #{:.0f} by mcap (${:.2e}) and #{:.0f} by coingecko rank. Current price is {:.8f} BTC / ${:.3f}. ATH price is {:.8f} BTC / ${:.3f}. USD change: 1d {:.1f}%, 1w {:.1f}%, 1m {:.1f}%, 1y {:.1f}%.".format(name, ticker, mcaprank, mcap, geckorank, btcprice, usdprice, athbtc, athusd, change_1d, change_1w, change_1m, change_1y))
     except:
-        bot.say("Couldn't find {} on le gecko".format(coin))
+        bot.say("Failed to retrieve or parse data for {}".format(coin))
 
 @sopel.module.commands('coin', 'coinex')
 def coinex(bot, trigger):
