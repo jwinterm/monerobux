@@ -460,7 +460,9 @@ def top(bot, trigger):
             market_cap_usd = float(i['market_cap'])
             rounded_mcap = trim_mcap(market_cap_usd)
             topXstring += "{0}. {1} ${2} | ".format(rank, symbol, rounded_mcap) #TODO: add price_usd, rounded
-        bot.say(topXstring[:-2])
+        xmr_str = topXstring[-16:] # monero is at the end, and might get truncated
+        final = (topXstring[:140] + " {...} " + xmr_str) if len(topXstring) > 165 else topXstring
+        bot.say(final[:-2])
     except:
         bot.say("The use is 'top' and then a digit 1 - 20")
 
