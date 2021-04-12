@@ -20,7 +20,7 @@ def fourmatter(bot, trigger):
 
 @sopel.module.commands('_.')
 def faceflip(bot, trigger):
-    bot.say(':|   .¯.   |:   ._.   :|   .¯.   |:   ._.   :|   .¯.   |:   ._.')
+    bot.say(':/   :|   :\   .¯.   /:   |:   \:   ._.   :/   :|   :\   .¯.   /:   |:   \:   ._.')
    
 @sopel.module.commands('ada', 'hoskinson')
 def ada(bot, trigger):

@@ -165,8 +165,12 @@ def gecko(bot, trigger):
         athusd = j['market_data']['ath']['usd']
         change_1d = j['market_data']['price_change_percentage_24h_in_currency']['usd']
         change_1w = j['market_data']['price_change_percentage_7d_in_currency']['usd']
-        change_1m = j['market_data']['price_change_percentage_30d_in_currency']['usd']
-        change_1y = j['market_data']['price_change_percentage_1y_in_currency']['usd']
+        try:
+            change_1m = j['market_data']['price_change_percentage_30d_in_currency']['usd']
+        except: change_1m = 0
+        try:
+            change_1y = j['market_data']['price_change_percentage_1y_in_currency']['usd']
+        except: change_1y = 0
         bot.say("{} ({}) is #{:.0f} by mcap (${:.2e}) and #{:.0f} by coingecko rank. Current price is {:.8f} BTC / ${:.3f}. ATH price is {:.8f} BTC / ${:.3f}. USD change: 1d {:.1f}%, 1w {:.1f}%, 1m {:.1f}%, 1y {:.1f}%.".format(name, ticker, mcaprank, mcap, geckorank, btcprice, usdprice, athbtc, athusd, change_1d, change_1w, change_1m, change_1y))
     except:
         bot.say("Failed to retrieve or parse data for {}".format(coin))
