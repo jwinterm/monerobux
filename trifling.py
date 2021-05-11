@@ -26,6 +26,10 @@ def faceflip(bot, trigger):
 def ada(bot, trigger):
     bot.say('DO YOU KNOW WHO I AM?')
 
+@sopel.module.commands('aids')
+def aids(bot, trigger):
+    bot.say('https://youtu.be/8iZcGnz7WcI?t=59')
+
 @sopel.module.commands('aminorex')
 def aminorex(bot, trigger):
     bot.say('if i could replace my wife with a robot...  i might seriously think about it')
