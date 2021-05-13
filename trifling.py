@@ -635,7 +635,7 @@ def soon(bot, trigger):
 
 @sopel.module.commands('shillo', 'cid')
 def shillo(bot, trigger):
-    bot.say(u'☠☠☠ Crypto is ded https://cryptocurrencydiy.net/wp-content/uploads/2018/03/bitcoin-is-dead-exit-all-crypto-1024x576-1024x585.jpg ☠☠☠ '.encode('utf8'))
+    bot.say(u'☠☠☠ Crypto is ded https://i.kym-cdn.com/photos/images/original/001/321/553/f03.jpg ☠☠☠ '.encode('utf8'))
 
 @sopel.module.commands('shrug')
 def shrug(bot, trigger):
