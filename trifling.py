@@ -900,16 +900,83 @@ def weather(bot, trigger):
             location = "zip="+location
         else:
             location = "q="+location.replace(' ', '%20')
+
         r = requests.get('https://api.openweathermap.org/data/2.5/weather?{}&appid={}'.format(location, wk))
         j = r.json()
+
+        location = j['name']+', '+j['sys']['country']
+        humidity = j['main']['humidity']
+        wind_speed_m_s = j['wind']['speed']
+        wind_deg = j['wind']['deg']
+        description = j['weather'][0]['description']
+        temp_in_c = float(j['main']['temp'])-273
+        low_in_c = float(j['main']['temp_min'])-273
+        high_in_c = float(j['main']['temp_max'])-273
+        temp = temp_in_c
+        low = low_in_c
+        high = high_in_c
+
+        def calculate_bearing(d):
+            dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+            ix = int(round(d / (360. / len(dirs))))
+            return dirs[(ix*2) % len(dirs)]
+
+        direction = calculate_bearing(wind_deg)
+
         try:
-            bot.say("In {} it is {:.2f} C with a low of {:.2f} and high of {:.2f} C, humidity is {}%, winds of {} m/s at an angle of {} deg with {}.".format(j['name']+', '+j['sys']['country'], float(j['main']['temp'])-273, float(j['main']['temp_min'])-273, float(j['main']['temp_max'])-273, j['main']['humidity'], j['wind']['speed'], j['wind']['deg'], j['weather'][0]['description']))
+            bot.say("In {} it is {:.1f} C with a low of {:.1f} and high of {:.1f} C, humidity is {}%, winds of {} m/s from the {} with {}.".format(location, temp, low, high, humidity, wind_speed_m_s, direction, description))
         except:
-            bot.say("In {} it is {:.2f} C with a low of {:.2f} and high of {:.2f} C, humidity is {}%, winds of {} m/s with {}.".format(j['name']+', '+j['sys']['country'], float(j['main']['temp'])-273, float(j['main']['temp_min'])-273, float(j['main']['temp_max'])-273, j['main']['humidity'], j['wind']['speed'], j['weather'][0]['description']))
+            bot.say("In {} it is {:.2f} C with a low of {:.2f} and high of {:.2f} C, humidity is {}%, winds of {} m/s with {}.".format(location, temp, low, high, humidity, wind_speed_m_s, description))
 
     except:
         bot.say("The earth is on fire 🌎🔥")
+	
+@sopel.module.commands('weatherf')
+def weatherf(bot, trigger):
+    wk = client.weather_key
+    try:
+        if not trigger.group(2):
+            location = q="san%20francisco"
+        elif trigger.group(2) == 'nioc':
+            location = 'new york city'
+        else:
+            location = trigger.group(2)
+        if location.isdigit():
+            location = "zip="+location
+        else:
+            location = "q="+location.replace(' ', '%20')
 
+        r = requests.get('https://api.openweathermap.org/data/2.5/weather?{}&appid={}'.format(location, wk))
+        j = r.json()
+
+        location = j['name']+', '+j['sys']['country']
+        humidity = j['main']['humidity']
+        wind_speed_m_s = j['wind']['speed']
+        wind_deg = j['wind']['deg']
+        description = j['weather'][0]['description']
+        temp_in_c = float(j['main']['temp'])-273
+        low_in_c = float(j['main']['temp_min'])-273
+        high_in_c = float(j['main']['temp_max'])-273
+        temp = (temp_in_c * 9 / 5 ) + 32
+        low = (low_in_c * 9 / 5 ) + 32
+        high = (high_in_c * 9 / 5 ) + 32
+        wind_speed_mph = float(wind_speed_m_s) * 2.236936
+
+        def calculate_bearing(d):
+            dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+            ix = int(round(d / (360. / len(dirs))))
+            return dirs[(ix*2) % len(dirs)]
+
+        direction = calculate_bearing(wind_deg)
+
+        try:
+            bot.say("In {} it is {:.1f} F with a low of {:.1f} and high of {:.1f} F, humidity is {}%, winds of {:.1f} mph from the {} with {}.".format(location, temp, low, high, humidity, wind_speed_mph, direction, description))
+        except:
+            bot.say("In {} it is {:.1f} F with a low of {:.1f} and high of {:.1f} F, humidity is {}%, winds of {:.1f} mph with {}.".format(location, temp, low, high, humidity, wind_speed_mph, description))
+
+    except:
+        bot.say("The earth is on fire 🌎🔥")
+	
 @sopel.module.commands('yeezy', 'kanye', 'ye')
 def yeezy(bot, trigger):
     #headers = {'User-Agent': 'monerobux-irc-bot-#wownero'}
