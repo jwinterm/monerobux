@@ -919,7 +919,7 @@ def weather(bot, trigger):
         def calculate_bearing(d):
             dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
             ix = int(round(d / (360. / len(dirs))))
-            return dirs[(ix*2) % len(dirs)]
+            return dirs[(ix) % len(dirs)]
 
         direction = calculate_bearing(wind_deg)
 
@@ -965,7 +965,7 @@ def weatherf(bot, trigger):
         def calculate_bearing(d):
             dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
             ix = int(round(d / (360. / len(dirs))))
-            return dirs[(ix*2) % len(dirs)]
+            return dirs[(ix) % len(dirs)]
 
         direction = calculate_bearing(wind_deg)
 
