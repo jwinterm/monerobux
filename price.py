@@ -225,10 +225,10 @@ def krak(bot, trigger):
         try:
             r=requests.get(kraktrig+coin+'XBT')
             j=r.json()
-	    stringtosay += "{0} at {1:.8f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
-	except:
+            stringtosay += "{0} at {1:.8f} on {2:.2f} 24 h {0} volume. ".format(coin, float(j['result']['X'+str(coin)+'XXBT']['c'][0]), float(j['result']['X'+str(coin)+'XXBT']['v'][1]))
+        except:
             bot.say("Error connecting to Kraken")
-	try:
+        try:
             bot.say(stringtosay)
         except:
             bot.say("Error getting data")
@@ -243,11 +243,11 @@ def lending(bot, trigger):
         currenttime=time.time()
         for i in j['offers']:
             amnt+=float(i['amount'])
-        bot.say("Total amount of XMR available {0:,.2f}. Changed by {1:.2f} in the last {2:.2f} hours".format(amnt, amnt-prevamnt, (currenttime-prevtime)/3600))
         global prevamnt
         prevamnt=amnt
         global prevtime
         prevtime=currenttime
+        bot.say("Total amount of XMR available {0:,.2f}. Changed by {1:.2f} in the last {2:.2f} hours".format(amnt, amnt-prevamnt, (currenttime-prevtime)/3600))
     except:
         bot.say("Something bad happened :o")
 
@@ -276,7 +276,6 @@ def metal(bot, trigger):
 
 
 @sopel.module.commands('polo', 'poloniex', 'marco', 'plol')
-@sopel.module.interval(3600)
 def polo(bot, trigger):
     if not trigger.group(2):
         try:
@@ -290,21 +289,21 @@ def polo(bot, trigger):
                 sign = '+'
             else:
                 sign = ''
-            face = ''
+            face = u'\u0000'
             if change > 0.10:
-                face = u'\u263d'.encode('utf8')
+                face = u'\u263d'
             if 0.10 >= change > 0.05:
-                face = u'\u2661'.encode('utf8')
+                face = u'\u2661'
             if 0.05 >= change > 0.02:
-                face = u'\u263a'.encode('utf8')
+                face = u'\u263a'
             if 0.02 >= change > -0.02:
-                face = u'\u2694'.encode('utf8')
+                face = u'\u2694'
             if -0.02 >= change > -0.05:
-                face = u'\u2639'.encode('utf8')
+                face = u'\u2639'
             if -0.05 >= change > -0.1:
-                face = u'\u2620'.encode('utf8')
+                face = u'\u2620'
             if change < -0.1:
-                face = u'\u262d'.encode('utf8')
+                face = u'\u262d'
             bot.say("Poloniex at {0:.8f} BTC; {1}{2:.2f}% over 24 hours on {3:.3f} BTC volume {4}".format(last, sign, change*100, vol, face))
         except:
             bot.say("Error retrieving data from Poloniex")
@@ -469,8 +468,8 @@ def top(bot, trigger):
             elif limit < 1:
                 bot.say("Dude...")
                 return
-    	r = requests.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page={}&page=1&sparkline=false'.format(limit))
-    	j = r.json()
+        r = requests.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page={}&page=1&sparkline=false'.format(limit))
+        j = r.json()
         for i in j:
             symbol = i['symbol']
             name = i['name']
@@ -519,7 +518,7 @@ def tall(bot, trigger):
         stampresult = requests.get(stampurl)
         stampjson = stampresult.json()
     except:
-	stampjson = False
+        stampjson = False
     if stampjson:
         stringtosend += "Bitstamp last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(stampjson['last']), float(stampjson['volume']))
     # Gemini
@@ -527,7 +526,7 @@ def tall(bot, trigger):
         gemiresult = requests.get(gemiurl)
         gemijson = gemiresult.json()
     except:
-	gemijson = False
+        gemijson = False
     if gemijson:
         try:
             stringtosend += "Gemini last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(gemijson['last']), float(gemijson['volume']['BTC']))
@@ -540,7 +539,7 @@ def tall(bot, trigger):
         gdaxprice = float(gdaxjson['price'])
         gdaxvolume = float(gdaxjson['volume'])
     except:
-	gdaxjson = False
+        gdaxjson = False
     if gdaxjson:
         stringtosend += "CBP last: ${0:,.2f}, vol: {1:,.1f} | ".format(gdaxprice, gdaxvolume)
     # Binance
@@ -552,7 +551,7 @@ def tall(bot, trigger):
                 binanceprice = float(i['lastPrice'])
                 binancevolume = float(i['volume'])
     except:
-	binancejson = False
+        binancejson = False
     if binancejson:
         stringtosend += "Binance last: ${0:,.2f}, vol: {1:,.1f} | ".format(binanceprice, binancevolume)
     # Bitfinex
@@ -560,7 +559,7 @@ def tall(bot, trigger):
         finexresult = requests.get(finexurl)
         finexjson = finexresult.json()
     except:
-	finexjson = False
+        finexjson = False
     try:
         if finexjson:
             stringtosend += "Bitfinex last: ${0:,.2f}, vol: {1:,.1f} | ".format(float(finexjson['last_price']), float(finexjson['volume']))
@@ -659,13 +658,13 @@ def xmrtall(bot, trigger):
 
     # Polo
     try:
-	r=requests.get(polourl)
+        r=requests.get(polourl)
         j=r.json()
         xmr=j["BTC_XMR"]
         last=float(xmr['last'])
 #       change=float(xmr['percentChange'])
         vol=float(xmr['baseVolume'])
-    	stringtosend += "Poloniex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
+        stringtosend += "Poloniex last: {0:.6f} BTC on {1:.2f} BTC volume | ".format(last, vol)
     except:
         bot.say("Something borked ¯\(º_o)/¯")
 
