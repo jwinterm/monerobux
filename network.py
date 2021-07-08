@@ -20,7 +20,7 @@ def fork(bot, trigger):
   try:
     r=requests.get(networkurl)
     j=r.json()
-  except Exception,e:
+  except Exception as e:
     pass
   try:
     height=j["height"]
@@ -37,7 +37,7 @@ def network(bot, trigger):
   try:
     r=requests.get(networkurl)
     j=r.json()
-  except Exception,e:
+  except:
     pass
   try:
     height=j["height"]
