@@ -980,5 +980,9 @@ def mental(bot, trigger):
     bot.say('Ahhhhhhhh!!!!')
 
 @sopel.module.commands('biden')
-def mental(bot, trigger):
+def biden(bot, trigger):
     bot.say('Come on man...')
+
+@sopel.module.commands('smile')
+def smile(bot, trigger):
+    bot.say('https://archive.is/uqHxO')
