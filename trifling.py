@@ -6,7 +6,7 @@ import requests
 import praw
 import client
 from threading import Timer
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 @sopel.module.commands('4matter')
 def fourmatter(bot, trigger):
@@ -77,7 +77,7 @@ def bbl(bot, trigger):
 
 @sopel.module.commands('bear')
 def bear(bot, trigger):
-    bot.say(u'ʕ ·(エ)· ʔ'.encode('utf8'))
+    bot.say(u'ʕ ·(エ)· ʔ')
 
 @sopel.module.commands('billions')
 def billions(bot, trigger):
@@ -85,11 +85,11 @@ def billions(bot, trigger):
 
 @sopel.module.commands('brothers')
 def brothers(bot, trigger):
-    bot.say(u'http://www.trollaxor.com/2011/11/brief-history-of-ascii-penis.html'.encode('utf8'))
+    bot.say(u'http://www.trollaxor.com/2011/11/brief-history-of-ascii-penis.html')
 
 @sopel.module.commands('bp', 'bps', 'bulletproof', 'bulletproofs')
 def bulletproofs(bot, trigger):
-    bot.say(u'https://www.youtube.com/watch?v=Kk8eJh4i8Lo'.encode('utf8'))
+    bot.say(u'https://www.youtube.com/watch?v=Kk8eJh4i8Lo')
 
 @sopel.module.commands('buyorsell')
 def buyorsell(bot, trigger):
@@ -186,7 +186,7 @@ def collect(bot, trigger):
         value_of_items_collected_in_one_day = quantity * value_of_one_item
         weekly_coins_to_buy = value_of_items_collected_in_one_day * 7 / coin_price
 
-        bot.say('{0} price: ${1:,.2f}, and {2} price: ${3:,.3f}'.format(item.capitalize(), value_of_one_item, coin.capitalize(), coin_price))
+        bot.say('{0} price: ${1:,.2f}, and {2} price: ${3:,.2f}'.format(item.capitalize(), value_of_one_item, coin.capitalize(), coin_price))
         bot.say('{0}: collect {1} per day to exchange for {2:,.5f} {3} each week!'.format(item.capitalize(), quantity, weekly_coins_to_buy, coin))
 
 @sopel.module.commands('covid', 'corona', 'conv')
@@ -247,7 +247,7 @@ def dash(bot, trigger):
 
 @sopel.module.commands('dealwithit')
 def dealwithit(bot, trigger):
-    bot.say(u'(•_•)   ( •_•)>⌐■-■    (⌐■_■)'.encode('utf8'))
+    bot.say(u'(•_•)   ( •_•)>⌐■-■    (⌐■_■)')
 
 @sopel.module.commands('Deathtobitcoin', 'Deathtobitcoin2')
 def deathtobitcoin2(bot, trigger):
@@ -255,11 +255,11 @@ def deathtobitcoin2(bot, trigger):
 
 @sopel.module.commands('diiorio')
 def diiorio(bot, trigger):
-    bot.say(u'http://www.contravex.com/2016/06/29/from-the-scammer-files-anthony-di-iorio/'.encode('utf8'))
+    bot.say(u'http://www.contravex.com/2016/06/29/from-the-scammer-files-anthony-di-iorio/')
 
 @sopel.module.commands('disapprove')
 def disapprove(bot, trigger):
-    bot.say(u'ಠ_ಠ'.encode('utf8'))
+    bot.say(u'ಠ_ಠ')
 
 @sopel.module.commands('ded')
 def ded(bot, trigger):
@@ -283,19 +283,19 @@ def encrypt(bot, trigger):
 
 @sopel.module.commands('eth')
 def eth(bot, trigger):
-    bot.say(u'The world computer 💻🌐'.encode('utf8'))
+    bot.say(u'The world computer 💻🌐')
 
 @sopel.module.commands('ferret', 'ferretinjapan')
 def ferret(bot, trigger):
-    bot.say(u'♥‿♥ https://crypto314.com/wp-content/uploads/2017/09/monero-1505185532555-723x1024.png ♥‿♥'.encode('utf8'))
+    bot.say(u'♥‿♥ https://crypto314.com/wp-content/uploads/2017/09/monero-1505185532555-723x1024.png ♥‿♥')
 
 @sopel.module.commands('fib', 'fibonacci')
 def fib(bot, trigger):
-    bot.say(u'Pardon me, do you have a moment to discuss our lord and savior ✞Cheesus Monero✞?'.encode('utf8'))
+    bot.say(u'Pardon me, do you have a moment to discuss our lord and savior ✞Cheesus Monero✞?')
 
 @sopel.module.commands('flip')
 def flip(bot, trigger):
-    bot.say(u'(╯°□°）╯︵ ┻━┻'.encode('utf8'))
+    bot.say(u'(╯°□°）╯︵ ┻━┻')
 
 @sopel.module.commands('fuck')
 def fuck(bot, trigger):
@@ -381,7 +381,7 @@ def jaxx(bot, trigger):
     bot.say(u'This command will be implemented soon. Honest. Especially if the devs can provide some unpaid assistance. Soon™...')
 
 @sopel.module.commands('jimbell')
-def jaxx(bot, trigger):
+def jimbell(bot, trigger):
     if not trigger.group(2):
         bot.say(u'https://en.wikipedia.org/wiki/Jim_Bell')
     else:
@@ -409,19 +409,15 @@ def kramer(bot, trigger):
 
 @sopel.module.commands('lambo')
 def lambo(bot, trigger):
-    bot.say(u'Our mission is to give you a taste of the lambo dream 🏎 '.encode('utf8'))
-
-@sopel.module.commands('lenny')
-def lenny(bot, trigger):
-    bot.say(u'( ͡° ͜ʖ ͡°)'.encode('utf8'))
+    bot.say(u'Our mission is to give you a taste of the lambo dream 🏎 ')
 
 @sopel.module.commands('lietome')
 def lietome(bot, trigger):
-    bot.say(u'https://www.youtube.com/watch?v=R5AsQbLHWbw'.encode('utf8'))
+    bot.say(u'https://www.youtube.com/watch?v=R5AsQbLHWbw')
 
 @sopel.module.commands('livermore')
 def livermore(bot, trigger):
-    bot.say(u'https://en.wikipedia.org/wiki/Reminiscences_of_a_Stock_Operator'.encode('utf8'))
+    bot.say(u'https://en.wikipedia.org/wiki/Reminiscences_of_a_Stock_Operator')
 
 @sopel.module.commands('loki')
 def loki(bot, trigger):
@@ -429,11 +425,11 @@ def loki(bot, trigger):
 
 @sopel.module.commands('luigi')
 def luigi(bot, trigger):
-    bot.say(u'🍄 luigi is doing. mario is not doing luigi is doing 🍄'.encode('utf8'))
+    bot.say(u'🍄 luigi is doing. mario is not doing luigi is doing 🍄')
 
 @sopel.module.commands('ltc', 'chikun')
 def ltc(bot, trigger):
-    bot.say(u'🐔🐔🐔 https://cdn.meme.am/cache/instances/folder100/48222100.jpg 🐔🐔🐔'.encode('utf8'))
+    bot.say(u'🐔🐔🐔 https://cdn.meme.am/cache/instances/folder100/48222100.jpg 🐔🐔🐔')
 
 @sopel.module.commands('major')
 def major(bot, trigger):
@@ -445,43 +441,43 @@ def masternode(bot, trigger):
 
 @sopel.module.commands('monerov', 'v')
 def monerov(bot, trigger):
-    bot.say(u"🔒🔒🔒 MoneroV is more secured than others. That's why it is better invest on moneroV. 💰💰💰".encode('utf8'))
+    bot.say(u"🔒🔒🔒 MoneroV is more secured than others. That's why it is better invest on moneroV. 💰💰💰")
 
 @sopel.module.commands('moon')
 def moon(bot, trigger):
-    bot.say(u'┗(°0°)┛'.encode('utf8'))
+    bot.say(u'┗(°0°)┛')
 
 @sopel.module.commands('multisig')
 def multisig(bot, trigger):
-    bot.say(u'𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮 𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮'.encode('utf8'))
+    bot.say(u'𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮 𝓼𝓲𝓰𝓷𝓪𝓽𝓾𝓻𝓮')
 
 @sopel.module.commands('myriad', 'myr', 'myriadcoin')
 def myriad(bot, trigger):
-    bot.say(u'Myriad - A coin for everyone 🖐'.encode('utf8'))
+    bot.say(u'Myriad - A coin for everyone 🖐')
 
 @sopel.module.commands('needmoney', 'needmoney90', 'nm90')
 def needmoney(bot, trigger):
-    bot.say(u'cash rules everything around me C.R.E.A.M get the money 💵 💵 bill yall'.encode('utf8'))
+    bot.say(u'cash rules everything around me C.R.E.A.M get the money 💵 💵 bill yall')
 
 @sopel.module.commands('nioc')
 def nioc(bot, trigger):
-    bot.say(u'https://ifunny.co/fun/laeIohx56'.encode('utf8'))
+    bot.say(u'https://ifunny.co/fun/laeIohx56')
 
 @sopel.module.commands('nobody')
 def nobody(bot, trigger):
     bot.say('https://www.youtube.com/watch?v=YA631bMT9g8')
 
-@sopel.module.commands('nomnomnom')
+@sopel.module.commands('nomnomnom', 'nomnom')
 def nomnomnom(bot, trigger):
-    bot.say(u'ᗧ•••ᗣ'.encode('utf8'))
+    bot.say(u'ᗧ•••ᗣ')
 
 @sopel.module.commands('noom')
 def noom(bot, trigger):
-    bot.say(u'┏(.0.)┓'.encode('utf8'))
+    bot.say(u'┏(.0.)┓')
 
 @sopel.module.commands('notbad', 'dorian')
 def notbad(bot, trigger):
-    bot.say(u'（´ー｀） http://hackingdistributed.com/images/2014-01-01-bitcoin/dorian1.jpg （´ー｀）'.encode('utf8'))
+    bot.say(u'（´ー｀） http://hackingdistributed.com/images/2014-01-01-bitcoin/dorian1.jpg （´ー｀）')
 
 @sopel.module.commands('obama')
 def obama(bot, trigger):
@@ -557,7 +553,7 @@ def projecting(bot, trigger):
 
 @sopel.module.commands('purge')
 def purge(bot, trigger):
-    bot.say(u'♔♔♔ Bow to the king https://preview.redd.it/fr8q7x9utnzy.png?width=612&auto=webp&s=8bf7aa7674d2dc3157b776ae07771144833cd879  ♔♔♔'.encode('utf8'))
+    bot.say(u'♔♔♔ Bow to the king https://preview.redd.it/fr8q7x9utnzy.png?width=612&auto=webp&s=8bf7aa7674d2dc3157b776ae07771144833cd879  ♔♔♔')
 
 @sopel.module.commands('rarepepe', 'rare')
 def rarepepe(bot, trigger):
@@ -579,11 +575,11 @@ def rarepepe(bot, trigger):
 
 @sopel.module.commands('rip')
 def rip(bot, trigger):
-    bot.say(u'(X_X) ☜ (◉▂◉ ) we hardly knew ye'.encode('utf8'))
+    bot.say(u'(X_X) ☜ (◉▂◉ ) we hardly knew ye')
 
 @sopel.module.commands('risto', 'rpietila')
 def risto(bot, trigger):
-    bot.say(u'Zionists own the media, including Hollywood. It is nothing extraordinary for them to use it to further their goals. Just see what they are propagating every day in every media outlet. And the compulsory disclaimer: Zionist != Jew. Zionists in my understanding are typically mostly not even ethnic Jews, and the supermajority of Jews certainly are not Zionists. Zionism is a purely political supremacy movement.'.encode('utf8'))
+    bot.say(u'Zionists own the media, including Hollywood. It is nothing extraordinary for them to use it to further their goals. Just see what they are propagating every day in every media outlet. And the compulsory disclaimer: Zionist != Jew. Zionists in my understanding are typically mostly not even ethnic Jews, and the supermajority of Jews certainly are not Zionists. Zionism is a purely political supremacy movement.')
 
 @sopel.module.commands('romerito', 'romero')
 def romerito(bot, trigger):
@@ -631,19 +627,15 @@ def scam(bot, trigger):
 
 @sopel.module.commands('soon')
 def soon(bot, trigger):
-    bot.say(u'Two weeks™'.encode('utf8'))
+    bot.say(u'Two weeks™')
 
 @sopel.module.commands('shillo', 'cid')
 def shillo(bot, trigger):
-    bot.say(u'☠☠☠ Crypto is ded https://i.kym-cdn.com/photos/images/original/001/321/553/f03.jpg ☠☠☠ '.encode('utf8'))
-
-@sopel.module.commands('shrug')
-def shrug(bot, trigger):
-    bot.say(u'¯\_(ツ)_/¯'.encode('utf8'))
+    bot.say(u'☠☠☠ Crypto is ded https://i.kym-cdn.com/photos/images/original/001/321/553/f03.jpg ☠☠☠ ')
 
 @sopel.module.commands('softich')
 def softich(bot, trigger):
-    bot.say(u'🐻🐻🐻 https://imgflip.com/i/1ve397 🐻🐻🐻'.encode('utf8'))
+    bot.say(u'🐻🐻🐻 https://imgflip.com/i/1ve397 🐻🐻🐻')
 
 @sopel.module.commands('summon')
 def summon(bot, trigger):
@@ -691,14 +683,14 @@ def trivia(bot, trigger):
         category = j['results'][0]['category']
         difficulty = j['results'][0]['difficulty']
         question = h.unescape(j['results'][0]['question'])
-	answers = [j['results'][0]['correct_answer']]
-	for i in j['results'][0]['incorrect_answers']:
-		answers.append(i)
-	random.shuffle(answers)
+        answers = [j['results'][0]['correct_answer']]
+        for i in j['results'][0]['incorrect_answers']:
+                answers.append(i)
+        random.shuffle(answers)
         correct_answer = j['results'][0]['correct_answer']
         incorrect_answers = j['results'][0]['incorrect_answers']
         bot.say("This question is in the field of {} and is of {} difficulty: {}".format(category, difficulty, question))
-	bot.say("The possible answers are: {}, {}, {}, or {}".format(answers[0], answers[1], answers[2], answers[3]))
+        bot.say("The possible answers are: {}, {}, {}, or {}".format(answers[0], answers[1], answers[2], answers[3]))
         replystr = "If you said {} you are correct, but if you said {}, {}, or {} you should call your parents and complain.".format(correct_answer, incorrect_answers[0], incorrect_answers[1], incorrect_answers[2])
         def f():
             bot.say(replystr)
@@ -729,10 +721,6 @@ def trump(bot, trigger):
 def trumbleweed(bot, trigger):
     bot.say("https://rootco.de/2016-03-28-why-use-tumbleweed/")
 
-@sopel.module.commands('unflip')
-def unflip(bot, trigger):
-    bot.say(u'┬─┬ノ( º _ ºノ)'.encode('utf8'))
-
 urmomoptions = [
 "ur mom is so stupid she bought all the dash",
 "ur momma got a peg leg with a kickstand",
@@ -756,7 +744,7 @@ def urmom(bot, trigger):
 
 @sopel.module.commands('verge', 'xvg', 'wraith')
 def verge(bot, trigger):
-    bot.say(u"👻🐕 Don't wraith my dark doge bro! 👻🐕".encode('utf8'))
+    bot.say(u"👻🐕 Don't wraith my dark doge bro! 👻🐕")
 
 vitalikoptions = [
 "https://pbs.twimg.com/media/CrWjczJXgAExF2S.jpg",
@@ -802,7 +790,7 @@ def test(bot, trigger):
 
 @sopel.module.rule('monerobux o\/')
 def wave(bot, trigger):
-    #bot.reply(u'‹^› ‹(•_•)› ‹^›'.encode('utf8'))
+    #bot.reply(u'‹^› ‹(•_•)› ‹^›')
     bot.reply('hello')
 #@sopel.module.rule('[Tt]rump')
 #def politics(bot, trigger):
