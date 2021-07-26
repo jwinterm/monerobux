@@ -643,8 +643,8 @@ def summon(bot, trigger):
         bot.say("{0} has summoned...no one".format(trigger.nick))
     else:
         try:
-            trigger.group(2).decode('ascii')
-            bot.say("{0} has summoned {1}, ༼つ ◕_◕ ༽つ come to us {1} ༼つ ◕_◕ ༽つ".format(trigger.nick, trigger.group(2)))
+            summoned = trigger.group(2)
+            bot.say("{0} has summoned {1}, ༼つ ◕_◕ ༽つ come to us {1} ༼つ ◕_◕ ༽つ".format(trigger.nick, summoned))
         except:
             bot.say("Stop using non-ascii characters! (╯°□°）╯︵ ( . 0 .)")
 
