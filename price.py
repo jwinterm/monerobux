@@ -404,13 +404,19 @@ def ogre(bot, trigger):
     try:
         r = requests.get(ogreurl)
         j = r.json()
-        for i in j:
-            if pair == i.keys()[0]:
-                last=float(i[pair]['price'])
-                vol=float(i[pair]['volume'])
-        bot.say("{0} on Tradeogre at {1:.8f} BTC on {2:.3f} BTC volume".format(pair, last, vol))
     except:
         bot.say("Error retrieving data from Ogre")
+    last = 0.0
+    vol = 0.0
+    try:
+        for i in j:
+            for key in i:
+                if pair == key:
+                    last=float(i[pair]['price'])
+                    vol=float(i[pair]['volume'])
+        bot.say("{0} on Tradeogre at {1:.8f} BTC on {2:.3f} BTC volume".format(pair, last, vol))
+    except:
+        bot.say("Error parsing data from Ogre")
 
 
 @sopel.module.commands('trex', 'bittrex')
